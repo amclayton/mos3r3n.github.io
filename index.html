@@ -99,30 +99,6 @@ to go through the exercises in order, since later exercises may require the outp
 Clicking the grey headers will expand each section or subsection.
 </p>
 
-<!--
-<p class="top">
-After the formal conclusion of this tutorial, if you would like to continue working through
-these practical exercises on your own machine, the input files for these exercises can be downloaded
-through the following links:
-</p>
-
-<ul>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/tutorial/ncl_scripts.tar.bz2>NCL scripts</a></li>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/tutorial/ncl_colormaps.tar.bz2>NCL color maps</a></li>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/tutorial/python_scripts.tar.bz2>Python scripts</a></li>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/WPS_GEOG.tar.bz2>Minimal geographical datasets</a></li>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/tutorial/meshes.tar.bz2>Meshes</a></li>
-<li><a href=https://www2.mmm.ucar.edu/projects/mpas/tutorial/met_data.tar.bz2>Meteorological input data</a></li>
-</ul>
-
-<p class="top">
-On the machines we've used in this tutorial, all of the above files have been unpacked
-in <em class="terminal">/home/shared/mpas_course/resources</em>, and it will be necessary
-for you to adjust paths in the instructions to match the path where you have unpacked
-these input files.
-</p>
--->
-
 <!-- ============================================================================== -->
 <!-- === 0. Prerequisites and environment setup                         =========== -->
 <!-- ============================================================================== -->
@@ -154,26 +130,74 @@ to get onto Aspire2a. It is recommended to at least login onto Aspire2a with mul
 </p>
 
 <p>
-After login, you will be on your home directory, using
+After login, you will be in your home directory:
+</p>
+
 <pre class="terminal">
 <em class="prompt">$ </em>pwd
 </pre>
-you will obtain your home directory. However, the home directory has very limited disk space, so it is recommended to
-doing all the exercises under your scratch directory, which you can set as an environmental variable following
+
+<p>
+The command above will display the current working directory (your home directory after login). However, the home directory
+ usually has very limited disk space, so it is recommended to perform all exercises under your scratch directory.
+</p>
+
+<p>
+You can set an environment variable for your scratch directory:
+</p>
+
 <pre class="terminal">
 <em class="prompt">$ </em>export SCRATCH=${HOME/home/scratch}
 </pre>
-Then direct to your scrtatch directory
+
+<p>
+Navigate to your scratch directory:
+</p>
+
 <pre class="terminal">
 <em class="prompt">$ </em>cd $SCRATCH
 </pre>
 
+<p>
+Then, create a working directory for the training exercises and move into it:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER
-<em class="prompt">$ </em>cp -r /glade/derecho/scratch/liuz/mpasjedi_tutorial202410HOWARD ./mpas_jedi_tutorial
+<em class="prompt">$ </em>mkdir MPAS_JEDI_Training
+<em class="prompt">$ </em>cd MPAS_JEDI_Training
 </pre>
+
+<p>
+All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, we recommend you to linking them to your working directory
+<pre class="terminal">
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/Graphics .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0 .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS2IODA .
+</pre>
+</p>
+
+<p>
+Now, under your working directory, you will have those folds:
+<ul>onverted ioda obs, used in p
+    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data on bufr and IODA formats, CRTM coefficients, bias correction files.
+    <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namlist and stream files.
+    <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
+    <li><em class="terminal">MPASJEDI_FILE</em> - yaml and job scirpt files for conducting MPAS-JEDI applications.
+    <li><em class="terminal">Graphics</em> - Python scripts for visualization.
+    <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compled exctuables of MPAS-JEDI (CCRS version).
+    <li><em class="terminal">OBS2IODA</em> - Source code and compiled exctuable of obs2ioda for observation convector.
+</ul>
+</p>
+
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
+<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
+</pre>
+</p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ls -l mpas_jedi_tutorial <br>

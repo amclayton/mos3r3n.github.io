@@ -81,7 +81,7 @@ function jump(sectionid='')
 <p class="top">
 This web page is intended to serve as a guide through the hands-on practice exercises of this MPAS-JEDI 
 training for the Weather Science Research Programme (WSRP) projects. Detailed information of WSRP 
-can be found at <a href="https://www.a-star.edu.sg/ihpc/cawret" target="_blank"/a>. In the following, 
+can be found at <a href="https://www.a-star.edu.sg/ihpc/cawret" target="_blank"</a>. In the following, 
 exercises are split into 5 main sections, each of them focusing on a specific aspect of using the MPAS-JEDI
 data assimilation system.
 </p>
@@ -89,7 +89,8 @@ data assimilation system.
 <p class="top">
 In case you would like to refer to any of the lecture slides from previous days,
 you can open the <a href="agenda.html" target="_blank">Tutorial Agenda</a> in another window.
-The test dataset is available under Aspire2a downloaded from <a href="testdata" target="_blank">Here</a>.
+The test dataset is available under Aspire2a under the WSRP project fold 
+/home/project/13004327/training_service/2026-MPAS-JEDI.
 </p>
 
 <p class="top">
@@ -131,30 +132,42 @@ these input files.
 <div id="prerequisites" class="section">
 <p>
 The practical exercises in this tutorial have been tailored to work on
-the <a href="https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/derecho/" target="_blank">Derecho</a> system.
-Derecho is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
+the <a href="https://www.nscc.sg/aspire-2a/" target="_blank">NSCC Aspire2a</a> system.
+Aspire2a is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
 tools through <i>modules</i>. In general, before compiling and running MPAS-JEDI on your own system,
 you will need to install <a href="https://github.com/JCSDA/spack-stack" target="_blank">spack-stack</a>.
-However, this tutorial does not cover the installation of spack-stack, which was pre-installed on Derecho.
-MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com/JCSDA/spack-stack/tree/release/1.6.0" target="_blank">spack-stack-1.6.0</a>.
+However, this tutorial does not cover the installation of spack-stack, which was pre-installed on Aspire2a.
+MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com/JCSDA/spack-stack/tree/release/1.8.0" target="_blank">spack-stack-1.8.0</a>.
 </p>
 
 <p>
-Logging onto Derecho from your laptop or desktop by
+Logging onto Aspire2a from your laptop or desktop by
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ssh -X derecho.hpc.ucar.edu
+<em class="prompt">$ </em>ssh aspire2a.nscc.sg
 </pre>
 
 <p>
-then using your password and DUO two-factor authentication to get onto Derecho. Note that
-'-X' is necessary in order to use X11-forwarding for direct graphics display from Derecho.
-It is recommended to at least login onto Derecho with two terminals for different tasks.
+You will be required to type your username and password, and then through the DUO two-factor authentication 
+to get onto Aspire2a. It is recommended to at least login onto Aspire2a with multiple terminals for different tasks.
 </p>
 
 <p>
-First, copying the pre-prepared tutorial test dataset directory to your own scratch disk space:
+After login, you will be on your home directory, using
+<pre class="terminal">
+<em class="prompt">$ </em>pwd
+</pre>
+you will obtain your home directory. However, the home directory has very limited disk space, so it is recommended to
+doing all the exercises under your scratch directory, which you can set as an environmental variable following
+<pre class="terminal">
+<em class="prompt">$ </em>export SCRATCH=${HOME/home/scratch}
+</pre>
+Then direct to your scrtatch directory
+<pre class="terminal">
+<em class="prompt">$ </em>cd $SCRATCH
+</pre>
+
 </p>
 
 <pre class="terminal">

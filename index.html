@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <!-- Copyright (c) 2026, University Corporation for Atmospheric Research (UCAR). -->
@@ -609,7 +608,6 @@ If the compilation is successful, the executable file <em class="terminal">obs2i
 
 </div>
 
-
 <!-- === 2.2 Run obs2ioda-v2.x ================================================ -->
 <div class="subheader" onClick="show('bufr')">
 <h3 id="bufr-header">2.2 Convert prepbufr/bufr files to IODAv2-HDF5 format </h3>
@@ -724,35 +722,35 @@ Now, one of the figures shown here:
 <!-- === 3. Running MPAS-JEDI's HofX application ======== -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('hofx')">
-<h2 id="hofx-header">2. Running MPAS-JEDI's HofX application</h2>
+<h2 id="hofx-header">3. Running MPAS-JEDI's HofX application</h2>
 </div>
 <div id="hofx" class="section">
 <p>
-In this session, we will be running an application called 𝐻(𝐱).
+In this session, we will be running an application called 𝐻(𝐱), which maps the model states to the observation space.
 </p>
 
 <!-- === 3.1 Create working directory and link files =================== -->
 <div class="subheader" onClick="show('grid_rotate')">
-<h3 id="grid_rotate-header">2.1 Create working directory and link files</h3>
+<h3 id="grid_rotate-header">3.1 Create working directory and link files</h3>
 </div>
 <div id="grid_rotate" class="subsection">
 
 <p>
-Creating hofx directory in mpas_jedi_tutorial, 
+Creating HofX directory in MPAS-JEDI-Training
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir hofx
-<em class="prompt">$ </em>cd hofx
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
+<em class="prompt">$ </em>mkdir HofX
+<em class="prompt">$ </em>cd HofX
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory,
+Set environment variable for the mpas-bundle directory
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
 </pre>
 
 <p>
@@ -762,16 +760,16 @@ physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*TBL .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*DBL .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*DATA .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.analysis .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.background .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.control .
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.ensemble .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/streams.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.analysis .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.background .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.control .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.ensemble .
 </pre>
 
 <p>
@@ -779,31 +777,35 @@ Link yamls:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/geovars.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/keptvars.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/obsop_name_map.yaml .
 </pre>
 
 <p>
-Link MPAS 6-h forecast background file into template file and an MPAS invariant file for 2-stream I/O:
+The MPAS uses the 2-stream IO, in which invariant and variant states are stored in seperate files. 
+Link MPAS invariant file (invariant fields) and 6-h forecast background file (variant fields). 
+Also, link the 6-h forecast file as the template file:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc templateFields.10242.nc
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./bg.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>ln -fs bg.2024-09-17_12.00.00.nc templateFields.522172.2024-09-17_12.00.00.nc
 </pre>
 
 <p>
-Link the background and observation input files:
-</p>
+Create dbIn and dbOut directories, and then link the observation input files under it:
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
+<em class="prompt">$ </em> mkdir dbIn dbOut
+<em class="prompt">$ </em> cd dbIn
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/aircraft_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/gnssro_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/satwind_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/sfc_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/sondes_obs_2024091712.h5 .
+
 </pre>
 
 </div>
@@ -816,12 +818,13 @@ Link the background and observation input files:
 <div id="initialization-static-varres" class="subsection">
 
 <p>
-Link hofx3d.yaml and run_hofx3d.csh to the working directory:
+Copy hofx.yaml and run_hofx.ksh to the working directory:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/hofx3d.yaml .
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_hofx3d.csh .
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/HofX
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/hofx.yaml .
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/run_hofx.ksh .
 </pre>
 
 <p>
@@ -829,12 +832,12 @@ Submit a PBS job to run hofx,
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>qsub run_hofx3d.csh 
+<em class="prompt">$ </em>qsub run_hofx.ksh 
 </pre>
 
 <p>
-According to the setting in hofx3d.yaml, the output files are obsout_hofx_*.h5. 
-You may check the output file content using 'ncdump -h obsout_hofx_aircraft.h5'.
+According to the setting in hofx.yaml, the output files are obsout_hofx_*.h5 under dbOut.
+You may check the output file content, e.g., using 'ncdump -h obsout_hofx_aircraft.h5'.
 you can also check hofx by running plot_diag.py.
 </p>
 
@@ -843,9 +846,8 @@ The following steps are for set up python environment, copy graphics directory, 
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>module reset
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
+<em class="prompt">$ </em>module load miniforge3/25.3.1
+<em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 <em class="prompt">$ </em>cp -r ${bundle_dir}/code/mpas-jedi/graphics .
 <em class="prompt">$ </em>cd graphics/standalone
 <em class="prompt">$ </em>python plot_diag.py
@@ -861,7 +863,7 @@ display distri_windEastward_hofx_aircraft_omb_allLevels.png
 <p>
 which will look like the figure below
 </p>
-<img src="images/distri_windEastward_hofx_aircraft_omb_allLevels.png", width="800"/>
+<img src="images/HofX_horizontal_distribution_satwind.png", width="800"/>
 
 <p>
 To view more figures, it is more convenient to transfer them to your local computer via:
@@ -872,9 +874,7 @@ To view more figures, it is more convenient to transfer them to your local compu
 
 </div>
 
-
 </div>
-
 
 <!-- ============================================================================== -->
 <!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs 
@@ -1852,815 +1852,6 @@ You may see some changes in the fit-to-obs statistics, convergence, or analysis 
 </pre>
 
 </div>
-
-
-</div>
-
-
-<!-- ============================================================================== -->
-<!-- === 6. Running EDA and LETKF ============================================ -->
-<!-- ============================================================================== -->
-<div class="header" onClick="show('EnsembleDA')">
-<h2 id="EnsembleDA-header">5. Running EDA and LETKF</h2>
-</div>
-<div id="EnsembleDA" class="section">
-<p>
-In this section, we'll get some experience in running single-time EDA and LETKF analysis test.
-</p>
-
-<!-- === 6.1 Running EDA =========================== -->
-<div class="subheader" onClick="show('run_eda')">
-<h3 id="run_eda-header">5.1 Running single-time EDA analysis</h3>
-</div>
-<div id="run_eda" class="subsection">
-
-<p>
-Here, we will run the single-time EDA analysis, which has a total of 10 3DEnVar members. 
-</p>
-<p>
-First, We need to create the working directory for EDA test and move to that directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>mkdir -p /glade/derecho/scratch/$USER/mpas_jedi_tutorial/eda
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial/eda
-</pre>
-
-<p>
-Set environment variable for the mpas-bundle directory,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-</pre>
-
-<p>
-  Then, we need to prepare necessary files for EDA test. 
-  Link MPAS physics-related data and table, MPAS graph, MPAS streams, and MPAS namelist files:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*BL .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*DATA .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.* .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km .
-</pre>
-
-<p>
-Link MPAS 2-stream files: 
-</p>
-  
-<pre class="terminal">
-<em class="prompt">$ </em> ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em> ln -sf ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc 
-</pre>
-
-<p>
-Link static yaml files for MPAS-JEDI:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml  ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml  ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-</pre>
-
-<p>
-Prepare the ensemble background as well as ensemble analysis directories and files for EDA. Since we have 20 members, it will be better that we deal with them by creating a simple cshell script <em class="terminal">prep_an_bg_directories.csh</em>:
-</p>
-
-<pre class="terminal">
-#!/bin/csh
-foreach imem (01 02 03 04 05 06 07 08 09 10)
-  mkdir -p bg/mem0${imem} an/mem0${imem}
-  set tpath=/glade/derecho/scratch/$USER/mpas_jedi_tutorial
-  ln -sf ${tpath}/ensemble/2018041418/${imem}/mpasout.2018-04-15_00.00.00.nc bg/mem0${imem}/bg.2018-04-15_00.00.00.nc
-  cp ../ensemble/2018041418/${imem}/mpasout.2018-04-15_00.00.00.nc an/mem0${imem}/an.2018-04-15_00.00.00.nc
-end
-</pre>
-
-<p>
-After running <em class="terminal">prep_an_bg_directories.csh</em>, the <em class="terminal">an</em> and <em class="terminal">bg</em> directories and files are prepared.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>chmod 755 ./prep_an_bg_directories.csh
-<em class="prompt">$ </em>./prep_an_bg_directories.csh
-</pre>
-
-<p>
-Next step, we create a directory <em class="terminal">dbIn</em> for observation input, and a directory <em class="terminal">dbOut</em> to store the observation feedback files of all EDA members.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>mkdir dbIn 
-<em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5    ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5       ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5   ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5    ./
-<em class="prompt">$ </em>cd ..
-</pre>
-
-<p>
-For <em class="terminal">dbOut</em> directory, we need to create subdirectories for all EDA members with a simple cshell script, <em class="terminal">prep_dbout_directory.csh</em>:
-</p>
-
-<pre class="terminal">
-#!/bin/csh
-foreach imem (01 02 03 04 05 06 07 08 09 10)
-  mkdir -p dbOut/mem0${imem}
-end
-</pre>
-
-<p> 
-By running the <em class="terminal">prep_dbout_directory.csh</em> with the command:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>chmod 755 ./prep_dbout_directory.csh
-<em class="prompt">$ </em>./prep_dbout_directory.csh
-</pre>
-
-<p>
-the <em class="terminal">dbOut</em> directory and its subdirectories are created.
-</p>
-
-<p>
-Also, link the localization matrix and static BEC files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../localization_pregenerated ./bumploc
-<em class="prompt">$ </em>ln -sf ../B_Matrix     ./
-</pre>
-
-<p>
-Last, copy related yaml files and scripts for EDA running:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/eda_3denvar.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/eda_rtpp.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_eda_members.csh ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_eda_rtpp.csh ./
-</pre>
-
-<p> 
-The <em class="terminal">eda_3denvar.yaml</em> is a template yaml file for all 3DEnVar EDA members. the eda_3denvar.yaml file is very similar to 3denvar.yaml. You may do "diff 3denvar.yaml eda_3denvar.yaml" to see their difference.
-</p>
-
-<pre class="terminal">
-18,19c18,19
-<   member: 1
-<   number of members: 1
----
->   member: {{imem}}
->   number of members: 10
-38d37
-<
-40c39
-<   filename: ./an.$Y-$M-$D_$h.$m.$s.nc
----
->   filename: ../../an/mem{{IMEM}}/an.$Y-$M-$D_$h.$m.$s.nc
-50,51c49,50
-<   - <<: *iterationConfig
-<     ninner: 50
----
-> #  - <<: *iterationConfig
-> #    ninner: 50
-69c68
-<     filename: ./bg.2018-04-15_00.00.00.nc
----
->     filename: ../../bg/mem{{IMEM}}/bg.2018-04-15_00.00.00.nc
-80c79
-<             files prefix: ./BUMP_files/bumploc_1200km6km
----
->             files prefix: ../../bumploc/bumploc_1200km6km
-89c88
-<         filename: ../ensemble/2018041418/%iMember%/mpasout.2018-04-15_00.00.00.nc
----
->         filename: ../../bg/mem%iMember%/bg.2018-04-15_00.00.00.nc
-92,93c91,93
-<       zero padding: 2
-<       nmembers: 10
----
->       zero padding: 3
->       nmembers: 9
->       except: [{{imem}}]
-95c95
-<     obs perturbations: false
----
->     obs perturbations: true
-103c103
-<             obsfile: ./aircraft_obs_2018041500.h5
----
->             obsfile: ../../dbIn/aircraft_obs_2018041500.h5
-107c107
-<             obsfile: ./obsout_da_aircraft.h5
----
->             obsfile: ../../dbOut/mem{{IMEM}}/obsout_da_aircraft.h5
-131c131
-<             obsfile: ./gnssro_obs_2018041500.h5
----
->             obsfile: ../../dbIn/gnssro_obs_2018041500.h5
-135c135
-<             obsfile: ./obsout_da_gnssroref.h5
----
->             obsfile: ../../dbOut/mem{{IMEM}}/obsout_da_gnssroref.h5
-175c175
-<             obsfile: ./satwind_obs_2018041500.h5
----
->             obsfile: ../../dbIn/satwind_obs_2018041500.h5
-179c179
-<             obsfile: ./obsout_da_satwind.h5
----
->             obsfile: ../../dbOut/mem{{IMEM}}/obsout_da_satwind.h5
-228c228
-<             obsfile: ./sfc_obs_2018041500.h5
----
->             obsfile: ../../dbIn/sfc_obs_2018041500.h5
-232c232
-<             obsfile: ./obsout_da_sfc.h5
----
->             obsfile: ../../dbOut/mem{{IMEM}}/obsout_da_sfc.h5
-262c262
-<             obsfile: ./sondes_obs_2018041500.h5
----
->             obsfile: ../../dbIn/sondes_obs_2018041500.h5
-266c266
-<             obsfile: ./obsout_da_sondes.h5
----
->             obsfile: ../../dbOut/mem{{IMEM}}/obsout_da_sondes.h5
-</pre>
-
-<p>
-Even though we can run each EDA member simulataneously, for this tutorial we run all 10 EDA members serially in one job, which will take about 10 minutes (one outer loop setting).  <em style="background-color: yellow;">In <em class="terminal">run_eda_members.csh</em>, you may modify the line <em class="terminal">foreach iens</em> to run less EDA members to save time.
-</p>
-
-<p>
-Submit the job script <em class="terminal">run_eda_members.csh</em> with:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>qsub run_eda_members.csh
-</pre>
-
-<p>
-When all EDA members are done, we will see that all <em class="terminal">an/mem*/an.2018-04-15_00.00.00.nc</em> are updated, and there are observation feedback files generated in <em class="terminal">dbOut/mem*</em>, namely <em class="terminal">obsout_da_*.h5</em>.
-</p>
-
-<p>
-Different from LETKF, which does posterior inflation internally, an offline posterior RTPP inflation can be run after EDA analyses with:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>qsub run_eda_rtpp.csh
-</pre>
-
-<p>
-The posterior RTPP inflation will update all EDA analysis members <em class="terminal">an/mem*/an.2018-04-15_00.00.00.nc</em>.
-</p>
-
-<p>
-This EDA test is ensemble of 3DEnVar, you could also run ensemble of 3DVar, hybrid-3DEnVar, or even hybrid-4DEnVar, with a corresponding yaml setting. A yaml file named <em class="terminal">eda_3dhyb.yaml</em> is provided for you to play with.
-</p>
-
-<p>
-We also prepared some NCL scripts for graphics to see the impacts of DA. Copy them to the working directory. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cp ../ncl_scripts/plot_eda_*.ncl .
-</pre>
-
-<p>
-Check whether the NCL library is available:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>which ncl
-</pre>
-
-<p>
-If the system fails to find ncl, you may need to load the NCL module: 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>module reset
-<em class="prompt">$ </em>module load ncl/6.6.2
-</pre>
-
-<p>
-We can plot the analysis increment of ensemble mean with the script <em class="terminal">plot_eda_ensmean_anainc.ncl</em>. Specify the <em class="terminal">diag_var</em>, <em class="terminal">diag_lev (for 3-D variables)</em>, and <em class="terminal">nens (if run fewer EDA members)</em> in the script,
-</p>
-
-<pre class="terminal">
-    diag_var="surface_pressure"
-    diag_lev=10
-    nens = 10
-</pre>
-
-<p>
-and then run:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_eda_ensmean_anainc.ncl
-</pre>
-
-<p>
-This will produce a figure named <em class="terminal">eda_ens_mean_inc_surface_pressure_lev0.png</em>.
-</p>
-
-<img src="images/eda_ens_mean_inc_surface_pressure_lev0.png", width="600"/>
-
-<p>
-With the <em class="terminal">plot_eda_ens_spread.ncl</em>, we can plot the ensemble spread of both background and analysis. Similar to the ensemble mean increments, just change the <em class="terminal">diag_var</em> and <em class="terminal">diag_lev</em> in the NCL script, and run <em class="terminal">plot_eda_ens_spread.ncl</em>:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_eda_ens_spread.ncl
-</pre>
-
-<p>
-This will produce a figure <em class="terminal">eda_ens_spread_surface_pressure_lev0.png</em>.
-</p>
-
-<img src="images/eda_ens_spread_surface_pressure_lev0.png", width="600"/>
-
-<p>
-We can also plot the vertical profiles of RMSE, BIAS, and total spread of the Innovations (Obs minus Bak) and Residuals (Obs minus Ana) with <em class="terminal">plot_eda_vert_profile_err.ncl</em>. We need to specify the <em class="terminal">diag_obs</em>, <em class="terminal">diag_var</em> and <em class="terminal">nens (if run fewer EDA members)</em> in the script:
-</p>
-
-<pre class="terminal">
-diag_obs="sondes"
-diag_var="windEastward"
-nens = 10
-</pre>
-
-<p>
-Running:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_eda_vert_profile_err.ncl
-</pre>
-
-<p>
-will produce a figure file <em class="terminal">eda_vert_profile_sondes_windEastward.png</em>:
-</p>
-
-<img src="images/eda_vert_profile_sondes_windEastward.png", width="600"/>
-
-</div>
-
-
-<!-- === 6.2 Running LETKF ======================================= -->
-<div class="subheader" onClick="show('run_letkf')">
-<h3 id="run_letkf-header">5.2 Running single-time LETKF analysis</h3>
-</div>
-<div id="run_letkf" class="subsection">
-
-<p>
-In this subsection, we will further run a single-time LETKF analysis. First, we need to create the working directory for LETKF and move to that directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>mkdir -p /glade/derecho/scratch/$USER/mpas_jedi_tutorial/letkf
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial/letkf
-</pre>
-
-<p>
-Set environment variable for the mpas-bundle directory,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-</pre>
-
-<p>
-Similar to EDA, we first prepare necessary files for LETKF.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*BL .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*DATA .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.* .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km .
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -sf ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml  ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml  ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-</pre>
-
-<p>
-Now prepare 'bg' and 'an' folders under letkf.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cp ../eda/prep_an_bg_directories.csh .
-<em class="prompt">$ </em>./prep_an_bg_directories.csh
-<em class="prompt">$ </em>cp -r an/mem001 an/mem000
-</pre>
-
-<p>
-The reason of creating an/mem000 is that LETKF also writes out the mean of ensemble analyses under an/mem000.
-For observation-related directories, we need to create <em class="terminal">dbIn</em>, <em class="terminal">dbOut</em>, and <em class="terminal">dbAna</em> directories, and link IODA observation files to <em class="terminal">dbIn</em> directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>mkdir dbIn dbOut dbAna
-<em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5    ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5       ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5   ./
-<em class="prompt">$ </em>ln -sf ../../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5    ./
-<em class="prompt">$ </em>cd ..
-</pre>
-
-<p>
-link the yaml files and scripts for LETKF:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/letkf_observer.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/letkf_solver.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/letkf_solver_vloc.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/letkf_diagoma.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_letkf_observer.csh ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_letkf_solver.csh ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_letkf_diagoma.csh ./
-</pre>
-
-<p>
-<em class="terminal">letkf_observer.yaml</em>, <em class="terminal">letkf_solver.yaml</em>, and <em class="terminal">letkf_diagoma.yaml</em> are used for the three steps of LETKF. <em class="terminal">letkf_observer.yaml</em> is for calculating the ensemble HofX of background and performing quality control based on the ensemble mean. <em class="terminal">letkf_solver.yaml</em> is for updating the ensemble mean and ensemble members. <em class="terminal">lketkf_diagoma.yaml</em> is for calculating the ensemble HofX of analysis for OMA diagnosis. 
-</p>
-
-<p>
-We first submit <em class="terminal">run_letkf_observer.csh</em>:
-</p>  
-
-<pre class="terminal">
-<em class="prompt">$ </em>qsub run_letkf_observer.csh
-</pre>
-
-<p>
-This observer step will produce <em class="terminal">obsout_da_*.h5</em> files in <em class="terminal">dbOut</em>. In each df5 file, we can see groups of <em class="terminal">hofx_0_*, hofx_y_mean_xb0, ombg, EffectiveQC0, EffectiveError0</em>.
-</p>
-
-<p>
-Then, submit <em class="terminal">run_letkf_solver.csh</em>:
-</p>
-  
-<pre class="terminal">
-<em class="prompt">$ </em>qsub run_letkf_solver.csh
-</pre>
-
-<p>
-This solver step will update <em class="terminal">an/mem*/an.2018-04-15_00.00.00.nc</em> files, including the ensemble mean of analysis <em class="terminal">an/mem000/an.2018-04-15_00.00.00.nc</em>.
-</p>
-
-<p>
-Last, submit <em class="terminal">run_letkf_diagoma.csh</em>:
-</p>  
-
-<pre class="terminal">
-<em class="prompt">$ </em>qsub run_letkf_diagoma.csh
-</pre>
-
-<p>
-The analysis-diagnos step will generate <em class="terminal">obsout_*.h5 files</em> in <em class="terminal">dbAna</em>, similar to the files in <em class="terminal">dbOut</em> but for HofX of ensemble analysis. 
-</p> 
-
-<p>
-The previous run only tests the horizontal localization. If we want to also employ the vertical localization, just change
-</p>
-
-<pre class="terminal">
-_height-based obs localizations: &heightAndHorizObsLoc
-  <<: *2DLETKFheightAndHorizObsLoc
-</pre>
-
-<p>
-  to
-</p>
-
-<pre class="terminal">
-_height-based obs localizations: &heightAndHorizObsLoc
-  <<: *3DLETKFheightAndHorizObsLoc
-</pre>
-
-<p>
-in <em class="terminal">letkf_solver.yaml</em>, and then resubmit <em class="terminal">run_letkf_solver.csh</em> and <em class="terminal">run_letkf_diagoma.csh</em>. Backup <em class="terminal">an</em> and <em class="terminal">dbAna</em> directories before another run.
-</p>
- 
-<p>
-Similar to the EDA test, we also prepared some NCL scripts to plot LETKF results.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cp ../ncl_scripts/plot_letkf_*.ncl .
-</pre>
-
-<p>
-Plotting the analysis increment of ensemble mean with <em class="terminal">plot_letkf_ensmean_anainc.ncl</em>. We need to specify the <em class="terminal">diag_var</em> and <em class="terminal">diag_lev (for 3-D variables)</em> in the NCL script.
-</p>
-
-<pre class="terminal">
-    diag_var="surface_pressure"
-    diag_lev=10
-</pre>
-
-<p>
-Then do:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_letkf_ensmean_anainc.ncl
-</pre>
-
-<p>
-This will produce a figure <em class="terminal">letkf_ens_mean_inc_surface_pressure_lev0.png</em>.
-</p>
-
-<img src="images/letkf_ens_mean_inc_surface_pressure_lev0.png", width="600"/>
-
-<p>
-For plotting ensemble spread of both background and analysis, you could change <em class="terminal">diag_var</em> and <em class="terminal">diag_lev</em> in <em class="terminal">plot_letkf_ens_spread.ncl</em> before running:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_letkf_ens_spread.ncl
-</pre>
-
-<p>
-This will produce a figure <em class="terminal">letkf_ens_spread_surface_pressure_lev0.png</em>.
-</p>
-
-<img src="images/letkf_ens_spread_surface_pressure_lev0.png", width="600"/>
-
-<p>
-For plotting the vertical profiles of RMSE, BIAS, and total spread of the Innovations (Obs minus Bak) and Residuals (Obs minus Ana) with <em class="terminal">plot_letkf_vert_profile_err.ncl</em>, we could specify the <em class="terminal">diag_obs</em> and <em class="terminal">diag_var</em> in the script:
-</p>
-
-<pre class="terminal">
-diag_obs="sondes"
-diag_var="windEastward"
-</pre>
-
-<p>
-then run:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncl plot_letkf_vert_profile_err.ncl
-</pre>
-
-<p>
-This will produce a figure <em class="terminal">letkf_vert_profile_sondes_windEastward.png</em>.
-</p>
-
-<img src="images/letkf_vert_profile_sondes_windEastward.png", width="600"/>
-
-</div>
-
-
-</div>
-
-
-<!-- ============================================================================== -->
-<!-- === 7. Plotting OMB/OMA from two experiments ================================ -->
-<!-- ============================================================================== -->
-<div class="header" onClick="show('omboma')">
-<h2 id="omboma-header">6. Plotting OMB/OMA from two experiments</h2>
-</div>
-<div id="omboma" class="section">
-<p>
-In this section, we will make plots for the statistics of OmB/OmA feedback files from two 2-day
-cycling experiments by using the graphics package. In order to do this,
-we first generate observation-space statistics following the instructions in Section 6.1,
-then create the plots from statistics files following the instructions in Section 6.2.
-</p>
-
-<!-- === 7.1 Generate aggregated statistics of OmB/OmA ============ -->
-<!-- === 7.1 Generate aggregated statistics of OmB/OmA ============ -->
-<div class="subheader" onClick="show('generate_stats')">
-<h3 id="generate_stats-header">6.1 Generate statistics of OmB/OmA</h3>
-</div>
-<div id="generate_stats" class="subsection">
-
-<p>
-The statistics are generated for each cycle and all <em class="terminal">ObsSpace</em> (e.g., sondes, aircraft, gnssro, etc.) found in the folder containing the data assimilation feedback files (i.e., obsout_da_*.h5). The statistics are binned globally and by latitude bands as specified in <em class="terminal">config.py</em>. 
-The binned statistics are stored in HDF5 files located in a folder named <em class="terminal">stats</em> that is created for each cycle. 
-The statistics are generated by the script <em class="terminal">DiagnoseObsStatistics.py</em> in <em class="terminal">graphics</em>.
-</p>
-
-<p>
-Let's begin by checking the directory called <em class="terminal">omboma_from2experiments</em>:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial/omboma_from2experiments
-</pre>
-
-<p>
-This folder contains sample variational-based DA observation "feedback" files from two experiments Exp1 and Exp2, e.g.,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ls Exp1/CyclingDA/*
-</pre>
-
-<p>
-You will see obsout_da_amsua_n18.h5 and obsout_da_gnssrobndropp1d.h5 under each cycle time during a 2-day period (9 cycles).
-We can generate the bias, RMSE, and standard deviation statistics of these OMB/OMA files using
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/generate_stats_omboma.csh .
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/advanceCYMDH.py .
-<em class="prompt">$ </em>qsub generate_stats_omboma.csh
-</pre>
-
-<p>
-The job will take ~5 minutes to complete, and you can take a look at the folder of the statistics files:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ls Exp1/CyclingDA/*/stats
-</pre>
-
-<p>
-You will see two files stats_da_amsua_n18.h5 and stats_da_gnssrobndropp1d.h5 in each folder.
-You may check generate_stats_omboma.csh, in which a line below generated statistical files.
-</p>
-
-<pre class="terminal">
-python DiagnoseObsStatistics.py -n ${NUMPROC} -p ${daDiagDir} -o obsout -app variational -nout 1
-</pre>
-
-where
-<pre class="terminal">
--n: number of tasks/processors for multiprocessing
--p: path to DA feedback files (e.g., Exp1/CyclingDA/2018041500)
--o: prefix for DA feedback files
--app: application (variational or hofx)
--nout: number of outer loops</pre>
-</pre>
-
-<p>
-Also note that <em class="terminal">advanceCYMDH.py</em> is a python code to help advance the time.
-</p>
-
-<p>
-If statistics files were created, we can proceed to make the plots in the next section!
-</p>
-
-</div>
-
-
-<!-- === 7.2 Make plots of OmB/OmA statistics ============ -->
-<!-- === 7.2 Make OmA/OmB plots ================================ -->
-<div class="subheader" onClick="show('make_plots')">
-<h3 id="make_plots-header">6.2 Make plots of OmB/OmA statistics</h3>
-</div>
-<div id="make_plots" class="subsection">
-
-<p>
-Set environment variable for the mpas-bundle directory,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-</pre>
-
-<p>
-Let us make a local copy of the graphics package first: 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial/omboma_from2experiments
-<em class="prompt">$ </em>cp -r ${bundle_dir}/code/mpas-jedi/graphics .
-<em class="prompt">$ </em>cd graphics
-</pre>
-
-<p>
-Then diff and replace <em class="terminal">analyze_config.py</em> with a pre-prepared one:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>diff analyze_config.py ../../MPAS_JEDI_yamls_scripts/analyze_config.py
-<em class="prompt">$ </em>mv analyze_config.py analyze_config.py_default
-<em class="prompt">$ </em>cp ../../MPAS_JEDI_yamls_scripts/analyze_config.py .
-</pre>
-
-<p>
-You can see the changes made in <em class="terminal">analyze_config.py</em> by diff.
-Below provides some explanations about settings in <em class="terminal">analyze_config.py</em>.
-</p>
-
-<ul>
-<li>Set the first and last cycle date time:
-<pre class="terminal">
-dbConf['firstCycleDTime'] = dt.datetime(2018,4,15,0,0,0)
-dbConf['lastCycleDTime'] = dt.datetime(2018,4,17,0,0,0)</pre>
-</li>
-
-<li>Set the time increment between valid date times to 6 hours:
-<pre class="terminal">dbConf['cyTimeInc'] = dt.timedelta(hours=6)</pre>
-</li>
-
-<li>Set the verification type to omb/oma:
-<pre class="terminal">VerificationType = 'omb/oma'</pre>
-</li>
-
-<li>Set the verification space to obs:
-<pre class="terminal">VerificationSpace = 'obs'</pre>
-</li>
-
-<li>Set the workflow type to MPAS-JEDI_tutorial:
-<pre class="terminal">workflowType = 'MPAS-JEDI_tutorial'
-</pre>
-</li>
-
-<li>Set the path to the experiment's folder:
-<pre class="terminal">dbConf['expDirectory'] = os.getenv('EXP_DIR','/glade/derecho/scratch/'+user+'/mpas_jedi_tutorial/omboma_from2experiments')</pre>
-</li>
-
-<li>Set the the name of the experiment that will be used as reference or control:
-<pre class="terminal">dbConf['cntrlExpName'] = 'exp1'</pre>
-</li>
-
-<li>Specify the experiments to be analyzed. Make sure that the value given to <em class="terminal">cntrlExpName</em> is one of the keys in the dictionary <em class="terminal">experiments</em>:
-<pre class="terminal">
-experiments['exp1'] = 'Exp1' + deterministicVerifyDir
-experiments['exp2'] = 'Exp2' + deterministicVerifyDir</pre>
-</li>
-
-<p>
-Last, setting python environment and do
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>module reset
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
-
-<em class="prompt">$ </em>./SpawnAnalyzeStats.py -a UMMM0008 -app variational -nout 1 -d gnssrobndropp1d
-<em class="prompt">$ </em>./SpawnAnalyzeStats.py -a UMMM0008 -app variational -nout 1 -d amsua_n18
-</pre>
-
-<p>
-Each SpawnAnalyzeStats.py command triggers two PBS jobs for making two types of
-figures under gnssrobndropp1d_analyses and amsua_n18_analyses directories.
-</p>
-
-<li>
-<strong>BinValAxisProfileDiffCI</strong>: vertical profiles of RMS relative differences from the RMS of OmB of Exp1 with confidence intervals (95%), as a function of the impact height for different latitude bands and binned by latitude at 10km</br>
-<strong>CYAxisExpLines</strong>: time series of the bias, count, RMS, and STD averaged globally and by latitude bands</br>
-</li>
-
-<p>SpawnAnalyzeStats.py can take some arguments (similar as in previous section), such as:
-</p>
-<pre class="terminal">
--a: account
--app: application (e.g., variational, hofx)
--nout: number of outer loops in the variational method
--d: diagSpaces (e.g., amsua_,sonde,airc,sfc,gnssrobndropp1d,satwind)
-</pre>
-
-<p>
-After jobs complete, you may check <em class="terminal">gnssrobndropp1d_analyses/CYAxisExpLines/omm</em>, for example,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd gnssrobndropp1d_analyses/CYAxisExpLines/omm
-<em class="prompt">$ </em>display QCflag_good_TSeries_0min_gnssrobndropp1d_omm_RMS.pdf
-</pre>
-
-<p>
-which will look like the figure below
-</p>
-<img src="images/QCflag_good_TSeries_0min_gnssrobndropp1d_omm_RMS.png"/>
-
-<p>
-To view more figures, it is more convenent to transfer them to your local computer via:
-</p>
-<pre class="terminal">
-<em class="prompt">$ </em>scp -r $USER@data-access.ucar.edu:/glade/derecho/scratch/$USER/mpas_jedi_tutorial/omboma_from2experiments/graphics/gnssrobndropp1d_analyses .
-<em class="prompt">$ </em>scp -r $USER@data-access.ucar.edu:/glade/derecho/scratch/$USER/mpas_jedi_tutorial/omboma_from2experiments/graphics/amsua_n18_analyses .
-</pre>
-
-</div>
-
 
 </div>
 

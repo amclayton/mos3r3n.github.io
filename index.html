@@ -151,6 +151,11 @@ You can set an environment variable for your scratch directory:
 </pre>
 
 <p>
+You will run all of the practical exercises in your own <i>scratch</i> space, and you can check whether it is properly set by using
+<em class="terminal">echo $SCRATCH</em>.
+</p>
+
+<p>
 Navigate to your scratch directory:
 </p>
 
@@ -168,7 +173,8 @@ Then, create a working directory for the training exercises and move into it:
 </pre>
 
 <p>
-All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, we recommend you to linking them to your working directory
+All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, 
+we recommend you to linking them to your working directory
 <pre class="terminal">
 <em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
 <em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
@@ -182,7 +188,7 @@ All the training dataset is located under /home/project/13004327/training_servic
 
 <p>
 Now, under your working directory, you will have those folds:
-<ul>onverted ioda obs, used in p
+<ul>
     <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data on bufr and IODA formats, CRTM coefficients, bias correction files.
     <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namlist and stream files.
     <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
@@ -193,47 +199,12 @@ Now, under your working directory, you will have those folds:
 </ul>
 </p>
 
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
-</pre>
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ls -l mpas_jedi_tutorial <br>
-total 372
-drwxr-xr-x 3 liuz ncar  16384 Aug  3 11:00 background
-drwxr-xr-x 3 liuz ncar  16384 Sep 23  2023 background_120km
-drwxr-xr-x 5 liuz ncar  16384 Aug  5 16:14 B_Matrix
-drwxr-xr-x 4 liuz ncar  16384 Sep 15 12:36 conus15km
-drwxr-xr-x 2 liuz ncar 147456 Aug  3 15:50 crtm_coeffs_v3
-drwxr-xr-x 3 liuz ncar  16384 Aug  3 21:23 ensemble
-drwxr-xr-x 2 liuz ncar  49152 Aug  5 16:32 localization_pregenerated
-drwxr-xr-x 2 liuz ncar  16384 Sep 15 12:44 MPAS_JEDI_yamls_scripts
-drwxr-xr-x 2 liuz ncar  16384 Aug  3 14:44 MPAS_namelist_stream_physics_files
-drwxr-xr-x 2 liuz ncar  16384 Sep 23  2023 ncl_scripts
-drwxr-xr-x 3 liuz ncar  16384 Sep 23  2023 obs_bufr
-drwxr-xr-x 3 liuz ncar  16384 Aug  6 22:19 obs_ioda_pregenerated
-drwxr-xr-x 5 liuz ncar  16384 Aug  7 16:25 omboma_from2experiments
--rwxr-xr-x 1 liuz ncar    393 Sep 15 15:26 setup_intel.sh
-</pre>
-
 <p>
-This copy will take some time as the size of the whole directory is ~15GB!
-You may pay special attention to the following directories: 
-<ul>
-    <li><em class="terminal">obs_ioda_pregenerated</em> - Pre-converted ioda obs, used in practices.
-    <li><em class="terminal">localization_pregenerated</em> - Pre-generated BUMP localization files
-                            used in practices.
-</ul>
+On aspire2a, the default shell is bash.
 </p>
 
 <p>
-On derecho, the default shell is bash.
-</p>
-
-<p>
-Derecho uses the LMOD package to manage the software development. 
+Aspire2a uses the LMOD package to manage the software development. 
 Running <em class="terminal">module list</em> to see what modules are loaded by default
 right after you log in.
 It should print something similar to below:
@@ -242,38 +213,22 @@ It should print something similar to below:
 <pre class="terminal">
 <em class="prompt">$ </em>module list
 
-Currently Loaded Modules:
-  1) ncarenv/23.09 (S)   3) intel/2023.2.1        5) cray-mpich/8.1.27   7) netcdf/4.9.2
-  2) craype/2.7.23       4) ncarcompilers/1.0.0   6) hdf5/1.12.2
-
-  Where:
-   S:  Module is Sticky, requires --force to unload or purge
-
+Currently Loaded Modulefiles:
+  1) craype-x86-rome          3) craype-network-ofi       5) cce/13.0.2               7) cray-dsmml/0.2.2         9) cray-libsci/21.08.1.2   11) PrgEnv-cray/8.3.3
+  2) libfabric/1.11.0.4.125   4) perftools-base/22.04.0   6) craype/2.7.15            8) cray-mpich/8.1.15       10) cray-pals/1.1.6
 </pre>
 
 <p>
-Post-processing and graphics exercises will need Python and NCAR Command
-Language (NCL).
-On Derecho, these are available in
-a Conda environment named 'npl'. The npl environment also provides
-NCL. We can load the conda module and activate the npl environment with
-the following commands:
-</p>
-
+Post-processing and graphics exercises will need Python. A Conda environment with a plenty of Python libraries are available. 
+We can activate the conda environment with the follwing command:
 <pre class="terminal">
-<em class="prompt">$ </em>module reset # this may or may not be needed
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
-<em class="prompt">$ </em>which ncl # check whether ncl exists
+<em class="prompt">$ </em>module load miniforge3/25.3.1
+<em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
-
-<p>
-You will run all of the practical exercises in your own <i>scratch</i> space under
- <em class="terminal">/glade/derecho/scratch/$USER/mpas_jedi_tutorial</em>.
 </p>
 
 <p>
-Running jobs on Derecho requires the submission of a job script to a batch queueing system,
+Running jobs on Aspire2a requires the submission of a job script to a batch queueing system,
 which will allocate requested computing resources to your job when they become available.
 In general, it's best to avoid running any compute-intensive jobs on the login nodes, and
 the practical instructions to follow will guide you in the process of submitting jobs when
@@ -281,7 +236,7 @@ necessary.
 </p>
 
 <p>
-As a first introduction to running jobs on Derecho, there are several key commands worth
+As a first introduction to running jobs on Aspire2a, there are several key commands worth
 noting:
 <ul>
     <li><em class="terminal">qsub job-script</em> - This command submits a PBS job script, which describes a job
@@ -293,25 +248,21 @@ noting:
 </p>
 
 <p>
-Throughout this tutorial, you will submit your jobs to a special queue <em class="terminal">S6244386</em> with the 'premium' priority, using an account number <em class="terminal">UMMM0008</em>.
- The special queue <em class="terminal">S6244386</em> can be used between 11:30am and 5:30pm each day.
- Out of this time slot, you can use the <em class="terminal">main</em> queue by modifying the queue name
- in the job scripts.
- At various points in the practical exercises, we'll need to submit jobs to Derecho's queueing system
+Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
+Afetr the training, do remember to use your own project number to submit jobs.
+
+ At various points in the practical exercises, we'll need to submit jobs to Aspire2a's queueing system
 using the <em class="terminal">qsub</em> command, and after doing so, we may check on the status
 of the job with the <em class="terminal">qstat</em> command, monitoring the log files produced by the job
-once we see that the job has begun to run. Most exercises will run with 64 cores of one single node
-though each of Derecho's nodes have 128 cores (235GB available memory).
-Note that 4DEnVar uses 3 nodes with the analyses at 3 times.
+once we see that the job has begun to run. Most exercises will run with 256 cores of two nodes
+though each of Aspire2a's nodes have 128 cores (440GB available memory).
 </p>
 
 <p>
-You're now ready to begin with the practical exercises of this tutorial!
+You're now ready to begin with the practical exercises of this training!
 </p>
 
 </div>
-
-
 
 <!-- ============================================================================== -->
 <!-- === 1. Compiling/Testing MPAS-JEDI =========== -->
@@ -322,7 +273,9 @@ You're now ready to begin with the practical exercises of this tutorial!
 <div id="compile" class="section">
 <p>
 In this section, the goal is to obtain, compile, and test the MPAS-JEDI code
-through cmake/ctest mechanism.
+through cmake/ctest mechanism. Due to I/O and network bandwidth limitations, 
+it is not recommended to download, compile, or test the MPAS-JEDI code on the login node 
+during this training.
 </p>
 
 
@@ -333,30 +286,30 @@ through cmake/ctest mechanism.
 <div id="downloading" class="subsection">
 
 <p>
-In order to build MPAS-JEDI and its dependencies, it is recommended to access source code from <a href=https://github.com/JCSDA/mpas-bundle>mpas-bundle</a>.
-We will use the 'release/3.0.1' branch from <a href=https://github.com/JCSDA/mpas-bundle/tree/release/3.0.1>mpas-bundle-3.0.1</a>:
+In order to build MPAS-JEDI and its dependencies, it is recommended to access source code from <a href=https://github.com/mos3r3n/mpas-bundle>mpas-bundle</a>.
+We will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/mpas-bundle/tree/SINGV-NG-1.0>SINGV-NG-1.0</a>:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir mpas_bundle_v3
-<em class="prompt">$ </em>cd mpas_bundle_v3
-<em class="prompt">$ </em>git clone -b release/3.0.1 https://github.com/JCSDA/mpas-bundle code
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
+<em class="prompt">$ </em>mkdir MPAS-BUNDLE
+<em class="prompt">$ </em>cd MPAS-BUNDLE
+<em class="prompt">$ </em>git clone -b SINGV-NG-1.0 https://github.com/mos3r3n/mpas-bundle code
 </pre>
 
 <p>
 The git command will clone the mpas-bundle repository from github to a local directory 'code'
-, then make the 'release/3.0.1' branch as the active branch. The output to the terminal should look as following:
+, then make the 'SINGV-NG-1.0' branch as the active branch. The output to the terminal should look as following:
 </p>
 
 <pre class="terminal">
 Cloning into 'code'...
-remote: Enumerating objects: 461, done.
-remote: Counting objects: 100% (82/82), done.
-remote: Compressing objects: 100% (44/44), done.
-remote: Total 461 (delta 44), reused 71 (delta 38), pack-reused 379
-Receiving objects: 100% (461/461), 144.69 KiB | 1.64 MiB/s, done.
-Resolving deltas: 100% (273/273), done.
+remote: Enumerating objects: 436, done.
+remote: Counting objects: 100% (73/73), done.
+remote: Compressing objects: 100% (35/35), done.
+remote: Total 436 (delta 55), reused 43 (delta 38), pack-reused 363 (from 1)
+Receiving objects: 100% (436/436), 144.95 KiB | 3.54 MiB/s, done.
+Resolving deltas: 100% (267/267), done.
 </pre>
 
 <p>
@@ -364,63 +317,35 @@ Note that the mpas-bundle repository does not contain actual source code.
 Instead, the CMakeLists.txt file under code includes the github repositories's branch/tag
 information needed to build MPAS-JEDI.
 
-One important difference from previous mpas-bundle releases (1.0.0 and 2.0.0) is
-that 3.0.1-based bundle works together with the official 8.2.2-based MPAS-A model code from  
-<a href=https://github.com/MPAS-Dev/MPAS-Model/tree/v8.2.2>MPAS-v8.2.2</a>.
+One important difference from previous mpas-bundle releases (1.0.0, 2.0.0, and 3.0.x) is
+that SINGV-NG-1.0 bundle works together with the special version of MPAS-A model code from  
+<a href=https://github.com/mos3r3n/MPAS-Model-SINGVNG/tree/nssl>MPAS-SINGVNG</a>. Also, some 
+enhancements have been applied to the MPAS-JEDI DA system.
 
-We now create a 'build' folder and load the spack-stack environment pre-built
-using the GNU compiler:
+We now load the spack-stack environment pre-built using the GNU compiler:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>source ./code/env-setup/gnu-derecho.sh
+<em class="prompt">$ </em>source code/env-setup/gnu-aspire2a.sh
 <em class="prompt">$ </em>module list
 </pre>
 
 <p>
-The output to the module list in the terminal should look like the following (102 modules!!!).
-These packages are from pre-installed spack-stack-1.6.0.
+The output to the module list in the terminal should look like the following (45 modules!!!).
+These packages are from pre-installed spack-stack-1.8.0.
 </p>
 
 <pre class="terminal">
-Currently Loaded Modules:
-  1) ecflow/5.8.4                 35) base-env/1.0.0        69) json-schema-validator/2.1.0
-  2) mysql/8.0.33                 36) boost/1.83.0          70) odc/1.4.6
-  3) ncarenv/23.09           (S)  37) openblas/0.3.24       71) py-attrs/21.4.0
-  4) gcc/12.2.0                   38) py-setuptools/63.4.3  72) py-pycparser/2.21
-  5) stack-gcc/12.2.0             39) py-numpy/1.22.3       73) py-cffi/1.15.1
-  6) craype/2.7.20                40) bufr/12.0.1           74) py-findlibs/0.0.2
-  7) cray-mpich/8.1.25            41) ecbuild/3.7.2         75) py-eccodes/1.5.0
-  8) libfabric/1.15.2.0           42) libpng/1.6.37         76) py-f90nml/1.4.3
-  9) cray-pals/1.2.11             43) openjpeg/2.3.1        77) py-h5py/3.7.0
- 10) stack-cray-mpich/8.1.25      44) eccodes/2.32.0        78) py-cftime/1.0.3.4
- 11) tar/1.34                     45) eigen/3.4.0           79) py-netcdf4/1.5.8
- 12) gettext/0.21.1               46) eckit/1.24.5          80) py-bottleneck/1.3.7
- 13) libxcrypt/4.4.35             47) fftw/3.3.10           81) py-numexpr/2.8.4
- 14) zlib/1.2.13                  48) fckit/0.11.0          82) py-et-xmlfile/1.0.1
- 15) sqlite/3.43.2                49) fiat/1.2.0            83) py-openpyxl/3.1.2
- 16) util-linux-uuid/2.38.1       50) ectrans/1.2.0         84) py-six/1.16.0
- 17) python/3.10.13               51) qhull/2020.2          85) py-python-dateutil/2.8.2
- 18) stack-python/3.10.13         52) atlas/0.35.1          86) py-pytz/2023.3
- 19) nghttp2/1.57.0               53) git-lfs/3.3.0         87) py-pyxlsb/1.0.10
- 20) curl/8.4.0                   54) gsibec/1.1.3          88) py-xlrd/2.0.1
- 21) cmake/3.23.1                 55) gsl-lite/0.37.0       89) py-xlsxwriter/3.1.7
- 22) git/2.41.0                   56) libjpeg/2.1.0         90) py-xlwt/1.3.0
- 23) pkg-config/0.29.2            57) krb5/1.19.2           91) py-pandas/1.5.3
- 24) hdf5/1.14.0                  58) libtirpc/1.3.3        92) py-pybind11/2.11.0
- 25) snappy/1.1.10                59) hdf/4.2.15            93) py-pycodestyle/2.11.0
- 26) zstd/1.5.2                   60) jedi-cmake/1.4.0      94) py-pyhdf/0.10.4
- 27) c-blosc/1.21.5               61) libxt/1.1.5           95) libyaml/0.2.5
- 28) netcdf-c/4.9.2               62) libxmu/1.1.4          96) py-pyyaml/6.0
- 29) nccmp/1.9.0.1                63) libxpm/3.5.12         97) py-scipy/1.11.3
- 30) netcdf-fortran/4.6.1         64) libxaw/1.0.13         98) py-packaging/23.1
- 31) parallel-netcdf/1.12.2       65) udunits/2.2.28        99) py-xarray/2023.7.0
- 32) parallelio/2.5.10            66) ncview/2.1.9         100) sp/2.5.0
- 33) py-pip/23.1.2                67) netcdf-cxx4/4.3.1    101) jedi-base-env/1.0.0
- 34) wget/1.20.3                  68) json/3.10.5          102) jedi-mpas-env/1.0.0
-
-  Where:
-   S:  Module is Sticky, requires --force to unload or purge
+Currently Loaded Modulefiles:
+  1) craype-x86-milan         10) zlib-ng/2.1.6            19) stack-python/3.11.7      28) snappy/1.1.10            37) parallelio/2.6.2
+  2) craype/2.7.15            11) pigz/2.8                 20) boost/1.84.0             29) c-blosc/1.21.5           38) jedi-cmake/1.4.0
+  3) libfabric/1.11.0.4.125   12) zstd/1.5.2               21) eckit/1.25.2             30) nghttp2/1.57.0           39) cmake/3.31.3
+  4) cray-pals/1.1.6          13) tar/1.34                 22) eigen/3.4.0              31) curl/8.7.1               40) ecbuild/3.7.2
+  5) gcc/11.2.0               14) gettext/0.22.5           23) fckit/0.11.0             32) hdf5/1.14.3              41) python-venv/1.0
+  6) cray-mpich/8.1.15        15) libxcrypt/4.4.35         24) fftw/3.3.10              33) netcdf-c/4.9.2           42) py-setuptools/63.4.3
+  7) stack-gcc/11.2.0         16) sqlite/3.43.2            25) ecmwf-atlas/0.36.0       34) netcdf-cxx4/4.3.1        43) py-pycodestyle/2.11.0
+  8) stack-cray-mpich/8.1.15  17) util-linux-uuid/2.38.1   26) gptl/8.1.1               35) netcdf-fortran/4.6.1     44) udunits/2.2.28
+  9) glibc/2.28               18) python/3.11.7            27) gsl-lite/0.37.0          36) parallel-netcdf/1.12.3   45) nccmp/1.9.0.1
 </pre>
 
 <p>
@@ -435,6 +360,13 @@ Now we are ready to 'fetch' actual source code from github repositories through 
 <h3 id="building-header">1.2 Compiling and testing MPAS-JEDI</h3>
 </div>
 <div id="building" class="subsection">
+
+<div class="outlined">
+<p>
+<b class="red">WARNING:</b>Due to huge burden on I/O and network bandwidth, please don't do configure, compile, adn test MPAS-JEDI during the training. 
+Inseatd, you may have a try after the traning when you have time.
+</p>
+</div>
 
 <p>
 MPAS-JEDI uses cmake to automatically fetch the code from various github repositories,
@@ -452,40 +384,29 @@ listed in CMakeLists.txt under ~code. Now type the command below under the build
 After it completes (may take 15-20 min depending on network connection), you will see the actual source code of various
 repositories (e.g., oops, vader, saber, ufo, ioda, crtm, mpas-jedi, and MPAS) is now under the code directory.
 Meanwhile, Makefile files to build executables are generated under the build directory.
-Now it is ready to compile MPAS-JEDI under 'build' using the standard make.
-However, it is NOT recommended to compile the code on the login node. Instead, better compiling code
-using a compute node with an interactive job by issuing the command below:
-</p>
-
-<div class="outlined">
-<p>
-<b class="red">WARNING:</b>This cmake step could take 15-20 min to complete. You may continue to read instructions while waiting.
-</p>
-</div>
-
+Now it is ready to compile MPAS-JEDI under 'build' using the standard make. Commonly, we don't compile MPAS-JEDI on the login node. 
+Instead, we do it by submiting an interactive job as following
 <pre class="terminal">
-<em class="prompt">$ </em>qsub -A ummm0008 -N build-bundle -q S6244386 -l job_priority=premium -l walltime=03:00:00 -l select=1:ncpus=128:mem=235GB -I
+<em class="prompt">$ </em>qsub -I -l select=1:ncpus=4:mem=32gb -l walltime=01:00:00 -P ${PROJECT_NUMBER} -q normal
 </pre>
 
-<p>
-This requests an interactive job to the 'S6244386' queue, with a job name 'build-bundle', 3 hours walltime of 
-a compute node with 128 cores, the 'premium' priority and an account number 'UMMM0008'.
-</p>
-
-<p>
-Note that the interactive job does not have the spack-stack environment loaded, you have to reload
-the spack-stack environment (under ~build), and then compiling code with the parallel make using 20 cores:
-</p>
+Then, your job will queue, and you will login to the compute node you are assigned when it is get ready
 <pre class="terminal">
-<em class="prompt">$ </em>source ../code/env-setup/gnu-derecho.sh
-<em class="prompt">$ </em>make -j20
+qsub: waiting for job 13405681.pbs101 to start
+qsub: job 13405681.pbs101 ready
 </pre>
+
+On the compute node, you need to re-activate the spack-stack environment first and then do "make".
+<pre class="terminal">
+<em class="prompt">$ </em>source ${SCRATCH}/MPAS-JEDI-Training/MPAS-BUNDLE/code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>make -j4
+</pre>
+</p>
 
 <p>
 This could take ~25 min. Using more cores for build could speed up a bit, but will not help too much from our experience. 
 Also note that the reason we do the cmake step (will clone various github repositories) on the login 
-node instead of a compute node is that 
-the derecho's compute nodes have a much slower internet connection.
+node instead of a compute node is that aspire2a's compute nodes have a much slower internet connection.
 </p>
 
 <div class="outlined">
@@ -495,19 +416,18 @@ the derecho's compute nodes have a much slower internet connection.
 </div>
 
 <p>
-Once we reach 100% of the compilation, many executables will be generated under ~build/bin.
-mpas model and mpas-jedi DA related executables are:
+Once we reach 100% of the compilation, many executables will be generated under build/bin.
+Related executables of MPAS model and MPAS-JEDI include:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ls bin/mpas*
-bin/mpas_atmosphere                     bin/mpasjedi_enshofx.x                   bin/mpasjedi_rtpp.x
-bin/mpas_atmosphere_build_tables        bin/mpasjedi_ens_mean_variance.x         bin/mpasjedi_saca.x
-bin/mpas_init_atmosphere                bin/mpasjedi_error_covariance_toolbox.x  bin/mpasjedi_variational.x
-bin/mpasjedi_convertstate.x             bin/mpasjedi_forecast.x                  bin/mpas_namelist_gen
-bin/mpasjedi_converttostructuredgrid.x  bin/mpasjedi_gen_ens_pert_B.x            bin/mpas_parse_atmosphere
-bin/mpasjedi_eda.x                      bin/mpasjedi_hofx3d.x                    bin/mpas_parse_init_atmosphere
-bin/mpasjedi_enkf.x                     bin/mpasjedi_hofx.x                      bin/mpas_streams_gen
+bin/mpas_atmosphere                     bin/mpasjedi_enkf.x                      bin/mpasjedi_hofx3d.x         bin/mpas_namelist_gen
+bin/mpas_atmosphere_build_tables        bin/mpasjedi_enshofx.x                   bin/mpasjedi_hofx.x           bin/mpas_parse_atmosphere
+bin/mpas_init_atmosphere                bin/mpasjedi_ens_mean_variance.x         bin/mpasjedi_process_perts.x  bin/mpas_parse_init_atmosphere
+bin/mpasjedi_convertstate.x             bin/mpasjedi_error_covariance_toolbox.x  bin/mpasjedi_rtpp.x           bin/mpas_streams_gen
+bin/mpasjedi_converttostructuredgrid.x  bin/mpasjedi_forecast.x                  bin/mpasjedi_saca.x
+bin/mpasjedi_eda.x                      bin/mpasjedi_gen_ens_pert_B.x            bin/mpasjedi_variational.x
 </pre>
 
 <p>
@@ -516,7 +436,7 @@ with two lines of simple command:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export LD_LIBRARY_PATH=/glade/derecho/scratch/${USER}/mpas_jedi_tutorial/mpas_bundle_v3/build/lib:$LD_LIBRARY_PATH
+<em class="prompt">$ </em>export LD_LIBRARY_PATH=${SCRATCH}/MPAS-JEDI-Training/MPAS-BUNDLE/build/lib:$LD_LIBRARY_PATH
 <em class="prompt">$ </em>cd mpas-jedi
 <em class="prompt">$ </em>ctest
 </pre>
@@ -607,7 +527,7 @@ After running ctest, you can terminate your interactive job by simply typing 'ex
 </pre>
 
 <p>
-The qstat command will return your job ID in a form of 'job-id-number.desched*'.
+The qstat command will return your job ID in a form of 'job-id-number.pbs101'.
 The qdel command will kill your interactive job by only supplying 'job-id-number'.
 </p>
 
@@ -617,7 +537,7 @@ Therefore, we pre-compiled mpas-bundle code with single-precision mode in
 </p>
 
 <pre class="terminal">
-/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0
 </pre>
 
 <p>
@@ -626,14 +546,179 @@ set an environment variable 'bundle_dir' for convenience in the subsequent pract
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+</pre>
+
+</div>
+
+</div>
+
+
+<!-- ============================================================================== -->
+<!-- === 2. Converting NCEP BUFR obs into IODA-HDF5 format  ====================== -->
+<!-- ============================================================================== -->
+<div class="header" onClick="show('convert')">
+<h2 id="convert-header">2. Converting NCEP BUFR obs into IODA-HDF5 format</h2>
+</div>
+<div id="convert" class="section">
+<p>
+The goal of this session is to create the observation input files needed for running
+MPAS-JEDI test cases.
+</p>
+
+<!-- === 2.1 Converter compilation ========================================= -->
+<div class="subheader" onClick="show('obs2ioda')">
+<h3 id="obs2ioda-header">2.1 Compiling the converter</h3>
+</div>
+<div id="obs2ioda" class="subsection">
+
+<p>
+Under the <em class="terminal">MPAS-JEDI-Training</em> directory,
+create a directory for converting NCEP BUFR observation into IODA-HDF5 format.
+Then, clone the obs2ioda repository and proceed for compiling the converter.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
+<em class="prompt">$ </em>git clone https://github.com/NCAR/obs2ioda
+<em class="prompt">$ </em>cd obs2ioda
+</pre>
+
+<p>
+NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) along with NETCDF-C and NETCDF-Fortran libraries.
+are required to compile <em class="terminal">obs2ioda_v3</em>.
+Here we have pre-built BUFR_LIB and
+we put the pre-build BUFR_LIB path in <em class="terminal">Makefile</em>.
+</p>
+
+<p>
+Load the proper intel compiler modules and then compile the converter by using <em class="terminal">make</em> command:
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>source /home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>mkdir build 
+<em class="prompt">$ </em>cd build
+<em class="prompt">$ </em>cmake .. -DNCEP_BUFR_LIB=/data/projects/13004327/software_service/spack-stack/1.8-mos3r3n/envs/mpas-bundle/install/gcc/11.2.0/bufr-12.1.0-eemymeq/lib64/libbufr_4.so
+<em class="prompt">$ </em>make
+</pre>
+
+<p>
+If the compilation is successful, the executable file <em class="terminal">obs2ioda_v3</em> will be generated under build/bin.
+</p>
+
+</div>
+
+
+<!-- === 2.2 Run obs2ioda-v2.x ================================================ -->
+<div class="subheader" onClick="show('bufr')">
+<h3 id="bufr-header">2.2 Convert prepbufr/bufr files to IODAv2-HDF5 format </h3>
+</div>
+<div id="bufr" class="subsection">
+
+<p>
+The NCEP bufr input files are under the existing OBS_FILE/BUFR folder. Now we need to convert
+the bufr-format data into the iodav2-hdf5 format under the OBS_IODA folder.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
+<em class="prompt">$ </em>mkidr OBS_IODA
+<em class="prompt">$ </em>cd OBS_IODA
+</pre>
+
+<p>
+Link the prepbufr/bufr files to the working directory:
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/BUFR/prepbufr.gdas.20240917.t12z.nr.48h .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/BUFR/gdas.1bamua.t12z.20240917.bufr .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/BUFR/gdas.gpsro.t12z.20240917.bufr .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/BUFR/gdas.1bmhs.t12z.20240917.bufr .
+</pre>
+
+<p>
+Link executables and files:
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/obs2ioda/build/bin/obs2ioda_v3 .
+</pre>
+
+<p>
+Now we can run <em class="terminal">obs2ioda_v3</em>.
+The usage is:
+</p>
+<pre class="terminal">
+<em class="prompt">$ </em>./obs2ioda_v3 [-i input_dir] [-o output_dir] [bufr_filename(s)_to_convert]
+</pre>
+
+<p>
+If input_dir and output_dir are not specified, the default is the current working directory.
+If bufr_filename(s)_to_convert is not specified, the code looks for file name, **prepbufr.bufr** (also **satwnd.bufr**, **gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**) in the input/working directory. If the file exists, do the conversion, otherwise skip it.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>source /home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>./obs2ioda_v3 prepbufr.gdas.20240917.t12z.nr.48h
+<em class="prompt">$ </em>./obs2ioda_v3 gdas.satwnd.t12z.20240917.bufr
+<em class="prompt">$ </em>./obs2ioda_v3 gdas.gpsro.t12z.20240917.bufr
+<em class="prompt">$ </em>./obs2ioda_v3 gdas.1bamua.t12z.20240917.bufr
+<em class="prompt">$ </em>./obs2ioda_v3 gdas.1bmhs.t12z.20240917.bufr
+</pre>
+
+<p>
+Now you have the proper format IODA files under OBS_IODA for mpas-jedi tests:
+</p>
+
+<pre class="terminal">
+aircraft_obs_2024091712.h5       amsua_n19_obs_2024091712.h5    mhs_n19_obs_2024091712.h5
+amsua_metop-b_obs_2024091712.h5  ascat_obs_2024091712.h5        satwind_obs_2024091712.h5
+amsua_metop-c_obs_2024091712.h5  gnssro_obs_2024091712.h5       sfc_obs_2024091712.h5
+amsua_n15_obs_2024091712.h5      mhs_metop-b_obs_2024091712.h5  sondes_obs_2024091712.h5
+amsua_n18_obs_2024091712.h5      mhs_metop-c_obs_2024091712.h5
 </pre>
 
 </div>
 
 
+<!-- === 2.3 Plot Obs locations ============================================== -->
+<div class="subheader" onClick="show('plot_loc')">
+<h3 id="plot_loc-header">2.3 Plotting observation coverage</h3>
+</div>
+<div id="plot_loc" class="subsection">
+
+<p>
+Setup python enviorment for plotting.
+</p>
+<p><i>
+Note that we need to load the python environment before executing the python script.
+If you have already loaded the spack-stack module, reset the module environment before loading python env.
+</i></p>
+<pre class="terminal">
+<em class="prompt">$ </em>module load miniforge3/25.3.1
+<em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
+</pre>
+
+<p>
+Copy graphics directory to current directory:
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>cp -r ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_obs_singv.py .
+<em class="prompt">$ </em>python plot_obs_singv.py
+</pre>
+
+<p>
+Now, one of the figures shown here:
+</p>
+
+<img src="images/OBS_horizontal_distribution_satwind.png", width="800"/>
+
 </div>
 
+</div>
 
 <!-- ============================================================================== -->
 <!-- === 3. Running MPAS-JEDI's HofX application ======== -->
@@ -2579,299 +2664,6 @@ To view more figures, it is more convenent to transfer them to your local comput
 
 </div>
 
-
-<!-- ============================================================================== -->
-<!-- === 8. Running regional MPAS-JEDI =========================================== -->
-<!-- ============================================================================== -->
-<div class="header" onClick="show('regional')">
-<h2 id="regional-header">7. Running regional MPAS-JEDI</h2>
-</div>
-<div id="regional" class="section">
-<p>
- Regional MPAS-JEDI test is under 'conus15km', where all necessary input files are already
- prepared. You can simply submit a job script by
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial/conus15km
-<em class="prompt">$ </em>qsub run_conus15km.csh
-</pre>
-
-<!-- === 8.1 Running regional MPAS-JEDI ============ -->
-
-</div>
-
-<!-- ============================================================================== -->
-<!-- === 8. Converting NCEP BUFR obs into IODA-HDF5 format  ====================== -->
-<!-- ============================================================================== -->
-<div class="header" onClick="show('convert')">
-<h2 id="convert-header">8. Converting NCEP BUFR obs into IODA-HDF5 format</h2>
-</div>
-<div id="convert" class="section">
-<p>
-The goal of this session is to create the observation input files needed for running
-MPAS-JEDI test cases.
-</p>
-
-<!-- === 8.1 Converter compilation ========================================= -->
-<div class="subheader" onClick="show('obs2ioda')">
-<h3 id="obs2ioda-header">8.1 Compiling the converter</h3>
-</div>
-<div id="obs2ioda" class="subsection">
-
-<p>
-In <em class="terminal">mpas_jedi_tutorial</em> directory,
-create a directory for converting NCEP BUFR observation into IODA-HDF5 format.
-Then, clone the obs2ioda repository and proceed for compiling the converter.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial 
-<em class="prompt">$ </em>git clone -b release/4mpas-jedi_v3.0.0 https://github.com/NCAR/obs2ioda
-<em class="prompt">$ </em>cd obs2ioda/obs2ioda-v2/src/
-</pre>
-
-<p>
-NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) along with NETCDF-C and NETCDF-Fortran libraries.
-is required to compile <em class="terminal">obs2ioda-v2.x</em>.
-Here we have pre-built BUFR_LIB and
-we put the pre-build BUFR_LIB path in <em class="terminal">Makefile</em>.
-</p>
-
-<p>
-Load the proper intel compiler modules and then compile the converter by using <em class="terminal">make</em> command:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>source ../../../setup_intel.sh
-<em class="prompt">$ </em>make
-</pre>
-
-<p>
-If the compilation is successful, the executable file <em class="terminal">obs2ioda-v2.x</em> will be generated.
-</p>
-
-</div>
-
-
-<!-- === 8.2 Run obs2ioda-v2.x ================================================ -->
-<div class="subheader" onClick="show('bufr')">
-<h3 id="bufr-header">8.2 Convert prepbufr/bufr files to IODAv2-HDF5 format </h3>
-</div>
-<div id="bufr" class="subsection">
-
-<p>
-The NCEP bufr input files are under the existing ~obs_bufr folder. Now we need to convert
-the bufr-format data into the iodav2-hdf5 format under the ~obs_ioda folder.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>mkdir /glade/derecho/scratch/${USER}/mpas_jedi_tutorial/obs_ioda
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial/obs_ioda
-<em class="prompt">$ </em>mkdir 2018041500
-<em class="prompt">$ </em>cd 2018041500
-</pre>
-
-<p>
-Link the prepbufr/bufr files to the working directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../../obs_bufr/2018041500/prepbufr.gdas.20180415.t00z.nr.48h .
-<em class="prompt">$ </em>ln -fs ../../obs_bufr/2018041500/gdas.1bamua.t00z.20180415.bufr .
-<em class="prompt">$ </em>ln -fs ../../obs_bufr/2018041500/gdas.gpsro.t00z.20180415.bufr .
-<em class="prompt">$ </em>ln -fs ../../obs_bufr/2018041500/gdas.satwnd.t00z.20180415.bufr .
-</pre>
-
-<p>
-Link executables and files:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../../obs2ioda/obs2ioda-v2/src/obs2ioda-v2.x .
-</pre>
-
-<p>
-Link obs_errtable to work directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../../obs_bufr/2018041500/obs_errtable .
-</pre>
-
-<p>
-Now we can run <em class="terminal">obs2ioda-v2.x</em>.
-The usage is:
-</p>
-<pre class="terminal">
-<em class="prompt">$ </em>./obs2ioda-v2.x [-i input_dir] [-o output_dir] [bufr_filename(s)_to_convert]
-</pre>
-
-<p>
-If input_dir and output_dir are not specified, the default is the current working directory.
-If bufr_filename(s)_to_convert is not specified, the code looks for file name, **prepbufr.bufr** (also **satwnd.bufr**, **gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**) in the input/working directory. If the file exists, do the conversion, otherwise skip it.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export LD_LIBRARY_PATH=${NETCDF}/lib:$LD_LIBRARY_PATH
-<em class="prompt">$ </em>./obs2ioda-v2.x prepbufr.gdas.20180415.t00z.nr.48h
-<em class="prompt">$ </em>./obs2ioda-v2.x gdas.satwnd.t00z.20180415.bufr
-<em class="prompt">$ </em>./obs2ioda-v2.x gdas.gpsro.t00z.20180415.bufr
-<em class="prompt">$ </em>./obs2ioda-v2.x gdas.1bamua.t00z.20180415.bufr
-</pre>
-
-<p>
-You should see *.h5 files in the folder.
-</p>
-
-</div>
-
-
-
-<!-- === 8.3 Generate iodav3 files ============================================== -->
-<div class="subheader" onClick="show('convert_mpas')">
-<h3 id="convert_mpas-header">8.3 Upgrade IODAv2-HDF5 into IODAv3-HDF5 </h3>
-</div>
-<div id="convert_mpas" class="subsection">
-
-<p>
-Create the directory <em class="terminal">iodav2</em>
-and move amsua and gnssro h5 files to the directory <em class="terminal">iodav2</em>.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial/obs_ioda/2018041500
-<em class="prompt">$ </em>mkdir iodav2
-<em class="prompt">$ </em>mv amsua_*obs* iodav2
-<em class="prompt">$ </em>mv gnssro_obs_*.h5  iodav2
-</pre>
-
-<p>
-Due to NetCDF-Fortran interface does not allow reading/writing NF90_STRING, so station_id and variable_names are still written out as
-</p>
-
-<pre class="terminal">
-char station_id(nlocs, nstring)
-char variable_names(nvars, nstring)
-</pre>
-<p>
-rather than
-</p>
-<pre class="terminal">
-string station_id(nlocs)
-string variable_names(nvars)
-</pre>
-
-<p>
-So, for aircraft/satwind/satwnd/sfc/sondes, we need run upgrade executable <em class="terminal">ioda-upgrade-v1-to-v2.x</em>.
-The output files for aircraft/satwind/satwnd/sfc/sondes are created in iodav2 directory.
-The input *h5 files in current directory can be deleted.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-<em class="prompt">$ </em>source ${bundle_dir}/code/env-setup/gnu-derecho.sh
-<em class="prompt">$ </em>export LD_LIBRARY_PATH=${bundle_dir}/build/lib:$LD_LIBRARY_PATH
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/build/bin/ioda-upgrade-v1-to-v2.x .
-<em class="prompt">$ </em>./ioda-upgrade-v1-to-v2.x satwind_obs_2018041500.h5 iodav2/satwind_obs_2018041500.h5
-<em class="prompt">$ </em>./ioda-upgrade-v1-to-v2.x satwnd_obs_2018041500.h5 iodav2/satwnd_obs_2018041500.h5
-<em class="prompt">$ </em>./ioda-upgrade-v1-to-v2.x sfc_obs_2018041500.h5 iodav2/sfc_obs_2018041500.h5
-<em class="prompt">$ </em>./ioda-upgrade-v1-to-v2.x aircraft_obs_2018041500.h5 iodav2/aircraft_obs_2018041500.h5
-<em class="prompt">$ </em>./ioda-upgrade-v1-to-v2.x sondes_obs_2018041500.h5 iodav2/sondes_obs_2018041500.h5
-<em class="prompt">$ </em>rm *.h5
-</pre>
-
-<p>
-Now we can upgrade iodav2 to iodav3 format by using <em class="terminal">ioda-upgrade-v2-to-v3.x</em>
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/build/bin/ioda-upgrade-v2-to-v3.x .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/ioda/share/ioda/yaml/validation/ObsSpace.yaml .
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/aircraft_obs_2018041500.h5 ./aircraft_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/gnssro_obs_2018041500.h5 ./gnssro_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/satwind_obs_2018041500.h5 ./satwind_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/satwnd_obs_2018041500.h5 ./satwnd_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/sfc_obs_2018041500.h5 ./sfc_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/sondes_obs_2018041500.h5 ./sondes_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/amsua_n15_obs_2018041500.h5 ./amsua_n15_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/amsua_n18_obs_2018041500.h5 ./amsua_n18_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/amsua_n19_obs_2018041500.h5 ./amsua_n19_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/amsua_metop-a_obs_2018041500.h5 ./amsua_metop-a_obs_2018041500.h5 ObsSpace.yaml
-<em class="prompt">$ </em>./ioda-upgrade-v2-to-v3.x iodav2/amsua_metop-b_obs_2018041500.h5 ./amsua_metop-b_obs_2018041500.h5 ObsSpace.yaml
-</pre>
-
-<p>
-An additional step is needed for satellite radiance data (e.g, amsua_n15, amsua_metop-a) in order to convert the 'sensorScanPosition' variable from float point to integer. This is a requirement after changes for consistency between UFO and IODA. For this, we have prepared the script 'run_updateSensorScanPosition.csh' that will link fix_float2int.py and update_sensorScanPosition.py, set environment variables, and execute the Python scripts.
-<p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../../MPAS_JEDI_yamls_scripts/run_updateSensorScanPosition.csh
-<em class="prompt">$ </em>./run_updateSensorScanPosition.csh
-</pre>
-
-<p>
-To check that radiance files have been updated, run ncdump and check for the variable 'sensorScanPosition' under the 'Metadata' group.
-<p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ncdump -h amsua_n15_obs_2018041500.h5 | grep sensorScanPosition
-</pre>
-
-<p>
-Now you have the proper format ioda files under ~obs_ioda/2018041500 for mpas-jedi tests:
-</p>
-
-<pre class="terminal">
-aircraft_obs_2018041500.h5       amsua_n18_obs_2018041500.h5  satwnd_obs_2018041500.h5
-amsua_metop-a_obs_2018041500.h5  amsua_n19_obs_2018041500.h5  sfc_obs_2018041500.h5
-amsua_metop-b_obs_2018041500.h5  gnssro_obs_2018041500.h5     sondes_obs_2018041500.h5
-amsua_n15_obs_2018041500.h5      satwind_obs_2018041500.h5
-</pre>
-
-</div>
-
-
-<!-- === 8.4 Plot Obs locations ============================================== -->
-<div class="subheader" onClick="show('plot_loc')">
-<h3 id="plot_loc-header">8.4 Plotting observation coverage</h3>
-</div>
-<div id="plot_loc" class="subsection">
-
-<p>
-Setup python enviorment for plotting.
-</p>
-<p><i>
-Note that we need to load the python environment before executing the python script.
-If you have already loaded the spack-stack module, reset the module environment before loading python env.
-</i></p>
-<pre class="terminal">
-<em class="prompt">$ </em>module reset
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
-</pre>
-
-<p>
-Copy graphics directory to current directory:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cp -r ${bundle_dir}/code/mpas-jedi/graphics .
-<em class="prompt">$ </em>cd graphics/standalone
-<em class="prompt">$ </em>ln -sf ../../../../MPAS_JEDI_yamls_scripts/plot_obs_loc_tut.py .
-<em class="prompt">$ </em>python plot_obs_loc_tut.py
-</pre>
-
-<p>
-Now, one of the figures shown here:
-</p>
-
-<img src="images/distri_airTemperature_sondes_obs_2018041500_all.png", width="800"/>
-
-</div>
-
-
-</div>
 
 </body>
 

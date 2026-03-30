@@ -1,3 +1,4 @@
+
 <!doctype html>
 
 <!-- Copyright (c) 2026, University Corporation for Atmospheric Research (UCAR). -->
@@ -798,8 +799,8 @@ Also, link the 6-h forecast file as the template file:
 Create dbIn and dbOut directories, and then link the observation input files under it:
 
 <pre class="terminal">
-<em class="prompt">$ </em> mkdir dbIn dbOut
-<em class="prompt">$ </em> cd dbIn
+<em class="prompt">$ </em>mkdir dbIn dbOut
+<em class="prompt">$ </em>cd dbIn
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/aircraft_obs_2024091712.h5 .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/gnssro_obs_2024091712.h5 .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/satwind_obs_2024091712.h5 .
@@ -809,7 +810,6 @@ Create dbIn and dbOut directories, and then link the observation input files und
 </pre>
 
 </div>
-
 
 <!-- === 3.2 Run HofX ========================================== -->
 <div class="subheader" onClick="show('initialization-static-varres')">
@@ -848,29 +848,36 @@ The following steps are for set up python environment, copy graphics directory, 
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
-<em class="prompt">$ </em>cp -r ${bundle_dir}/code/mpas-jedi/graphics .
-<em class="prompt">$ </em>cd graphics/standalone
+<em class="prompt">$ </em>cp  ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_obs_singv.py .
+</pre>
+
+Before plotting, you need to do several modifications as the following in plot_obs_singv.py:
+<pre class="terminal">
+obsout_dir = './dbOut'
+plot_type = 'HofX'
+hofx_da = 'hofx'
+sensors = ['satwind','sondes','aircraft','sfc','gnssro']
+</pre>
+
+Then, you can run the Python script to plot the simulated observed variables.
+
+<pre class="terminal"></pre>
 <em class="prompt">$ </em>python plot_diag.py
 </pre>
+
+</p>
 
 <p>
 This will produce a number of figure files, display one of them
 <p>
 <pre class="terminal">
-display distri_windEastward_hofx_aircraft_omb_allLevels.png
+display HofX_horizontal_distribution_satwind.png
 </pre>
 
 <p>
 which will look like the figure below
 </p>
 <img src="images/HofX_horizontal_distribution_satwind.png", width="800"/>
-
-<p>
-To view more figures, it is more convenient to transfer them to your local computer via:
-</p>
-<pre class="terminal">
-<em class="prompt">$ </em>scp -r $USER@data-access.ucar.edu:/glade/derecho/scratch/$USER/mpas_jedi_tutorial/hofx/graphics/standalone .
-</pre>
 
 </div>
 
@@ -880,7 +887,7 @@ To view more figures, it is more convenient to transfer them to your local compu
 <!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs 
 <!-- ============================================================================== -->
 <div class="header" onClick="show('envar')">
-<h2 id="envar-header">3. Generating localization files and running 3D/4DEnVar with "conventional" obs</h2>
+<h2 id="envar-header">4. Generating localization files and running 3DEnVar with "conventional" obs</h2>
 </div>
 <div id="envar" class="section">
 <p>
@@ -889,13 +896,13 @@ To view more figures, it is more convenient to transfer them to your local compu
 
 <!-- === 4.1 Generating BUMP localization files ============== -->
 <div class="subheader" onClick="show('generate_localization')">
-<h3 id="generate_localization-header">3.1 Generating BUMP localization files</h3>
+<h3 id="generate_localization-header">4.1 Generating BUMP localization files</h3>
 </div>
 <div id="generate_localization" class="subsection">
 
 <p>
 In this practice, we will generate the BUMP localization files to be used for spatial localization
-of ensemble background error covariance. These files will be used in the following 3D/4DEnVar and hybrid-3DEnVar
+of ensemble background error covariance. These files will be used in the following 3DEnVar and hybrid-3DEnVar
 data assimilation practice.
 </p>
 
@@ -905,62 +912,63 @@ create the working directory.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir localization
-<em class="prompt">$ </em>cd localization
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
+<em class="prompt">$ </em>mkdir Localization
+<em class="prompt">$ </em>cd Localization
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory,
+set the bundle_dir environment
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
 </pre>
 
 <p>
-Link MPAS physics-related data and tables, MPAS graph, MPAS streams, MPAS namelist files.
+Now, we need to prepare input files to generate BUMP localization files.
+Similar to what we have done for HofX applcaition, we need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.analysis ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.background ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.control ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.ensemble ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/streams.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.analysis .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.background .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.control .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.ensemble .
 </pre>
 
 <p>
-Link MPAS 2-stream files.
+Then, link yamls:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/geovars.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/keptvars.yaml .
 </pre>
 
 <p>
-Link yaml files.
+Followed by the 2-stream IO files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml  ./
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml  ./
-<em class="prompt">$ </em>ln -fs ../MPAS_JEDI_yamls_scripts/bumploc.yaml ./
-</pre>
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc .
+<em class="prompt">$ </em>ln -fs mpasout.2024-09-17_12.00.00.nc templateFields.522172.2024-09-17_12.00.00.nc
 
 <p>
-Link and submit pbs job script.
+copy the MPAS-JEDI yaml file and the pbs job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_bumploc.csh ./
-<em class="prompt">$ </em>qsub run_bumploc.csh
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/bumploc.yaml .
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/run_bumploc.ksh .
+<em class="prompt">$ </em>qsub run_bumploc.ksh
 </pre>
 
 <p>
@@ -969,64 +977,31 @@ or monitoring the log file <em class="terminal">jedi.log</em>.
 </p>
 
 <p>
-After finishing the PBS job, user can check the BUMP localization files generated. The "local" files are generated for each processor (64 processors in this practice).
+After finishing the PBS job, user can check the BUMP localization files generated. The "local" files are generated for each processor (256 processors in this practice).
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ls bumploc_1200km6km_nicas_local_*.nc <br>
-bumploc_1200km6km_nicas_local_000064-000001.nc  bumploc_1200km6km_nicas_local_000064-000033.nc
-bumploc_1200km6km_nicas_local_000064-000002.nc  bumploc_1200km6km_nicas_local_000064-000034.nc
-bumploc_1200km6km_nicas_local_000064-000003.nc  bumploc_1200km6km_nicas_local_000064-000035.nc
-bumploc_1200km6km_nicas_local_000064-000004.nc  bumploc_1200km6km_nicas_local_000064-000036.nc
-bumploc_1200km6km_nicas_local_000064-000005.nc  bumploc_1200km6km_nicas_local_000064-000037.nc
-bumploc_1200km6km_nicas_local_000064-000006.nc  bumploc_1200km6km_nicas_local_000064-000038.nc
-bumploc_1200km6km_nicas_local_000064-000007.nc  bumploc_1200km6km_nicas_local_000064-000039.nc
-bumploc_1200km6km_nicas_local_000064-000008.nc  bumploc_1200km6km_nicas_local_000064-000040.nc
-bumploc_1200km6km_nicas_local_000064-000009.nc  bumploc_1200km6km_nicas_local_000064-000041.nc
-bumploc_1200km6km_nicas_local_000064-000010.nc  bumploc_1200km6km_nicas_local_000064-000042.nc
-bumploc_1200km6km_nicas_local_000064-000011.nc  bumploc_1200km6km_nicas_local_000064-000043.nc
-bumploc_1200km6km_nicas_local_000064-000012.nc  bumploc_1200km6km_nicas_local_000064-000044.nc
-bumploc_1200km6km_nicas_local_000064-000013.nc  bumploc_1200km6km_nicas_local_000064-000045.nc
-bumploc_1200km6km_nicas_local_000064-000014.nc  bumploc_1200km6km_nicas_local_000064-000046.nc
-bumploc_1200km6km_nicas_local_000064-000015.nc  bumploc_1200km6km_nicas_local_000064-000047.nc
-bumploc_1200km6km_nicas_local_000064-000016.nc  bumploc_1200km6km_nicas_local_000064-000048.nc
-bumploc_1200km6km_nicas_local_000064-000017.nc  bumploc_1200km6km_nicas_local_000064-000049.nc
-bumploc_1200km6km_nicas_local_000064-000018.nc  bumploc_1200km6km_nicas_local_000064-000050.nc
-bumploc_1200km6km_nicas_local_000064-000019.nc  bumploc_1200km6km_nicas_local_000064-000051.nc
-bumploc_1200km6km_nicas_local_000064-000020.nc  bumploc_1200km6km_nicas_local_000064-000052.nc
-bumploc_1200km6km_nicas_local_000064-000021.nc  bumploc_1200km6km_nicas_local_000064-000053.nc
-bumploc_1200km6km_nicas_local_000064-000022.nc  bumploc_1200km6km_nicas_local_000064-000054.nc
-bumploc_1200km6km_nicas_local_000064-000023.nc  bumploc_1200km6km_nicas_local_000064-000055.nc
-bumploc_1200km6km_nicas_local_000064-000024.nc  bumploc_1200km6km_nicas_local_000064-000056.nc
-bumploc_1200km6km_nicas_local_000064-000025.nc  bumploc_1200km6km_nicas_local_000064-000057.nc
-bumploc_1200km6km_nicas_local_000064-000026.nc  bumploc_1200km6km_nicas_local_000064-000058.nc
-bumploc_1200km6km_nicas_local_000064-000027.nc  bumploc_1200km6km_nicas_local_000064-000059.nc
-bumploc_1200km6km_nicas_local_000064-000028.nc  bumploc_1200km6km_nicas_local_000064-000060.nc
-bumploc_1200km6km_nicas_local_000064-000029.nc  bumploc_1200km6km_nicas_local_000064-000061.nc
-bumploc_1200km6km_nicas_local_000064-000030.nc  bumploc_1200km6km_nicas_local_000064-000062.nc
-bumploc_1200km6km_nicas_local_000064-000031.nc  bumploc_1200km6km_nicas_local_000064-000063.nc
-bumploc_1200km6km_nicas_local_000064-000032.nc  bumploc_1200km6km_nicas_local_000064-000064.nc
+<em class="prompt">$ </em>ls bumploc_nicas_local_*.nc <br>
+
 </pre>
 
 <p>
-For a Dirac function multiplied by a given localization function, user can make a plot with <em class="terminal"> dirac_nicas.2018-04-15_00.00.00.nc</em> .
+For a Dirac function multiplied by a given localization function, user can make a plot with <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
 </p>
 
 <p><i>
-Note that we need to load the python environment before executing the python script.
-If you have already loaded the spack-stack module, please reset the module environment to properly load the NCAR Python Library (NPL).
+Make sure the Conda environment has been activated before plotting.
 </i></p>
 <pre class="terminal">
-<em class="prompt">$ </em>module reset
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
+<em class="prompt">$ </em>module load miniforge3/25.3.1
+<em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 <p>
 Copy the plotting script for Dirac output.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cp ../MPAS_JEDI_yamls_scripts/plot_bumploc.py ./
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_bumploc.py .
 <em class="prompt">$ </em>python plot_bumploc.py
 <em class="prompt">$ </em>display figure_bumploc.png
 </pre>
@@ -1034,30 +1009,30 @@ Copy the plotting script for Dirac output.
 <img src="images/figure_bumploc.png", width="600"/>
 
 <p>
-User may play with different localization lengths (e.g., change the horizontal one from 1200km to 600km) by
+User may play with different localization lengths (e.g., change the horizontal one from 300km to 150km) by
 changing the following YAML keys from <em class="terminal">bumploc.yaml</em>, then re-submit the PBS job script.
 </p>
 
 <p><i>
-[Note that <em class="terminal">dirac_nicas.2018-04-15_00.00.00.nc</em> and 
-<em class="ternminal">figure_bumploc.png</em> will be overwritten, so it is a good idea
+[Note that <em class="terminal">dirac_nicas.2024-09-17_12.00.00.nc</em>, 
+<em class="ternminal">figure_bumploc.png</em>, and all tghose BUMP NICAS files will be overwritten, so it is a good idea
 to rename the existing files to compare them to those from a new experiment with modified localization lengths.]
 </i></p>
 
 <pre class="terminal">
       ...
       io:
-	files prefix: <em style="background-color: yellow;">bumploc_1200km6km</em>
+	      files prefix: <em style="background-color: yellow;">bumploc</em>
       ...
       nicas:
         resolution: 8.0
         explicit length-scales: true
         horizontal length-scale:
           - groups: [common]
-	    value: <em style="background-color: yellow;">1200.0e3</em>
+	          value: <em style="background-color: yellow;">300.0e3</em>
         vertical length-scale:
           - groups: [common]
-	    value: <em style="background-color: yellow;">6.0e3</em>
+	          value: <em style="background-color: yellow;">4.0e3</em>
       ...
 </pre>
 
@@ -1068,15 +1043,15 @@ Make a plot for Dirac result (with <em class="terminal">plot_bumploc.py</em>) to
 </div>
 
 
-<!-- === 4.2 Running a 240 km 3DEnVar Update ====================== -->
+<!-- === 4.2 Running a 3DEnVar analysis ====================== -->
 
-<div class="subheader" onClick="show('240km_3denvar')">
-<h3 id="240km_3denvar-header">3.2 Running a 240 km 3DEnVar analysis</h3>
+<div class="subheader" onClick="show('3denvar')">
+<h3 id="denvar-header">3.2 Running a 3DEnVar analysis</h3>
 </div>
-<div id="240km_3denvar" class="subsection">
+<div id="3denvar" class="subsection">
 
 <p>
-We are now ready to set up and run the first analysis test using 3DEnVar. For this 3DEnVar, we will use a 240 km background forecast and ensemble input at the same resolution.
+We are now ready to set up and run the first analysis test using 3DEnVar. For this 3DEnVar, we will use a 3 km background forecast and ensemble input at the same resolution.
 </p>
 
 <p>
@@ -1084,67 +1059,73 @@ Let's create a new working directory for this test:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir 3denvar
-<em class="prompt">$ </em>cd 3denvar
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/
+<em class="prompt">$ </em>mkdir Variational
+<em class="prompt">$ </em>cd Variational
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory,
+set the bundle_dir environment:
+<pre class="terminal">
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+</pre>
+</p>
+
+<p>
+Again, we now prepare all necessary input files to run the MPAS-JEDI variational DA application.
+Similar to what we have done before, we need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/streams.atmosphere .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.analysis .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.background .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.control .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/stream_list.atmosphere.ensemble .
 </pre>
 
 <p>
-We can then link the relevant MPAS stream, graph, namelist, and physics files:
+Then, link yamls:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/stream_list*  ./
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/geovars.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/keptvars.yaml .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/obsop_name_map.yaml .
 </pre>
 
 <p>
-Next, we need to link in a few yaml files that define MPAS variables for JEDI:
+Followed by the 2-stream IO files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./templateFields.522172.2024-09-17_12.00.00.nc
+
+<p>
+Next, we should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working directory and make a copy of the background file as the analysis file to be overwritten. 
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./bg.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>cp bg.2024-09-17_12.00.00.nc an.2024-09-17_12.00.00.nc
 </pre>
 
 <p>
-Next, we need to link MPAS 2-stream files corresponding to the 240 km mesh.
-For this experiment we need to link the following files:
+Next, we need to link ensemble forecasts and bump localization files.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-</pre>
-
-<p>
-Next, we should link the background file <em class="terminal">mpasout.2018-04-15_00.00.00.nc</em> into the working directory and make a copy of the background file as the analysis file to be overwritten. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>cp ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./an.2018-04-15_00.00.00.nc
-</pre>
-
-<p>
-Next, we need to link bump localization files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../localization_pregenerated ./BUMP_files
+<em class="prompt">$ </em>mkdir ensBEC
+<em class="prompt">$ </em>cd ensBEC
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/ensemble .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_EnsLOC .
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 </pre>
 
 <p>
@@ -1152,34 +1133,46 @@ Next, we need to link observation files into the working directory.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
+<em class="prompt">$ </em>mkdir dbIn dbOut
+<em class="prompt">$ </em>cd dbIn
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/aircraft_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/gnssro_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/satwind_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/sfc_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/sondes_obs_2024091712.h5 .
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 </pre>
 
 <p>
-Next, we are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. <em class="terminal">3denvar.yaml</em> contains all of the settings we need for this 3DEnVar update.
+Next, we are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
+<em class="terminal">3denvar.yaml</em> contains all of the settings we need for this 3DEnVar update. 
+Also, copy the PBS job script. 
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/3denvar.yaml ./
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3denvar.yaml .
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training//run_variational.ksh .
 </pre>
 
 <p>
-We are finally ready to link a PBS job script and then submit it. Notice the job script runs the following executable <em class="terminal">mpasjedi_variational.x</em>, which is used for all of our variational updates. 
+Before submitting the job to run the 3DEnvar application, we need to check whether the test case is properly set:
+<pre class="terminal">
+<em class="prompt">$ </em>grep "da_test=" run_variational.ksh
+export da_test="3denvar"
+</pre>
+
+<p>
+Now, we submit the PBS job script to run the following executable <em class="terminal">mpasjedi_variational.x</em>, which is used for all of our variational updates. 
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_JEDI_yamls_scripts/run_3denvar.csh ./
-<em class="prompt">$ </em>qsub run_3denvar.csh
+<em class="prompt">$ </em>qsub run_variational.ksh
 </pre>
 
 <p>
 Once your job is submitted, you can check the status of the job using <em class="terminal">qstat -u ${USER}</em>.
 
-When the job is complete, you can check the log file by using <em class="terminal">vi mpasjedi_3denvar.log</em>.
+When the job is complete, you can check the log file by using <em class="terminal">vi jedi_3denvar.log</em>.
 
 </p>
 
@@ -1188,17 +1181,20 @@ Now that the analysis was successful, you may plot the cost function and gradien
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em> module load conda
-<em class="prompt">$ </em> conda activate npl
-<em class="prompt">$ </em> cp ${bundle_dir}/code/mpas-jedi/graphics/standalone/plot_cost_grad.py .
+<em class="prompt">$ </em>module load miniforge3/25.3.1
+<em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 
 <p>
-Changing 'jedi.log' to 'mpasjedi_3denvar.log' in plot_cost_grad.py, then do
-</p>
+Link 'jedi_3denvar.log' to 'jedi.log' in plot_cost_grad.py, copy the Python script plot_cost_grad.py to the current 
+working directory, and run the python scirpt to plot the figure:
+
 <pre class="terminal">
+<em class="prompt">$ </em> ln -sf jedi_3denvar.log ./jedi.log
+<em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_cost_grad.py .
 <em class="prompt">$ </em> python plot_cost_grad.py
 </pre>
+</p>
 
 <p>
 You can then view the figure using the following:
@@ -1215,12 +1211,13 @@ You can also plot the analysis increment (i.e., an.*.nc - bg.*.nc) with the foll
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em> cp ../MPAS_JEDI_yamls_scripts/plot_analysis_increment.py ./
-<em class="prompt">$ </em> python plot_analysis_increment.py
-<em class="prompt">$ </em> display figure_increment_uReconstructZonal_10.png
+<em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/module_mpas_vars.py .
+<em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_mpas_anainc.py .
+<em class="prompt">$ </em> python plot_mpas_anainc.py
+<em class="prompt">$ </em> display ana_inc_U-V-T-Q_lev10.png
 </pre>
 
-<img src="images/figure_increment_uReconstructZonal_10.png" alt="3DEnVar Inc" width="600" height="300">
+<img src="images/ana_inc_U-V-T-Q_lev10.png" alt="3DEnVar Inc" width="600" height="300">
 
 <p>
 You will also see several so-called DA "feedback" files below:
@@ -1239,296 +1236,30 @@ You can follow the same procedure as in section 2.2 to plot these 'feedback' fil
 <p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>module load conda
-<em class="prompt">$ </em>conda activate npl
-<em class="prompt">$ </em>cp -r ${bundle_dir}/code/mpas-jedi/graphics .
-<em class="prompt">$ </em>cd graphics/standalone
+<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/Graphics/mpas_jedi_graphics/* .
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_diag.py .
 <em class="prompt">$ </em>python plot_diag.py
 </pre>
 
 This will produce a number of figure files, display one of them
 <pre class="terminal">
-display RMSofOMM_da_aircraft_airTemperature.png
+display RMSofOMM_da_gnssro_atmosphericRefractivity.png
 </pre>
 
 <p>
 which will look like the figure below
 </p>
-<img src="images/RMSofOMM_da_aircraft_airTemperature.png", width="800"/>
+<img src="images/RMSofOMM_da_gnssro_atmosphericRefractivity.png", width="800"/>
 
 </div>
 
-
-<!-- === 4.3 Running a dual-resolution 120-240 km 3DEnVar Update ============ -->
-
-<div class="subheader" onClick="show('120km240km_3denvar')">
-<h3 id="120km240km_3denvar-header">3.3 Running a dual-resolution 120-240 km 3DEnVar analysis</h3>
 </div>
-<div id="120km240km_3denvar" class="subsection">
-
-<p>
-Now we know how to run a 3DEnVar analysis, let's prepare a second test which uses a higher resolution background of 120 km but a coarser ensemble of 240 km.
-</p>
-
-<p>
-Let's create a new working directory to run our 120-240km 3DEnVar update:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir 3denvar_120km240km
-<em class="prompt">$ </em>cd 3denvar_120km240km
-</pre>
-
-<p>
-Set environment variable for the mpas-bundle directory,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-</pre>
-
-<p>
-We can then link the relevant MPAS stream, graph, namelist, and physics files. In addition to files for 240km mesh, we also need files for 120 km mesh.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/<em class="highlight">x1.40962.graph.info.part.64</em> ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/<em class="highlight">namelist.atmosphere_120km</em> ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/<em class="highlight">streams.atmosphere_120km</em> ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/stream_list*  ./
-</pre>
-
-<p>
-Next, we need to link in a few yaml files again that define MPAS variables for JEDI:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-</pre>
-
-<p>
-Next, we need to link MPAS 2-stream files corresponding to both 240 km and 120 km MPAS grids. We need both a <em class="terminal">static.nc</em> file and <em class="terminal">templateFields.nc</em> file. 
-For this experiment we need to link the following files:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/<em class="highlight">x1.40962.invariant.nc</em> .
-<em class="prompt">$ </em>ln -fs ../background_120km/2018041418/mpasout.2018-04-15_00.00.00.nc ./<em class="highlight">templateFields.40962.nc</em>
-</pre>
-
-
-<p>
-Next, we should link 120 km background file into the working directory and make a copy of the background file as the analysis file to be overwritten. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background_120km/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>cp ../background_120km/2018041418/mpasout.2018-04-15_00.00.00.nc ./an.2018-04-15_00.00.00.nc
-</pre>
-
-<p>
-Next, we need to link our bump localization files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../localization_pregenerated ./BUMP_files
-</pre>
-
-<p>
-Next, we need to link observation files into the working directory. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
-</pre>
-
-<p>
-Next, we are ready to copy the pre-prepared <em class="terminal">3denvar_120km240km.yaml</em> file for this dual-resolution 3DEnVar.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/3denvar_120km240km.yaml ./3denvar.yaml
-</pre>
-
-<p>
-We are finally ready to link a PBS job script and then submit the job.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_JEDI_yamls_scripts/run_3denvar.csh ./
-<em class="prompt">$ </em>qsub run_3denvar.csh
-</pre>
-
-<p>
-Again, you can check the status of the job using <em class="terminal">qstat -u ${USER}</em>.
-
-When the job is complete, you can check the log file by using <em class="terminal">vi mpasjedi_3denvar.log</em>.
-
-</p>
-
-<p>
-Again, you may plot cost function and gradient norm reduction as well as the analysis increment.
-</p>
-
-<p>
-You need to change <em class="terminal">"x1.10242.invariant.nc"</em> to <em class="terminal">"x1.40962.invariant.nc"</em> within <em class="terminal">plot_analysis_increment.py</em> in order to plot increment at the 120 km mesh.
-</p>
-
-</div>
-
-
-<!-- === 4.4 Running a 240 km 4DEnVar Update ======================================= -->
-
-<div class="subheader" onClick="show('240km_4denvar')">
-<h3 id="240km_4denvar-header">3.4 Running a 240 km 4DEnVar analysis</h3>
-</div>
-<div id="240km_4denvar" class="subsection">
-
-<p>
-Now we know how to run a 3DEnVar analysis, let's try 4DEnVar with 3 subwindows.
-</p>
-
-<p>
-Let's create a new working directory to run 240km 4DEnVar:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/${USER}/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir 4denvar
-<em class="prompt">$ </em>cd 4denvar
-</pre>
-
-<p>
-Set environment variable for the mpas-bundle directory,
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
-</pre>
-
-<p>
-We can then link MPAS stream, graph, namelist, and physics files just as we did for 3DEnVar.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -sf ../MPAS_namelist_stream_physics_files/stream_list*  ./
-</pre>
-
-<p>
-Next, we need to link a few yaml files again that define MPAS variables for JEDI:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml ./
-<em class="prompt">$ </em>ln -sf ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-</pre>
-
-<p>
-Next, we need to link MPAS 2-stream files corresponding to 240km mesh.
-For this experiment we need to link the following files:
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-</pre>
-
-<p>
-Next, we need to link 240km background files for each subwindow into the working directory and make a copy of each background file as the analysis file for each subwindow to be overwritten. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-14_21.00.00.nc ./bg.2018-04-14_21.00.00.nc
-<em class="prompt">$ </em>cp ../background/2018041418/mpasout.2018-04-14_21.00.00.nc     ./an.2018-04-14_21.00.00.nc
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>cp ../background/2018041418/mpasout.2018-04-15_00.00.00.nc     ./an.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_03.00.00.nc ./bg.2018-04-15_03.00.00.nc
-<em class="prompt">$ </em>cp ../background/2018041418/mpasout.2018-04-15_03.00.00.nc     ./an.2018-04-15_03.00.00.nc
-</pre>
-
-<p>
-Next, we need to link bump localization files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../localization_pregenerated ./BUMP_files
-</pre>
-
-<p>
-Next, we need to link observation files. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
-</pre>
-
-<p>
-Next, we are ready to link the pre-prepared <em class="terminal">4denvar.yaml</em> file.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/4denvar.yaml ./4denvar.yaml
-</pre>
-
-<p>
-We are finally ready to link a PBS job script and then submit a job. Note that this 4DEnVar job uses 3 nodes with 64 cores per node for 3 subwindows. 
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_JEDI_yamls_scripts/run_4denvar.csh ./
-<em class="prompt">$ </em>qsub run_4denvar.csh
-</pre>
-
-<p>
-Again, you can check the status of the job using <em class="terminal">qstat -u ${USER}</em>.
-
-When the job is complete, you can check the log file by using <em class="terminal">vi mpasjedi_4denvar.log</em>.
-
-</p>
-
-<p>
-Again, you can plot cost function and gradient norm reduction as well as analysis increments at one of 3 subwindows.
-</p>
-
-<p>
-You may modify the <em class="terminal">an</em> and <em class="terminal">bg</em> files in <em class="terminal">plot_analysis_increment.py</em> to see how the increment changes across the subwindows.
-</p>
-
-</div>
-
-
-</div>
-
 
 <!-- ============================================================================== -->
-<!-- === 5. Running 3DVar and hybrid-3DEnVar  ======================== -->
+<!-- === 5. Running 3DVar and hybrid-3DEnVar, and assimilates more observations  == -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('hybrid')">
-<h2 id="hybrid-header">4. Running 3DVar and hybrid-3DEnVar with satellite radiance data</h2>
+<h2 id="hybrid-header">5. Assimileting remoting sensing data using different DA methods</h2>
 </div>
 <div id="hybrid" class="section">
 <p>

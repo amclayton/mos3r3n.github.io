@@ -1047,7 +1047,7 @@ Make a plot for Dirac result (with <em class="terminal">plot_bumploc.py</em>) to
 <!-- === 4.2 Running a 3DEnVar analysis ====================== -->
 
 <div class="subheader" onClick="show('3denvar')">
-<h3 id="denvar-header">3.2 Running a 3DEnVar analysis</h3>
+<h3 id="denvar-header">4.2 Running a 3DEnVar analysis</h3>
 </div>
 <div id="3denvar" class="subsection">
 
@@ -1207,7 +1207,7 @@ You can then view the figure using the following:
 <em class="prompt">$ </em>display costgrad.png
 </pre>
 
-<img src="images/costgrad.png" alt="cost function and gradient norm reduction" width="600" height="400">
+<img src="images/costgrad.png" alt="cost function and gradient norm reduction" width="800">
 
 <p>
 You can also plot the analysis increment (i.e., an.*.nc - bg.*.nc) with the following.
@@ -1220,7 +1220,7 @@ You can also plot the analysis increment (i.e., an.*.nc - bg.*.nc) with the foll
 <em class="prompt">$ </em> display ana_inc_U-V-T-Q_lev10.png
 </pre>
 
-<img src="images/ana_inc_U-V-T-Q_lev10.png" alt="3DEnVar Inc" width="600" height="300">
+<img src="images/ana_inc_U-V-T-Q_lev10.png" alt="3DEnVar Inc" width="800">
 
 <p>
 You will also see several so-called DA "feedback" files below:
@@ -1547,10 +1547,10 @@ which will look like the figure below
 </div>
 
 <!-- === 5.2 Assimilating radar observations ========================================== -->
-<div class="subheader" onClick="show('run_3dhyb')">
-<h3 id="run_3dhyb-header">5.2 Testing radar data assimilation</h3>
+<div class="subheader" onClick="show('run_radar')">
+<h3 id="run_radar-header">5.2 Testing radar data assimilation</h3>
 </div>
-<div id="run_3dhyb" class="subsection">
+<div id="run_radar" class="subsection">
 
 <p>
 In this practice, we will run radar data assimilation using the 3DEnvar method. In this practice, 
@@ -1718,10 +1718,10 @@ backup our tested dataset before going to the next practice:
 </div>
 
 <!-- === 5.3 Assimilating clear-sky satellite radiances ========================================== -->
-<div class="subheader" onClick="show('run_3dhyb')">
-<h3 id="run_3dhyb-header">5.3 Assimilating clear-sky satellite radiances</h3>
+<div class="subheader" onClick="show('run_clearsky')">
+<h3 id="run_clearsky-header">5.3 Assimilating clear-sky satellite radiances</h3>
 </div>
-<div id="run_3dhyb" class="subsection">
+<div id="run_clearsky" class="subsection">
 
 <p>
 In the last practice, we further test the clear-sky satellite radiances assimilation using MPAS-JEDI's hybrid 3DEnVar method.

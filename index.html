@@ -960,6 +960,7 @@ Followed by the 2-stream IO files:
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc .
 <em class="prompt">$ </em>ln -fs mpasout.2024-09-17_12.00.00.nc templateFields.522172.2024-09-17_12.00.00.nc
+</pre>
 
 <p>
 copy the MPAS-JEDI yaml file and the pbs job script, and then submit the job script.
@@ -1106,9 +1107,11 @@ Followed by the 2-stream IO files:
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./templateFields.522172.2024-09-17_12.00.00.nc
+</pre>
 
 <p>
-Next, we should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working directory and make a copy of the background file as the analysis file to be overwritten. 
+Next, we should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working 
+directory and make a copy of the background file as the analysis file to be overwritten. 
 </p>
 
 <pre class="terminal">
@@ -1117,7 +1120,7 @@ Next, we should link the background file <em class="terminal">mpasout.2024-09-17
 </pre>
 
 <p>
-Next, we need to link ensemble forecasts and bump localization files.
+Then, we need to link ensemble forecasts and bump localization files.
 </p>
 
 <pre class="terminal">
@@ -1144,7 +1147,7 @@ Next, we need to link observation files into the working directory.
 </pre>
 
 <p>
-Next, we are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
+Now, we are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
 <em class="terminal">3denvar.yaml</em> contains all of the settings we need for this 3DEnVar update. 
 Also, copy the PBS job script. 
 </p>
@@ -1263,163 +1266,287 @@ which will look like the figure below
 </div>
 <div id="hybrid" class="section">
 <p>
+In this session, we will test different different deterministic DA methods. Also, we will 
+additionally assimilate more remote sensing observations, including radar reflectivity and 
+satellite radiances.
 </p>
 
 
 <!-- === 5.1 Running 3DVar ==================================== -->
 <div class="subheader" onClick="show('run_3dvar')">
-<h3 id="run_3dvar-header">4.1 Running 3DVar</h3>
+<h3 id="run_3dvar-header">5.1 Running 3DVar and hybrid-3DEnVar</h3>
 </div>
 <div id="run_3dvar" class="subsection">
 
 <p>
-In this practice, we will run MPAS-JEDI 3DVar at global 240 km mesh.
-The overall procedure is similar to the 3D/4DEnVar practice. However, 3DVar
-uses the static multivariate background error covariance (B), which contains the
-climatological characteristics. Here, the pre-generated static B will be used.
-We hope to provide a practice for static B training in future MPAS-JEDI tutorials.
+In this practice, we will run MPAS-JEDI 3DVar and hybird 3DEnVar. The overall procedure is similar 
+to the 3DEnVar practice in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
+background error covariance (BEC), which contains the climatological characteristics. Here, the 
+pre-generated static BEC will be used. We hope to provide a practice for static B training in future 
+MPAS-JEDI training.
 </p>
 
 <p>
-After changing to our <em class="terminal">/glade/derecho/scratch/${USER}/mpas_jedi_tutorial</em> directory,
-create the working directory for 3dvar.
+All tests will be conducted in the same directory as the 3DEnvar. Therefore, it is reconmmanded to backup 
+previous 3DEnvar results.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial
-<em class="prompt">$ </em>mkdir 3dvar
-<em class="prompt">$ </em>cd 3dvar
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
+<em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3denvar.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>cp bg.2024-09-17_12.00.00.nc an.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>mv dbOut dbOut_3denvar
+<em class="prompt">$ </em>mkdir dbOut
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory,
+All files necessary to run 3DVar and hybrid 3DEnVar are available under Variational, except for the static BEC 
+files. So, we link the static BEC files:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+<em class="prompt">$ </em>mkdir staticBEC
+<em class="prompt">$ </em>cd staticBEC
+<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_HDIAG .
+<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_NICAS .
 </pre>
 
 <p>
-Link MPAS physics-related data and tables, MPAS graph, MPAS streams, and MPAS namelist files.
+Then, we can copy the yaml file:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.analysis ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.background ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.control ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.ensemble ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3dvar.yaml .
 </pre>
 
 <p>
-Link the background file and <em style="background-color: yellow;">copy it as an analysis file</em>.
+Before doing the 3DVar practice, we can comapre 3dvar.yaml and 3denvar.yaml, and can find their difference is in the background error section:
+
+<pre class="terminal">
+<em class="prompt">$ </em>diff 3dvar.yaml 3denvar.yaml
+<     covariance model: SABER
+<     saber central block:
+<       saber block name: BUMP_NICAS
+<       active variables: &ctlvars [uReconstructZonal,uReconstructMeridional,temperature,spechum,surface_pressure]
+<       read:
+<         io:
+<           data directory: staticBEC/BUMP_NICAS
+<           files prefix: mpas
+<         drivers:
+<           multivariate strategy: univariate
+<           read local nicas: true
+<         grids: 
+<           - model:
+<               variables: [uReconstructZonal,uReconstructMeridional,temperature,spechum]
+<           - model:
+<               variables: [surface_pressure]
+<     saber outer blocks:
+<     - saber block name: StdDev
+<       read:
+<         model file:
+<           filename: staticBEC/BUMP_HDIAG/mpas.stddev.nc
+<           date: *analysisDate
+<           stream name: control
+---
+>     covariance model: ensemble
+>     localization:
+>       localization method: SABER
+>       saber central block:
+>         saber block name: BUMP_NICAS
+>         active variables: *incvars
+>         read:
+>           io:
+>             data directory: ensBEC/BUMP_EnsLOC
+>             files prefix: bumploc
+>           drivers:
+>             multivariate strategy: duplicated
+>             read local nicas: true
+>           model:
+>             level for 2d variables: last
+>     members from template:
+>       template:
+>         <<: *memberConfig
+>         filename: ensBEC/ensemble/mpasout.2024-09-17_12.00.00.nc.mem%iMember%
+>       pattern: %iMember%
+>       start: 1
+>       zero padding: 3
+>       nmembers: 10
+</pre>
+
 </p>
+
 <p>
-The file with prefix <em class="terminal">mpasout</em> contains the variables for 
-<em class="terminal">"da_state"</em> stream of 2-stream I/O.
-</p>
-<p>
-And the data assimilation will overwrite 
-several selected analyzed variables (defined in <em class="terminal">stream_list.atmosphere.analysis)</em>
-in the analysis file. 
+Also, change the da_test="3denvar" to da_test="3dvar" in the PBS script file run_variational.ksh. Then, submit the job:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>cp ./bg.2018-04-15_00.00.00.nc ./an.2018-04-15_00.00.00.nc
+<em class="prompt">$ </em>qsub run_variational.ksh
 </pre>
 
 <p>
-Link MPAS 2-stream files.
+You can repeat the same procedures as the 3DEnvar practice to analyze the results of 3DVar, like the cost function, analysis 
+increment, and OMB/OMA statistics. Here, we won't include detailed instructions anymore.
+</p>
+
+<p>
+After running 3DVar practice successfully, we now do the hybrid 3DEnvar practice. Similarly, backup the results of 3DVar run:
+
+<pre class="terminal">
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
+<em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3dvar.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>cp bg.2024-09-17_12.00.00.nc an.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>mv dbOut dbOut_3dvar
+<em class="prompt">$ </em>mkdir dbOut
+</pre>
+
+</p>
+
+<p>
+Then, we can copy the yaml file:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
+<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3dhybrid.yaml .
 </pre>
 
 <p>
-Prepare the pre-generated static B files.
+By comapring 3dhybrid.yaml and 3dvar.yaml, you can clearly see the difference in the background error section:
+
+<pre class="terminal">
+<em class="prompt">$ </em>diff 3dhybrid.yaml 3dvar.yaml
+<     covariance model: hybrid
+<     no outer loop update: true
+<     components:
+<     - weight:
+<         value: 0.4
+<       covariance:
+<         covariance model: SABER
+<         saber central block:
+<           saber block name: BUMP_NICAS
+<           active variables: &ctlvars [uReconstructZonal,uReconstructMeridional,temperature,spechum,surface_pressure]
+<           read:
+<             io:
+<               data directory: staticBEC/BUMP_NICAS
+<               files prefix: mpas
+<             drivers:
+<               multivariate strategy: univariate
+<               read local nicas: true
+<             grids: 
+<               - model:
+<                   variables: [uReconstructZonal,uReconstructMeridional,temperature,spechum]
+<               - model:
+<                   variables: [surface_pressure]
+<         saber outer blocks:
+<         - saber block name: StdDev
+<           read:
+<             model file:
+<               filename: staticBEC/BUMP_HDIAG/mpas.stddev.nc
+<               date: *analysisDate
+<               stream name: control
+<     - weight:
+<         value: 0.6
+<       covariance:
+<         covariance model: ensemble
+<         localization:
+<           localization method: SABER
+<           saber central block:
+<             saber block name: BUMP_NICAS
+<             active variables: *incvars
+<             read:
+<               io:
+<                 data directory: ensBEC/BUMP_EnsLOC
+<                 files prefix: bumploc
+<               drivers:
+<                 multivariate strategy: duplicated
+<                 read local nicas: true
+<               model:
+<                 level for 2d variables: last
+<         members from template:
+<           template:
+<             <<: *memberConfig
+<             filename: ensBEC/ensemble/mpasout.2024-09-17_12.00.00.nc.mem%iMember%
+<           pattern: %iMember%
+<           start: 1
+<           zero padding: 3
+<           nmembers: 10
+---
+>     covariance model: SABER
+>     saber central block:
+>       saber block name: BUMP_NICAS
+>       active variables: &ctlvars [uReconstructZonal,uReconstructMeridional,temperature,spechum,surface_pressure]
+>       read:
+>         io:
+>           data directory: staticBEC/BUMP_NICAS
+>           files prefix: mpas
+>         drivers:
+>           multivariate strategy: univariate
+>           read local nicas: true
+>         grids: 
+>           - model:
+>               variables: [uReconstructZonal,uReconstructMeridional,temperature,spechum]
+>           - model:
+>               variables: [surface_pressure]
+>     saber outer blocks:
+>     - saber block name: StdDev
+>       read:
+>         model file:
+>           filename: staticBEC/BUMP_HDIAG/mpas.stddev.nc
+>           date: *analysisDate
+>           stream name: control
+</pre>
+</p>
+
+<p>
+Change the da_test="3dvar" to da_test="3dhybrid" in the PBS script file run_variational.ksh. Then, submit the job:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../B_Matrix ./
+<em class="prompt">$ </em>qsub run_variational.ksh
 </pre>
+</p>
 
 <p>
-Next, link the observation files to be assimilated.
-Along the conventional observation, here a single AMSU-A radiance observation from NOAA-18 is added.
-</p>
+Backup the hybrid 3DeVar results:
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/amsua_n18_obs_2018041500.h5
+<em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3dhybrid.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>mv dbOut dbOut_3dvar
 </pre>
 
-<p>
-For this 3DVar test, satellite radiance data from NOAA-18's AMSU-A sensor is assimilated, so need coefficient files for CRTM.
 </p>
 
+<p>
+We now can have a comparsion among the three practices through their analysis increments. Modify the Python script plot_mpas_anainc.py:
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../crtm_coeffs_v3  ./
+    mpas_bak = [
+        "bg.2024-09-17_12.00.00.nc",
+        "bg.2024-09-17_12.00.00.nc",
+        "bg.2024-09-17_12.00.00.nc",
+    ]
+    mpas_ana = [
+        "3dvar.2024-09-17_12.00.00.nc",
+        "3denvar.2024-09-17_12.00.00.nc",
+        "3dhybrid.2024-09-17_12.00.00.nc",
+    ]
+    experiments = ["3DVar", "3D-EnVar", "3D-Hybrid"]
 </pre>
-
-<p>
-Link yaml files:
-</p>
-
+Then run it, and view the plotted graphic:
 <pre class="terminal">
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml  ./
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml  ./
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/3dvar.yaml ./
+<em class="prompt">$ </em>python plot_mpas_anainc.py
+<em class="prompt">$ </em>display mpas_anainc_3exps.png
 </pre>
-
-<p>
-Link and submit pbs job script:
 </p>
 
-<pre class="terminal">
-<em class="prompt">$ </em>ln -sf ../MPAS_JEDI_yamls_scripts/run_3dvar.csh ./
-<em class="prompt">$ </em>qsub run_3dvar.csh
-</pre>
-
 <p>
-User may check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
-or monitoring the log file <em class="terminal">tail -f mpasjedi_3dvar.log</em> .
+which will look like the figure below
 </p>
-
-<p><i>
-You may make figures following similar procedures in previous sections.
-</i></p>
-
-	</li>
-	<li> You may also try to assimilate additional satellite radiance data.
-
-<p>
-To do this, additional obs file (for example, <em class="terminal">../obs_ioda_pregenerated/2018041500/amsua_n19_obs_2018041500.h5</em>)
-should be linked to <em class="terminal">/glade/derecho/scratch/$USER/mpas_jedi_tutorial/3dvar/</em>.
-</p>
-<p>
-Also, user need to add the corresponding <em class="terminal">obs space</em> yaml key in <em class="terminal">3dvar.yaml</em> .
-</p>
-	</li>
-</ol>
-
-</pre>
+<img src="images/mpas_anainc_3exps.png", width="800"/>
 
 </div>
 
-
-<!-- === 5.2 Running hybrid-3DEnVar ========================================== -->
+<!-- === 5.2 Assimilating radar observations ========================================== -->
 <div class="subheader" onClick="show('run_3dhyb')">
 <h3 id="run_3dhyb-header">4.2 Running Hybrid-3DEnVar</h3>
 </div>
@@ -1453,84 +1580,6 @@ Set environment variable for the mpas-bundle directory,
 Link MPAS physics-related data and tables, MPAS graph, MPAS streams, and MPAS namelist files.
 </p>
 
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*BL ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/*DATA ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.graph.info.part.64 ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/streams.atmosphere_240km ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.analysis ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.background ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.control ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/stream_list.atmosphere.ensemble ./
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/namelist.atmosphere_240km ./
-</pre>
-
-<p>
-Link the background file and <em style="background-color: yellow;">copy it as an analysis file</em>.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./bg.2018-04-15_00.00.00.nc
-<em class="prompt">$ </em>cp ./bg.2018-04-15_00.00.00.nc ./an.2018-04-15_00.00.00.nc
-</pre>
-
-<p>
-Link MPAS 2-stream files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../MPAS_namelist_stream_physics_files/x1.10242.invariant.nc .
-<em class="prompt">$ </em>ln -fs ../background/2018041418/mpasout.2018-04-15_00.00.00.nc ./templateFields.10242.nc
-</pre>
-
-<p>
-Prepare the pre-generated static B files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../B_Matrix ./
-</pre>
-
-<p>
-Link the localization files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../localization_pregenerated ./BUMP_files
-</pre>
-
-<p>
-Link the observation files to be assimilated.
-Along the conventional observation, here a single AMSU-A radiance observation from NOAA-18 is added.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/aircraft_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/gnssro_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/satwind_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sfc_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/sondes_obs_2018041500.h5  .
-<em class="prompt">$ </em>ln -fs ../obs_ioda_pregenerated/2018041500/amsua_n18_obs_2018041500.h5
-</pre>
-
-<p>
-Prepare the coefficient files for CRTM.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ../crtm_coeffs_v3  ./
-</pre>
-
-<p>
-Link yaml files.
-</p>
-
-<pre class="terminal">
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/geovars.yaml  ./
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/namelists/keptvars.yaml  ./
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/code/mpas-jedi/test/testinput/obsop_name_map.yaml ./
-<em class="prompt">$ </em>ln -fs ../MPAS_JEDI_yamls_scripts/3dhyb.yaml ./
-</pre>
 
 <p>
 Link and submit pbs job script.
@@ -1548,6 +1597,46 @@ or monitoring the log file <em class="terminal">tail -f mpasjedi_3dhyb.log</em> 
 
 	</li>
 </ol>
+
+<p>
+User may want to try additional practice as below.
+</p>
+
+<p>
+You may see some changes in the fit-to-obs statistics, convergence, or analysis increment fields.
+</p>
+
+</div>
+
+<!-- === 5.3 Assimilating clear-sky MHS radiances ========================================== -->
+<div class="subheader" onClick="show('run_3dhyb')">
+<h3 id="run_3dhyb-header">4.2 Running Hybrid-3DEnVar</h3>
+</div>
+<div id="run_3dhyb" class="subsection">
+
+<p>
+In this practice, we will run MPAS-JEDI Hybrid-3DEnVar at global 240 km mesh.
+The hybrid covariance will be made from both static B and ensemble B.
+</p>
+
+<p>
+After changing to /glade/derecho/scratch/${USER}/mpas_jedi_tutorial directory,
+create the working directory for Hybrid-3DEnVar.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>cd /glade/derecho/scratch/$USER/mpas_jedi_tutorial
+<em class="prompt">$ </em>mkdir hybrid-3denvar
+<em class="prompt">$ </em>cd hybrid-3denvar
+</pre>
+
+<p>
+Set environment variable for the mpas-bundle directory,
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>export bundle_dir=/glade/derecho/scratch/liuz/mpas_bundle_v3_public_gnuSP
+</pre>
 
 <p>
 User may want to try additional practice as below.
@@ -1577,10 +1666,6 @@ The default <em class="terminal">3dhyb.yaml</em> uses 0.5 and 0.5 weights for st
 <p>
 You may see some changes in the fit-to-obs statistics, convergence, or analysis increment fields.
 </p>
-	</li>
-</ol>
-
-</pre>
 
 </div>
 

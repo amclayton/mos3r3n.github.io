@@ -1707,7 +1707,22 @@ Last, modify the run_variational.ksh to name da_test to "3denvar_radar", and sub
 </pre>
 
 <p>
-backup our tested dataset before going to the next practice:
+After the successufl runing the radar DA practice, we can run the plot_diag.py to see the results.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>python plot_diag.py
+</pre>
+
+You can display the vertical profiles of OMB/OMA of radar reflectivity:
+<pre class="terminal">
+display RMSofOMM_da_radar_zh_equivalentReflectivityFactor.png
+</pre>
+
+<img src="images/RMSofOMM_da_radar_zh_equivalentReflectivityFactor.png" alt="vertical profile of RMS of OMB/OMA for radar reflectivity" width="800">
+
+<p>
+Before going to the next practice, backup our tested dataset:
 </p>
 
 <pre class="terminal">
@@ -1763,6 +1778,9 @@ Now, we can compare 3dhybrid_mhs.yaml with 3dhybrid.yaml:
 </pre>
 We will find the differences is adding a new observation section related to MHS Metop-B. In this section, we 
 show what should be included for clear-ksy satellite radiance assimilation
+</p>
+
+<p>
 1) observation operator via CRTM (Community Radiative Transfer Model):
 <pre class="terminal">
 <       obs operator:
@@ -1811,8 +1829,8 @@ show what should be included for clear-ksy satellite radiance assimilation
 <           output file: dbOut/satbias_cov_mhs_metop-b.h5
 </pre>
 
-<pre class="terminal">
 3) radiance-specific or general quality control, observation error:
+<pre class="terminal">
 <       obs filters:
 <       # Metadata Check
 <       - filter: Domain Check
@@ -1938,6 +1956,13 @@ show what should be included for clear-ksy satellite radiance assimilation
 <         maxvalue: 0.1
 </pre>
 
+<p>
+Modify the run_variational.ksh to name da_test to "3dhybrid_mhs", and submib the PBS job:
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>qsub run_variational.ksh
+</pre>
 
 </div>
 

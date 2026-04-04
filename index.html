@@ -75,7 +75,7 @@ function jump(sectionid='')
 <img src="images/MPAS_logo.png" style="height:84px; width:250px">
 <img src="images/mss-ccrs-logo.png" style="height:84px; width:400px">
 <img src="images/Astar_logo.png" style="height:84px; width:250px">
-<h1>Welcome to the CAWRAS initial MPAS-JEDI training hands-on exercises</h1>
+<h1>Hands-on exercises for CAWRAS initial MPAS-JEDI training</h1>
 
 <p class="top">
 This web page is intended to serve as a guide through the hands-on practical exercises within the
@@ -254,15 +254,18 @@ noting:
 Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
 After the training, please remember to use your own project number when submitting jobs.
 
-At various points in the practical exercises, we'll need to submit jobs to ASPIRE 2A's queueing system
-using the <em class="terminal">qsub</em> command, and after doing so, we may check on the status
-of the job with the <em class="terminal">qstat</em> command, monitoring the log files produced by the job
-once we see that the job has begun to run. Most exercises will run with 256 cores of two nodes
-though each of ASPIRE 2A's nodes have 128 cores (440GB available memory).
+At various points in the practical exercises, you will need to submit jobs to
+ASPIRE 2A's queueing system
+using the <em class="terminal">qsub</em> command.
+After doing so, you may check on the status of the job using the
+<em class="terminal">qstat</em> command, or by monitoring the log files
+produced by the job after seeing that the job has begun to run.
+Most exercises will run on 256 cores spread between two ASPIRE 2A nodes, each
+of which has 128 cores and 440 GB available memory.
 </p>
 
 <p>
-You're now ready to begin with the practical exercises of this training!
+You're now ready to begin with the practical exercises of this training course!
 </p>
 
 </div>
@@ -271,16 +274,24 @@ You're now ready to begin with the practical exercises of this training!
 <!-- === 1. Compiling/Testing MPAS-JEDI =========== -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('compile')">
-<h2 id="compile-header">1. Compiling/Testing MPAS-JEDI</h2>
+<h2 id="compile-header">1. Compiling and testing MPAS-JEDI</h2>
 </div>
 <div id="compile" class="section">
 <p>
-In this section, the goal is to obtain, compile, and test the MPAS-JEDI code
-through cmake/ctest mechanism. Due to I/O and network bandwidth limitations, 
-it is not recommended to download, compile, or test the MPAS-JEDI code on the login node 
-during this training.
-</p>
+This section explains how to obtain and compile the MPAS-JEDI code, and run
+installation tests, through a cmake/ctest mechanism.
 
+<div class="outlined">
+<p>
+However, due to the huge burden on I/O and network bandwidth, please do not
+configure or compile the MPAS-JEDI code, or run the installation tests, during
+the training course. Instead, please set up an environment variable called
+'bundle_dir` which points to a directory containing pre-compiled executables:
+<pre class="terminal">
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+</pre>
+</p>
+</div>
 
 <!-- === 1.1 Downloading the code ================================================ -->
 <div class="subheader" onClick="show('downloading')">

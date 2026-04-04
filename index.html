@@ -120,11 +120,11 @@ You can login to ASPIRE 2A from your laptop or desktop as follows.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ssh -Y &lt;username&gt;@aspire2a.nscc.sg
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nscc.sg
 </pre>
 
 <p>
-You will be required to type your username and password, and then through the DUO two-factor authentication 
+You will be required to type your userid and password, and then through the DUO two-factor authentication 
 to get onto ASPIRE 2A. It is recommended to login to ASPIRE 2A within multiple terminals, each for a different
 task.
 
@@ -192,13 +192,13 @@ Due to IO limititations, we recommend that you link them into your working direc
 <p>
 Now, under your working directory, you will have these folders:
 <ul>
-    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data in bufr and IODA formats, CRTM coefficients, bias correction files.
+    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data in BUFR and IODA formats, CRTM coefficients, and bias correction files.
     <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namelist and stream files.
     <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
     <li><em class="terminal">MPASJEDI_FILE</em> - YAML and job script files for running MPAS-JEDI applications.
     <li><em class="terminal">Graphics</em> - Python scripts for visualization.
     <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compiled executables for MPAS-JEDI (CCRS version).
-    <li><em class="terminal">OBS2IODA</em> - Source code and compiled executable for the obs2ioda observation convector.
+    <li><em class="terminal">OBS2IODA</em> - Source code and compiled executables for the obs2ioda observation convector.
 </ul>
 </p>
 
@@ -207,10 +207,10 @@ On ASPIRE 2A, the default shell is bash.
 </p>
 
 <p>
-ASPIRE 2A uses the LMOD package to manage the software development. 
-Running <em class="terminal">module list</em> to see what modules are loaded by default
+ASPIRE 2A uses the LMOD package to manage the software environment.
+Run <em class="terminal">module list</em> to see what modules are loaded by default
 right after you log in.
-It should print something similar to below:
+The output something be similar to that below:
 </p>
 
 <pre class="terminal">
@@ -617,12 +617,12 @@ If the compilation is successful, the executable file <em class="terminal">obs2i
 
 <!-- === 2.2 Run obs2ioda-v2.x ================================================ -->
 <div class="subheader" onClick="show('bufr')">
-<h3 id="bufr-header">2.2 Convert prepbufr/bufr files to IODAv2-HDF5 format </h3>
+<h3 id="bufr-header">2.2 Convert PREPBUFR/BUFR files to IODAv2-HDF5 format </h3>
 </div>
 <div id="bufr" class="subsection">
 
 <p>
-The NCEP bufr input files are under the existing OBS_FILE/BUFR folder. Now we need to convert
+The NCEP BUFR input files are under the existing OBS_FILE/BUFR folder. Now we need to convert
 the bufr-format data into the iodav2-hdf5 format under the OBS_IODA folder.
 </p>
 
@@ -633,7 +633,7 @@ the bufr-format data into the iodav2-hdf5 format under the OBS_IODA folder.
 </pre>
 
 <p>
-Link the prepbufr/bufr files to the working directory:
+Link the prepBUFR/BUFR files to the working directory:
 </p>
 
 <pre class="terminal">

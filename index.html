@@ -88,7 +88,7 @@ of using the MPAS-JEDI data assimilation system.
 <p class="top">
 If you would like to refer to the accompanying lecture slides,
 you can open the <a href="agenda.html" target="_blank">Tutorial Agenda</a> in another window.
-The test dataset is available under Aspire2a under the CAWRAS project folder 
+The test dataset is available under ASPIRE 2A under the CAWRAS project folder 
 /home/project/13004327/training_service/2026-MPAS-JEDI.
 </p>
 
@@ -107,25 +107,28 @@ Clicking the grey headers will expand each section or subsection.
 <div id="prerequisites" class="section">
 <p>
 The practical exercises in this tutorial have been tailored to work on
-the <a href="https://www.nscc.sg/aspire-2a/" target="_blank">NSCC Aspire2a</a> system.
-Aspire2a is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
+the <a href="https://www.nscc.sg/aspire-2a/" target="_blank">NSCC ASPIRE 2A</a> system.
+ASPIRE 2A is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
 tools through <i>modules</i>. In general, before compiling and running MPAS-JEDI on your own system,
 you will need to install <a href="https://github.com/JCSDA/spack-stack" target="_blank">spack-stack</a>.
-However, this tutorial does not cover the installation of spack-stack, which was pre-installed on Aspire2a.
+However, this tutorial does not cover the installation of spack-stack, which was pre-installed on ASPIRE 2A.
 MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com/JCSDA/spack-stack/tree/release/1.8.0" target="_blank">spack-stack-1.8.0</a>.
 </p>
 
 <p>
-Logging onto Aspire2a from your laptop or desktop by
+You can login to ASPIRE 2A from your laptop or desktop as follows.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nscc.sg
+<em class="prompt">$ </em>ssh -Y &lt;username&gt;@aspire2a.nscc.sg
 </pre>
 
 <p>
 You will be required to type your username and password, and then through the DUO two-factor authentication 
-to get onto Aspire2a. It is recommended to at least login onto Aspire2a with multiple terminals for different tasks.
+to get onto ASPIRE 2A. It is recommended to login to ASPIRE 2A within multiple terminals, each for a different
+task.
+
+(Note - need to fix this! DUO is needed for VPN access. Login comes later.)
 </p>
 
 <p>
@@ -138,11 +141,11 @@ After login, you will be in your home directory:
 
 <p>
 The command above will display the current working directory (your home directory after login). However, the home directory
- usually has very limited disk space, so it is recommended to perform all exercises under your scratch directory.
+usually has very limited disk space, so it is recommended to perform all exercises under your scratch directory.
 </p>
 
 <p>
-You can set an environment variable for your scratch directory:
+You can set an environment variable for your scratch directory as follows:
 </p>
 
 <pre class="terminal">
@@ -150,7 +153,8 @@ You can set an environment variable for your scratch directory:
 </pre>
 
 <p>
-You will run all of the practical exercises in your own <i>scratch</i> space, and you can check whether it is properly set by using
+You will run all of the practical exercises in your own <i>scratch</i> space, and you can check whether it is properly
+set by entering
 <em class="terminal">echo $SCRATCH</em>.
 </p>
 
@@ -172,8 +176,8 @@ Then, create a working directory for the training exercises and move into it:
 </pre>
 
 <p>
-All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, 
-we recommend you to linking them to your working directory
+All of the training datasets is located under /home/project/13004327/training_service/2026-MPAS-JEDI.
+Due to IO limititations, we recommend that you link them into your working directory:
 <pre class="terminal">
 <em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
 <em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
@@ -191,7 +195,7 @@ Now, under your working directory, you will have these folders:
     <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data in bufr and IODA formats, CRTM coefficients, bias correction files.
     <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namelist and stream files.
     <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
-    <li><em class="terminal">MPASJEDI_FILE</em> - yaml and job script files for conducting MPAS-JEDI applications.
+    <li><em class="terminal">MPASJEDI_FILE</em> - YAML and job script files for running MPAS-JEDI applications.
     <li><em class="terminal">Graphics</em> - Python scripts for visualization.
     <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compiled executables for MPAS-JEDI (CCRS version).
     <li><em class="terminal">OBS2IODA</em> - Source code and compiled executable for the obs2ioda observation convector.
@@ -199,11 +203,11 @@ Now, under your working directory, you will have these folders:
 </p>
 
 <p>
-On aspire2a, the default shell is bash.
+On ASPIRE 2A, the default shell is bash.
 </p>
 
 <p>
-Aspire2a uses the LMOD package to manage the software development. 
+ASPIRE 2A uses the LMOD package to manage the software development. 
 Running <em class="terminal">module list</em> to see what modules are loaded by default
 right after you log in.
 It should print something similar to below:
@@ -227,7 +231,7 @@ and can be activated by running the following command:
 </p>
 
 <p>
-Running jobs on Aspire2a requires the submission of a job script to a batch queueing system,
+Running jobs on ASPIRE 2A requires the submission of a job script to a batch queueing system,
 which will allocate requested computing resources to your job when they become available.
 In general, it's best to avoid running any compute-intensive jobs on the login nodes.
 The practical instructions to follow will guide you through the process of submitting jobs when
@@ -235,7 +239,7 @@ necessary.
 </p>
 
 <p>
-As a first introduction to running jobs on Aspire2a, there are several key commands worth
+As a first introduction to running jobs on ASPIRE 2A, there are several key commands worth
 noting:
 <ul>
     <li><em class="terminal">qsub job-script</em> - This command submits a PBS job script, which describes a job
@@ -250,11 +254,11 @@ noting:
 Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
 After the training, please remember to use your own project number when submitting jobs.
 
-At various points in the practical exercises, we'll need to submit jobs to Aspire2a's queueing system
+At various points in the practical exercises, we'll need to submit jobs to ASPIRE 2A's queueing system
 using the <em class="terminal">qsub</em> command, and after doing so, we may check on the status
 of the job with the <em class="terminal">qstat</em> command, monitoring the log files produced by the job
 once we see that the job has begun to run. Most exercises will run with 256 cores of two nodes
-though each of Aspire2a's nodes have 128 cores (440GB available memory).
+though each of ASPIRE 2A's nodes have 128 cores (440GB available memory).
 </p>
 
 <p>
@@ -408,7 +412,7 @@ On the compute node, you need to re-activate the spack-stack environment first a
 <p>
 This could take ~25 min. Using more cores for build could speed up a bit, but will not help too much from our experience. 
 Also note that the reason we do the cmake step (will clone various github repositories) on the login 
-node instead of a compute node is that aspire2a's compute nodes have a much slower internet connection.
+node instead of a compute node is that ASPIRE 2A's compute nodes have a much slower internet connection.
 </p>
 
 <div class="outlined">
@@ -776,7 +780,7 @@ physics-related data and tables, MPAS graph, streams, and namelist files:
 </pre>
 
 <p>
-Link yamls:
+Link YAML files:
 </p>
 
 <pre class="terminal">
@@ -946,7 +950,7 @@ Similar to what we have done for HofX applcaition, we need to link MPAS physics-
 </pre>
 
 <p>
-Then, link yamls:
+Then, link YAML files:
 </p>
 
 <pre class="terminal">
@@ -965,7 +969,7 @@ Followed by the 2-stream IO files:
 </pre>
 
 <p>
-copy the MPAS-JEDI yaml file and the pbs job script, and then submit the job script.
+copy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
@@ -1093,7 +1097,7 @@ Similar to what we have done before, we need to link MPAS physics-related data a
 </pre>
 
 <p>
-Then, link yamls:
+Then, link YAML files:
 </p>
 
 <pre class="terminal">
@@ -1314,7 +1318,7 @@ files. So, we link the static BEC files:
 </pre>
 
 <p>
-Then, we can copy the yaml file:
+Then, we can copy the YAML file:
 </p>
 
 <pre class="terminal">
@@ -1405,7 +1409,7 @@ After running 3DVar practice successfully, we now do the hybrid 3DEnvar practice
 </p>
 
 <p>
-Then, we can copy the yaml file:
+Then, we can copy the YAML file:
 </p>
 
 <pre class="terminal">

@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <!-- Copyright (c) 2026, University Corporation for Atmospheric Research (UCAR). -->
@@ -121,7 +120,7 @@ Logging onto Aspire2a from your laptop or desktop by
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ssh aspire2a.nscc.sg
+<em class="prompt">$ </em>ssh -Y <userid>aspire2a.nscc.sg
 </pre>
 
 <p>
@@ -147,7 +146,7 @@ You can set an environment variable for your scratch directory:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export SCRATCH=${HOME/home/scratch}
+<em class="prompt">$ </em>export SCRATCH=${HOME}/scratch
 </pre>
 
 <p>
@@ -168,8 +167,8 @@ Then, create a working directory for the training exercises and move into it:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>mkdir MPAS_JEDI_Training
-<em class="prompt">$ </em>cd MPAS_JEDI_Training
+<em class="prompt">$ </em>mkdir MPAS-JEDI-Training
+<em class="prompt">$ </em>cd MPAS-JEDI-Training
 </pre>
 
 <p>
@@ -187,15 +186,15 @@ we recommend you to linking them to your working directory
 </p>
 
 <p>
-Now, under your working directory, you will have those folds:
+Now, under your working directory, you will have these folders:
 <ul>
-    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data on bufr and IODA formats, CRTM coefficients, bias correction files.
-    <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namlist and stream files.
+    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data in bufr and IODA formats, CRTM coefficients, bias correction files.
+    <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namelist and stream files.
     <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
-    <li><em class="terminal">MPASJEDI_FILE</em> - yaml and job scirpt files for conducting MPAS-JEDI applications.
+    <li><em class="terminal">MPASJEDI_FILE</em> - yaml and job script files for conducting MPAS-JEDI applications.
     <li><em class="terminal">Graphics</em> - Python scripts for visualization.
-    <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compled exctuables of MPAS-JEDI (CCRS version).
-    <li><em class="terminal">OBS2IODA</em> - Source code and compiled exctuable of obs2ioda for observation convector.
+    <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compiled executables for MPAS-JEDI (CCRS version).
+    <li><em class="terminal">OBS2IODA</em> - Source code and compiled executable for the obs2ioda observation convector.
 </ul>
 </p>
 
@@ -219,8 +218,8 @@ Currently Loaded Modulefiles:
 </pre>
 
 <p>
-Post-processing and graphics exercises will need Python. A Conda environment with a plenty of Python libraries are available. 
-We can activate the conda environment with the follwing command:
+Post-processing and graphics exercises will need Python. A Conda environment with the required Python libraries is available, 
+and can be activated by running the following command:
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
@@ -230,8 +229,8 @@ We can activate the conda environment with the follwing command:
 <p>
 Running jobs on Aspire2a requires the submission of a job script to a batch queueing system,
 which will allocate requested computing resources to your job when they become available.
-In general, it's best to avoid running any compute-intensive jobs on the login nodes, and
-the practical instructions to follow will guide you in the process of submitting jobs when
+In general, it's best to avoid running any compute-intensive jobs on the login nodes.
+The practical instructions to follow will guide you through the process of submitting jobs when
 necessary.
 </p>
 
@@ -243,15 +242,15 @@ noting:
                                          to be run on one or more batch nodes.
     <li><em class="terminal">qstat -u $USER</em> - This command tells you the status of your pending and running jobs.
                                                    <i>Note that you may need to wait about 30 seconds for a recently submitted job to show up.</i></li>
-    <li><em class="terminal">qdel JobID</em> - This command deletes a queued or running job</li>
+    <li><em class="terminal">qdel JobID</em> - This command deletes a queued or running job.</li>
 </ul>
 </p>
 
 <p>
 Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
-Afetr the training, do remember to use your own project number to submit jobs.
+After the training, please remember to use your own project number when submitting jobs.
 
- At various points in the practical exercises, we'll need to submit jobs to Aspire2a's queueing system
+At various points in the practical exercises, we'll need to submit jobs to Aspire2a's queueing system
 using the <em class="terminal">qsub</em> command, and after doing so, we may check on the status
 of the job with the <em class="terminal">qstat</em> command, monitoring the log files produced by the job
 once we see that the job has begun to run. Most exercises will run with 256 cores of two nodes
@@ -298,8 +297,9 @@ We will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/mp
 </pre>
 
 <p>
-The git command will clone the mpas-bundle repository from github to a local directory 'code'
-, then make the 'SINGV-NG-1.0' branch as the active branch. The output to the terminal should look as following:
+The git command will clone the mpas-bundle repository from github to a local directory 'code',
+and then make the 'SINGV-NG-1.0' branch the active branch. The terminal output should look like
+the following:
 </p>
 
 <pre class="terminal">
@@ -314,11 +314,11 @@ Resolving deltas: 100% (267/267), done.
 
 <p>
 Note that the mpas-bundle repository does not contain actual source code. 
-Instead, the CMakeLists.txt file under code includes the github repositories's branch/tag
-information needed to build MPAS-JEDI.
+Instead, the CMakeLists.txt file under code includes the github branch/tag
+information of the repositories needed to build MPAS-JEDI.
 
 One important difference from previous mpas-bundle releases (1.0.0, 2.0.0, and 3.0.x) is
-that SINGV-NG-1.0 bundle works together with the special version of MPAS-A model code from  
+that SINGV-NG-1.0 bundle works together with a special version of the MPAS-A model code from  
 <a href=https://github.com/mos3r3n/MPAS-Model-SINGVNG/tree/nssl>MPAS-SINGVNG</a>. Also, some 
 enhancements have been applied to the MPAS-JEDI DA system.
 
@@ -363,14 +363,16 @@ Now we are ready to 'fetch' actual source code from github repositories through 
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>Due to huge burden on I/O and network bandwidth, please don't do configure, compile, adn test MPAS-JEDI during the training. 
-Inseatd, you may have a try after the traning when you have time.
+<b class="red">WARNING:</b>Due to the huge burden on I/O and network bandwidth, please do not configure, compile, or run the
+MPAS-JEDI installation tests during the training. 
+Instead, you may have a try after the training when you have time.
 </p>
 </div>
 
 <p>
 MPAS-JEDI uses cmake to automatically fetch the code from various github repositories,
-listed in CMakeLists.txt under ~code. Now type the command below under the build directory:
+listed in CMakeLists.txt under the code directory. Now type the command below under
+${SCRATCH}/MPAS-JEDI-Training/MPAS-BUNDLE:
 </p>
 
 <pre class="terminal">
@@ -381,11 +383,11 @@ listed in CMakeLists.txt under ~code. Now type the command below under the build
 </pre>
 
 <p>
-After it completes (may take 15-20 min depending on network connection), you will see the actual source code of various
+After it completes (it may take 15-20 min depending on the network connection), you will see the actual source code of various
 repositories (e.g., oops, vader, saber, ufo, ioda, crtm, mpas-jedi, and MPAS) is now under the code directory.
 Meanwhile, Makefile files to build executables are generated under the build directory.
-Now it is ready to compile MPAS-JEDI under 'build' using the standard make. Commonly, we don't compile MPAS-JEDI on the login node. 
-Instead, we do it by submiting an interactive job as following
+Now it is possible to compile MPAS-JEDI under 'build' using the standard make program. Commonly, we don't compile MPAS-JEDI on the login node. 
+Instead, we do it by submitting an interactive job as following
 <pre class="terminal">
 <em class="prompt">$ </em>qsub -I -l select=1:ncpus=4:mem=32gb -l walltime=01:00:00 -P ${PROJECT_NUMBER} -q normal
 </pre>

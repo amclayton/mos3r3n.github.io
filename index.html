@@ -941,14 +941,14 @@ It should look like the figure below.
 <div id="generate_localization" class="subsection">
 
 <p>
-In this exercise, we will generate the BUMP localization files to be used for spatial localization
+In this exercise, we will generate the BUMP localization files that can be used for spatial localization
 of the ensemble background error covariance. These files will be used in the 3DEnVar
 and hybrid-3DEnVar data assimilation exercises that follow later.
 </p>
 
 <p>
 After changing to your <em class="terminal">${SCRATCH}/MPAS-JEDI-Training</em> directory,
-create and remove to the working directory as follows.
+create and move to the working directory as follows.
 </p>
 
 <pre class="terminal">
@@ -959,7 +959,7 @@ create and remove to the working directory as follows.
 
 <p>
 Then, make sure that the `bundle_dir` points to the correct directory.
-For example, if you are running the exercide during the taining course, pick up the
+For example, if you are running this exercise during the training course, pick up the
 pre-built executables as follows.
 </p>
 
@@ -969,7 +969,7 @@ pre-built executables as follows.
 
 <p>
 Now, we need to prepare the input files required to generate the BUMP localization files.
-Similar to what was done for the HofX applcaition, link in MPAS physics-related data and tables,
+Similar to what was done for the HofX application, link in MPAS physics-related data and tables,
 and the MPAS graph, streams, and namelist files:
 </p>
 
@@ -987,17 +987,13 @@ and the MPAS graph, streams, and namelist files:
 </pre>
 
 <p>
-Then, link in the YAML files:
+Then, link in the YAML files and then the 2-stream IO files:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/geovars.yaml .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/keptvars.yaml .
 </pre>
-
-<p>
-Then, link in the 2-stream IO files:
-</p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
@@ -1006,7 +1002,7 @@ Then, link in the 2-stream IO files:
 </pre>
 
 <p>
-Now, ccopy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
+Now, copy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
@@ -1016,13 +1012,13 @@ Now, ccopy the MPAS-JEDI YAML file and the pbs job script, and then submit the j
 </pre>
 
 <p>
-You may check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
+You can check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
 or by monitoring the log file <em class="terminal">jedi.log</em>.
 </p>
 
 <p>
-After the PBS job has finished, check that the BUMP localization files generated.
-A "local" file should be generated for each processor (256 processors in this exercise).
+After the PBS job has finished, check that the BUMP localization files have been generated.
+One "local" file should be generated for each processor. (256 processors are used for this exercise).
 </p>
 
 <pre class="terminal">
@@ -1031,38 +1027,53 @@ A "local" file should be generated for each processor (256 processors in this ex
 </pre>
 
 <p>
-For a Dirac function multiplied by a given localization function, user can make a plot with <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
+For a Dirac function multiplied by a given localization function, the
+user can make a plot from <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
 </p>
 
 <p><i>
-Make sure the Conda environment has been activated before plotting.
+First, make sure the Conda environment has been activated before plotting:
 </i></p>
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 <p>
-Copy the plotting script for Dirac output.
+Then copy and run the plotting script for the Dirac output file:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_bumploc.py .
 <em class="prompt">$ </em>python plot_bumploc.py
+</pre>
+
+The resulting figure can be displayed as follows:
+
+<pre class="terminal">
 <em class="prompt">$ </em>display figure_bumploc.png
 </pre>
+
+<p>
+The figure should look like this:
+</p>
 
 <img src="images/figure_bumploc.png", width="600"/>
 
 <p>
-User may play with different localization lengths (e.g., change the horizontal one from 300km to 150km) by
-changing the following YAML keys from <em class="terminal">bumploc.yaml</em>, then re-submit the PBS job script.
+We suggest that you try applying different horizontal or vertical localization lengths,
+and seeing how this alters the results. This is done by changing the relevant YAML keys,
+and then re-submiting the PBS job script.
 </p>
 
 <p><i>
 [Note that <em class="terminal">dirac_nicas.2024-09-17_12.00.00.nc</em>, 
-<em class="ternminal">figure_bumploc.png</em>, and all tghose BUMP NICAS files will be overwritten, so it is a good idea
-to rename the existing files to compare them to those from a new experiment with modified localization lengths.]
+<em class="ternminal">figure_bumploc.png</em>, and all the BUMP NICAS files will be overwritten, so it is a good idea
+to rename the existing files to allow comparison with the new experiment using modified localization lengths.]
 </i></p>
+
+<p>
+The YAML settings you might want to change are highlighted below.
+</p>
 
 <pre class="terminal">
       ...
@@ -1082,7 +1093,8 @@ to rename the existing files to compare them to those from a new experiment with
 </pre>
 
 <p>
-Make a plot for Dirac result (with <em class="terminal">plot_bumploc.py</em>) to see how the localization looks like.
+You can then compare the <em class="ternminal">figure_bumploc.png</em> file
+with the original one.
 </p>
 
 </div>

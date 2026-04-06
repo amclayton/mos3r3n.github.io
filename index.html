@@ -908,7 +908,7 @@ Then, you can run the Python script to plot the simulated observed variables.
 </p>
 
 <p>
-This will produce a number of figure files. You can display one of them as follows
+This will produce a number of figure files. You can display one of them as follows.
 <p>
 <pre class="terminal">
 display HofX_horizontal_distribution_satwind.png
@@ -924,7 +924,7 @@ It should look like the figure below.
 </div>
 
 <!-- ============================================================================== -->
-<!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs 
+<!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('envar')">
 <h2 id="envar-header">4. Generating localization files and running 3DEnVar with "conventional" obs</h2>
@@ -941,14 +941,14 @@ It should look like the figure below.
 <div id="generate_localization" class="subsection">
 
 <p>
-In this practice, we will generate the BUMP localization files to be used for spatial localization
-of ensemble background error covariance. These files will be used in the following 3DEnVar and hybrid-3DEnVar
-data assimilation practice.
+In this exercise, we will generate the BUMP localization files to be used for spatial localization
+of the ensemble background error covariance. These files will be used in the 3DEnVar
+and hybrid-3DEnVar data assimilation exercises that follow later.
 </p>
 
 <p>
-After changing to our <em class="terminal">/glade/derecho/scratch/${USER}/mpas_jedi_tutorial</em> directory,
-create the working directory.
+After changing to your <em class="terminal">${SCRATCH}/MPAS-JEDI-Training</em> directory,
+create and remove to the working directory as follows.
 </p>
 
 <pre class="terminal">
@@ -958,7 +958,9 @@ create the working directory.
 </pre>
 
 <p>
-set the bundle_dir environment
+Then, make sure that the `bundle_dir` points to the correct directory.
+For example, if you are running the exercide during the taining course, pick up the
+pre-built executables as follows.
 </p>
 
 <pre class="terminal">
@@ -966,8 +968,9 @@ set the bundle_dir environment
 </pre>
 
 <p>
-Now, we need to prepare input files to generate BUMP localization files.
-Similar to what we have done for HofX applcaition, we need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
+Now, we need to prepare the input files required to generate the BUMP localization files.
+Similar to what was done for the HofX applcaition, link in MPAS physics-related data and tables,
+and the MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -984,7 +987,7 @@ Similar to what we have done for HofX applcaition, we need to link MPAS physics-
 </pre>
 
 <p>
-Then, link YAML files:
+Then, link in the YAML files:
 </p>
 
 <pre class="terminal">
@@ -993,7 +996,7 @@ Then, link YAML files:
 </pre>
 
 <p>
-Followed by the 2-stream IO files:
+Then, link in the 2-stream IO files:
 </p>
 
 <pre class="terminal">
@@ -1003,7 +1006,7 @@ Followed by the 2-stream IO files:
 </pre>
 
 <p>
-copy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
+Now, ccopy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
@@ -1013,12 +1016,13 @@ copy the MPAS-JEDI YAML file and the pbs job script, and then submit the job scr
 </pre>
 
 <p>
-User may check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
-or monitoring the log file <em class="terminal">jedi.log</em>.
+You may check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
+or by monitoring the log file <em class="terminal">jedi.log</em>.
 </p>
 
 <p>
-After finishing the PBS job, user can check the BUMP localization files generated. The "local" files are generated for each processor (256 processors in this practice).
+After the PBS job has finished, check that the BUMP localization files generated.
+A "local" file should be generated for each processor (256 processors in this exercise).
 </p>
 
 <pre class="terminal">
@@ -1319,7 +1323,7 @@ satellite radiances.
 <div id="run_3dvar" class="subsection">
 
 <p>
-In this practice, we will run MPAS-JEDI 3DVar and hybird 3DEnVar. The overall procedure is similar 
+In this exercise, we will run MPAS-JEDI 3DVar and hybird 3DEnVar. The overall procedure is similar 
 to the 3DEnVar practice in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
 background error covariance (BEC), which contains the climatological characteristics. Here, the 
 pre-generated static BEC will be used. We hope to provide a practice for static B training in future 
@@ -1593,7 +1597,7 @@ which will look like the figure below
 <div id="run_radar" class="subsection">
 
 <p>
-In this practice, we will run radar data assimilation using the 3DEnvar method. In this practice, 
+In this exercise, we will run radar data assimilation using the 3DEnvar method. In this exercise, 
 radar reflectivity is included as an analysis variable, and with this, the tagent linear and adjoint
 of reflectivity operator can be avoided. We still conduct the practice under ${SCRATCH}/MPAS-JEDI-Training/Variational.
 </p>

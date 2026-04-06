@@ -786,7 +786,7 @@ Then, set an environment variable that points to the mpas-bundle directory
 
 <p>
 Now, we need to prepare input files to run HofX.
-The following commands are for linking physics-related data and tables, MPAS graph, streams, and namelist files:
+The following commands are for linking physics-related data and tables, and MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -824,7 +824,7 @@ Run the following commands to link in an MPAS invariant file (invariant fields) 
 </pre>
 
 <p>
-We also need to link the 6-h forecast file as a template file:
+We also need to link in the 6-h forecast file as a template file:
 </p>
 
 <pre class="terminal">
@@ -849,12 +849,12 @@ Next, create dbIn and dbOut directories, and then link the observation input fil
 
 <!-- === 3.2 Run HofX ========================================== -->
 <div class="subheader" onClick="show('initialization-static-varres')">
-<h3 id="initialization-static-varres-header">2.2 Run HofX</h3>
+<h3 id="initialization-static-varres-header">3.2 Run HofX</h3>
 </div>
 <div id="initialization-static-varres" class="subsection">
 
 <p>
-Now, copy hofx.yaml and run_hofx.ksh to the HofX directory:
+Now, copy hofx.yaml and run_hofx.ksh into the HofX directory:
 </p>
 
 <pre class="terminal">
@@ -873,15 +873,15 @@ Then, submit the PBS job to run hofx:
 
 <p>
 According to the settings in hofx.yaml, the output files are named obsout_hofx_*.h5, and stored
-under dbOut. You may check the output file contents by using the ncdump program - e.g. 'ncdump -h obsout_hofx_aircraft.h5'.
+under dbOut. You may check the output file contents by using the ncdump program - e.g. 'ncdump -h dbOut/obsout_hofx_aircraft.h5'.
 </p>
 
 <p>
-You can also check hofx by running plot_diag.py.
+You can also check hofx by and running plot_obs_singv.py.
 </p>
 
 <p>
-The following steps are for setting up the Python environment, copy graphics directory, and run plot_diag.py:
+The following commands set up the Python environment and copy plot_obs_singv.py.
 </p>
 
 <pre class="terminal">
@@ -890,7 +890,8 @@ The following steps are for setting up the Python environment, copy graphics dir
 <em class="prompt">$ </em>cp  ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_obs_singv.py .
 </pre>
 
-Before plotting, you need to do several modifications as the following in plot_obs_singv.py:
+Before running  plot_obs_singv.py, you will need to make the following modifications near the bottom
+of the script.
 <pre class="terminal">
 obsout_dir = './dbOut'
 plot_type = 'HofX'
@@ -901,20 +902,20 @@ sensors = ['satwind','sondes','aircraft','sfc','gnssro']
 Then, you can run the Python script to plot the simulated observed variables.
 
 <pre class="terminal"></pre>
-<em class="prompt">$ </em>python plot_diag.py
+<em class="prompt">$ </em>python plot_obs_singv.py
 </pre>
 
 </p>
 
 <p>
-This will produce a number of figure files, display one of them
+This will produce a number of figure files. You can display one of them as follows
 <p>
 <pre class="terminal">
 display HofX_horizontal_distribution_satwind.png
 </pre>
 
 <p>
-which will look like the figure below
+It should look like the figure below.
 </p>
 <img src="images/HofX_horizontal_distribution_satwind.png", width="800"/>
 

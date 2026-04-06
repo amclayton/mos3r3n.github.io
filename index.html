@@ -609,8 +609,8 @@ Then, clone the obs2ioda repository and proceed to compile the converter.
 <p>
 To compile <em class="terminal">obs2ioda_v3</em>, some libraries are required:
 NETCDF-C and NETCDF-Fortran libraries, and the NCEP BUFR library
-<a href="https://github.com/NOAA-EMC/NCEPLIBS-bufr">
-https://github.com/NOAA-EMC/NCEPLIBS-bufr</a>.
+(<a href="https://github.com/NOAA-EMC/NCEPLIBS-bufr">
+https://github.com/NOAA-EMC/NCEPLIBS-bufr</a>).
 Here, we will use a pre-built NCEP BUFR library. The library is referenced
 by NCEP_BUFR_LIB in
 <em class="terminal">Makefile</em>, and the value of NCEP_BUFR_LIB is
@@ -643,18 +643,19 @@ If the compilation is successful, the executable file <em class="terminal">obs2i
 <div id="bufr" class="subsection">
 
 <p>
-The NCEP BUFR input files are under the existing OBS_FILE/BUFR folder. Now we need to convert
-the bufr-format data into the iodav2-hdf5 format under the OBS_IODA folder.
+The NCEP BUFR input files are under the existing OBS_FILE/BUFR folder. Now we
+will convert the bufr-format data into the iodav2-hdf5 format under a new
+directory OBS_IODA.
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
-<em class="prompt">$ </em>mkidr OBS_IODA
+<em class="prompt">$ </em>mkdir OBS_IODA
 <em class="prompt">$ </em>cd OBS_IODA
 </pre>
 
 <p>
-Link the prepBUFR/BUFR files to the working directory:
+Link the PREPBUFR/BUFR files to the working directory:
 </p>
 
 <pre class="terminal">
@@ -682,7 +683,10 @@ The usage is:
 
 <p>
 If input_dir and output_dir are not specified, the default is the current working directory.
-If bufr_filename(s)_to_convert is not specified, the code looks for file name, **prepbufr.bufr** (also **satwnd.bufr**, **gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**) in the input/working directory. If the file exists, do the conversion, otherwise skip it.
+If bufr_filename(s)_to_convert is not specified, the code looks for files in the input/working
+directory which have the following filename patterns: **prepbufr.bufr**, **satwnd.bufr**,
+**gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**.
+All files matching the patterns are converted.
 </p>
 
 <pre class="terminal">
@@ -695,7 +699,7 @@ If bufr_filename(s)_to_convert is not specified, the code looks for file name, *
 </pre>
 
 <p>
-Now you have the proper format IODA files under OBS_IODA for mpas-jedi tests:
+The OBS_IODA directory should now contain the following IODA-format files.
 </p>
 
 <pre class="terminal">
@@ -705,6 +709,10 @@ amsua_metop-c_obs_2024091712.h5  gnssro_obs_2024091712.h5       sfc_obs_20240917
 amsua_n15_obs_2024091712.h5      mhs_metop-b_obs_2024091712.h5  sondes_obs_2024091712.h5
 amsua_n18_obs_2024091712.h5      mhs_metop-c_obs_2024091712.h5
 </pre>
+
+<p>
+These files will be used later by some of the MPAS-JEDI tests.
+</p>
 
 </div>
 
@@ -716,19 +724,14 @@ amsua_n18_obs_2024091712.h5      mhs_metop-c_obs_2024091712.h5
 <div id="plot_loc" class="subsection">
 
 <p>
-Setup python enviorment for plotting.
-</p>
-<p><i>
-Note that we need to load the python environment before executing the python script.
-If you have already loaded the spack-stack module, reset the module environment before loading python env.
-</i></p>
+First, set up the Python environment required for plotting as follows.
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 
 <p>
-Copy graphics directory to current directory:
+Next, copy the plotting script to the current directory, an then run it:
 </p>
 
 <pre class="terminal">
@@ -737,7 +740,7 @@ Copy graphics directory to current directory:
 </pre>
 
 <p>
-Now, one of the figures shown here:
+The command will create many figures. An example figure is shown below.
 </p>
 
 <img src="images/OBS_horizontal_distribution_satwind.png", width="800"/>
@@ -754,7 +757,7 @@ Now, one of the figures shown here:
 </div>
 <div id="hofx" class="section">
 <p>
-In this session, we will be running an application called 𝐻(𝐱), which maps the model states to the observation space.
+In this session, we will be running an application called 𝐻(𝐱), which maps model states to observation space.
 </p>
 
 <!-- === 3.1 Create working directory and link files =================== -->
@@ -764,7 +767,7 @@ In this session, we will be running an application called 𝐻(𝐱), which maps
 <div id="grid_rotate" class="subsection">
 
 <p>
-Creating HofX directory in MPAS-JEDI-Training
+Create an HofX directory under MPAS-JEDI-Training as follows:
 </p>
 
 <pre class="terminal">
@@ -774,7 +777,7 @@ Creating HofX directory in MPAS-JEDI-Training
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory
+Set an environment variable for the mpas-bundle directory
 </p>
 
 <pre class="terminal">
@@ -782,8 +785,8 @@ Set environment variable for the mpas-bundle directory
 </pre>
 
 <p>
-Now, we need to prepare input files to run hofx.
-The following commands are for linking files, such as, 
+Now, we need to prepare input files to run HofX.
+The following commands are for linking files, such as
 physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
@@ -801,7 +804,7 @@ physics-related data and tables, MPAS graph, streams, and namelist files:
 </pre>
 
 <p>
-Link YAML files:
+We also need to link in YAML files:
 </p>
 
 <pre class="terminal">
@@ -811,19 +814,26 @@ Link YAML files:
 </pre>
 
 <p>
-The MPAS uses the 2-stream IO, in which invariant and variant states are stored in seperate files. 
-Link MPAS invariant file (invariant fields) and 6-h forecast background file (variant fields). 
-Also, link the 6-h forecast file as the template file:
+MPAS uses 2-stream IO, in which invariant and variant states are stored in separate files. 
+The following commands link in an MPAS invariant file (invariant fields) and an MPAS
+6-h forecast background file (variant fields).
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./bg.2024-09-17_12.00.00.nc
+</pre>
+
+<p>
+We also link the 6-h forecast file as a template file:
+</p>
+
+<pre class="terminal">
 <em class="prompt">$ </em>ln -fs bg.2024-09-17_12.00.00.nc templateFields.522172.2024-09-17_12.00.00.nc
 </pre>
 
 <p>
-Create dbIn and dbOut directories, and then link the observation input files under it:
+Next, create dbIn and dbOut directories, and then link the observation input files into dbIn:
 
 <pre class="terminal">
 <em class="prompt">$ </em>mkdir dbIn dbOut

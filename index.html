@@ -176,7 +176,7 @@ Then, create a working directory for the training exercises and move into it:
 </pre>
 
 <p>
-All of the training datasets is located under /home/project/13004327/training_service/2026-MPAS-JEDI.
+All of the training datasets are located under /home/project/13004327/training_service/2026-MPAS-JEDI.
 Due to IO limititations, we recommend that you link them into your working directory:
 <pre class="terminal">
 <em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
@@ -283,10 +283,10 @@ installation tests, through a cmake/ctest mechanism.
 
 <div class="outlined">
 <p>
-However, due to the huge burden on I/O and network bandwidth, please do not
+Due to the huge burden on I/O and network bandwidth, <b>please do not
 configure or compile the MPAS-JEDI code, or run the installation tests, during
-the training course. Instead, please set up an environment variable called
-'bundle_dir` which points to a directory containing pre-compiled executables:
+the training course</b>. Instead, please set up an environment variable called
+'bundle_dir' which points to a directory containing pre-compiled executables:
 <pre class="terminal">
 <em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
 </pre>
@@ -300,7 +300,8 @@ the training course. Instead, please set up an environment variable called
 <div id="downloading" class="subsection">
 
 <p>
-In order to build MPAS-JEDI and its dependencies, it is recommended to access source code from <a href=https://github.com/mos3r3n/mpas-bundle>mpas-bundle</a>.
+In order to build MPAS-JEDI and its dependencies, it is recommended to obtain
+the source code from <a href=https://github.com/mos3r3n/mpas-bundle>mpas-bundle</a>.
 We will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/mpas-bundle/tree/SINGV-NG-1.0>SINGV-NG-1.0</a>:
 </p>
 
@@ -331,13 +332,15 @@ Resolving deltas: 100% (267/267), done.
 Note that the mpas-bundle repository does not contain actual source code. 
 Instead, the CMakeLists.txt file under code includes the github branch/tag
 information of the repositories needed to build MPAS-JEDI.
+</p>
 
+<p>
 One important difference from previous mpas-bundle releases (1.0.0, 2.0.0, and 3.0.x) is
-that SINGV-NG-1.0 bundle works together with a special version of the MPAS-A model code from  
+that the SINGV-NG-1.0 bundle works together with a special version of the MPAS-A model code from  
 <a href=https://github.com/mos3r3n/MPAS-Model-SINGVNG/tree/nssl>MPAS-SINGVNG</a>. Also, some 
 enhancements have been applied to the MPAS-JEDI DA system.
 
-We now load the spack-stack environment pre-built using the GNU compiler:
+Now load the spack-stack pre-built environment for the GNU compiler:
 </p>
 
 <pre class="terminal">
@@ -346,8 +349,8 @@ We now load the spack-stack environment pre-built using the GNU compiler:
 </pre>
 
 <p>
-The output to the module list in the terminal should look like the following (45 modules!!!).
-These packages are from pre-installed spack-stack-1.8.0.
+The output from the 'module list' command in the terminal should then look like
+the following (45 modules!!!).
 </p>
 
 <pre class="terminal">
@@ -362,6 +365,9 @@ Currently Loaded Modulefiles:
   8) stack-cray-mpich/8.1.15  17) util-linux-uuid/2.38.1   26) gptl/8.1.1               35) netcdf-fortran/4.6.1     44) udunits/2.2.28
   9) glibc/2.28               18) python/3.11.7            27) gsl-lite/0.37.0          36) parallel-netcdf/1.12.3   45) nccmp/1.9.0.1
 </pre>
+<p>
+(These packages are from the pre-installed spack-stack-1.8.0.)
+</p>
 
 <p>
 Now we are ready to 'fetch' actual source code from github repositories through cmake.
@@ -378,9 +384,8 @@ Now we are ready to 'fetch' actual source code from github repositories through 
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>Due to the huge burden on I/O and network bandwidth, please do not configure, compile, or run the
-MPAS-JEDI installation tests during the training. 
-Instead, you may have a try after the training when you have time.
+<b class="red">WARNING:</b> Again, please do not run the commands in this
+section during the course.
 </p>
 </div>
 
@@ -428,7 +433,7 @@ node instead of a compute node is that ASPIRE 2A's compute nodes have a much slo
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>The compilation could take ~25 min to complete. You may continue to read instructions while waiting.
+<b class="red">TIP:</b> The compilation could take ~25 min to complete. You may continue to read instructions while waiting.
 </p>
 </div>
 
@@ -579,7 +584,7 @@ set an environment variable 'bundle_dir' for convenience in the subsequent pract
 </div>
 <div id="convert" class="section">
 <p>
-The goal of this session is to create the observation input files needed for running
+The goal of this exercise is to create the observation input files needed for running
 MPAS-JEDI test cases.
 </p>
 
@@ -591,8 +596,8 @@ MPAS-JEDI test cases.
 
 <p>
 Under the <em class="terminal">MPAS-JEDI-Training</em> directory,
-create a directory for converting NCEP BUFR observation into IODA-HDF5 format.
-Then, clone the obs2ioda repository and proceed for compiling the converter.
+create a directory for converting NCEP BUFR observations into IODA-HDF5 format.
+Then, clone the obs2ioda repository and proceed to compile the converter.
 </p>
 
 <pre class="terminal">
@@ -602,14 +607,19 @@ Then, clone the obs2ioda repository and proceed for compiling the converter.
 </pre>
 
 <p>
-NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) along with NETCDF-C and NETCDF-Fortran libraries.
-are required to compile <em class="terminal">obs2ioda_v3</em>.
-Here we have pre-built BUFR_LIB and
-we put the pre-build BUFR_LIB path in <em class="terminal">Makefile</em>.
+To compile <em class="terminal">obs2ioda_v3</em>, some libraries are required:
+NETCDF-C and NETCDF-Fortran libraries, and the NCEP BUFR library
+<a href="https://github.com/NOAA-EMC/NCEPLIBS-bufr">
+https://github.com/NOAA-EMC/NCEPLIBS-bufr</a>.
+Here, we will use a pre-built NCEP BUFR library. The library is referenced
+by NCEP_BUFR_LIB in
+<em class="terminal">Makefile</em>, and the value of NCEP_BUFR_LIB is
+specified via the cmake command.
 </p>
 
 <p>
-Load the proper intel compiler modules and then compile the converter by using <em class="terminal">make</em> command:
+Load the proper intel compiler modules, and then compile the converter by using
+the <em class="terminal">make</em> command:
 </p>
 
 <pre class="terminal">

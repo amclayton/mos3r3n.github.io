@@ -116,7 +116,11 @@ MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com
 </p>
 
 <p>
-Logging onto Aspire2a from your laptop or desktop by
+Before logging onto Aspire2a, you need to set up your vpn to have the internet connection to NSCC HPC systems. Please follow the instructions from NSCC for
+	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_MAC.pdf" target="_blank">Mac</a> and 
+	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a>users.  
+<p>
+After setting up the VPN, log onto Aspire2a from your laptop or desktop by
 </p>
 
 <pre class="terminal">
@@ -124,8 +128,8 @@ Logging onto Aspire2a from your laptop or desktop by
 </pre>
 
 <p>
-You will be required to type your username and password, and then through the DUO two-factor authentication 
-to get onto Aspire2a. It is recommended to at least login onto Aspire2a with multiple terminals for different tasks.
+You will be required to type your username and password to log in to Aspire2a. It is recommended to at least login onto Aspire2a 
+with multiple terminals for different tasks.
 </p>
 
 <p>
@@ -1771,7 +1775,7 @@ Then, we copy the background file to the analysis file for overwriting:
 </p>
 
 <p>
-Following, copy the 3dhybrid_mhs.yaml to current working directory:
+Following, copy the 3dhybrid_mhs.yaml to the current working directory:
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3dhybrid_mhs.yaml . 
@@ -1779,11 +1783,13 @@ Following, copy the 3dhybrid_mhs.yaml to current working directory:
 
 <p>
 Now, we can compare 3dhybrid_mhs.yaml with 3dhybrid.yaml:
+</p>
 <pre class="terminal">
 <em class="prompt">$ </em>diff 3dhybrid_mhs.yaml 3dhybrid.yaml
 </pre>
+<p>
 We will find that the difference is adding a new observation section related to MHS Metop-B. In this section, we 
-show what should be included for clear-sky satellite radiance assimilation
+show what should be included for clear-sky satellite radiance assimilation:
 </p>
 
 <p>
@@ -1983,7 +1989,7 @@ After the practice, we can check the results by running the plot_diag.py.
 <em class="prompt">$ </em>python plot_diag.py
 </pre>
 
-You can display the scattered of OMB/OMA of the radiances:
+We can display the scatter plot of OMB/OMA of the radiances:
 <pre class="terminal">
 display XB_XA_da_mhs_metop-b.png
 </pre>
@@ -1991,7 +1997,7 @@ display XB_XA_da_mhs_metop-b.png
 <img src="images/XB_XA_da_mhs_metop-b.png" alt="vertical profile of RMS of OMB/OMA for radar reflectivity" width="800">
 
 <p>
-Similar to previous DA tests, you can save your running results: 
+Similar to previous DA tests, we can save the running results: 
 </p>
 
 <pre class="terminal">
@@ -2000,7 +2006,7 @@ Similar to previous DA tests, you can save your running results:
 </pre>
 
 <p>
-Now, you have all the tests of the training finished.
+Now, we have all the tests of the training finished.
 </p>
 
 </div>

@@ -176,13 +176,13 @@ Then, create a working directory for the training exercises and move into it:
 All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, 
 we recommend you to linking them to your working directory
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/Graphics .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0 .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS2IODA .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/Graphics .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0 .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/OBS2IODA .
 </pre>
 </p>
 
@@ -1193,7 +1193,7 @@ Link 'jedi_3denvar.log' to 'jedi.log' in plot_cost_grad.py, copy the Python scri
 working directory, and run the python scirpt to plot the figure:
 
 <pre class="terminal">
-<em class="prompt">$ </em> ln -sf jedi_3denvar.log ./jedi.log
+<em class="prompt">$ </em> ln -fs jedi_3denvar.log ./jedi.log
 <em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_cost_grad.py .
 <em class="prompt">$ </em> python plot_cost_grad.py
 </pre>
@@ -1239,7 +1239,7 @@ You can follow the same procedure as in section 2.2 to plot these 'feedback' fil
 <p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/Graphics/mpas_jedi_graphics/* .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/Graphics/mpas_jedi_graphics/* .
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_diag.py .
 <em class="prompt">$ </em>python plot_diag.py
 </pre>
@@ -1307,8 +1307,8 @@ files. So, we link the static BEC files:
 <pre class="terminal">
 <em class="prompt">$ </em>mkdir staticBEC
 <em class="prompt">$ </em>cd staticBEC
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_HDIAG .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_NICAS .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_HDIAG .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_NICAS .
 </pre>
 
 <p>
@@ -1563,8 +1563,8 @@ First, link the IODA-format radar observations into dbIn directory:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 <em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_rw_obs_2024091712.h5
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_zh_obs_2024091712.h5
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_rw_obs_2024091712.h5
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_zh_obs_2024091712.h5
 <em class="prompt">$ </em>mkdir -p ${SCRATCH}/MPAS-JEDI-Training/Variational/dbOut
 </pre>
 </p>
@@ -1748,11 +1748,11 @@ ${SCRATCH}/MPAS-JEDI-Training/Variational.
 First, prepare satellite observation-related files for the practice, including MHS IODA file, bias correction files, and CRTM coefficients:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/CRTM_Coeff .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/CRTM_Coeff .
 <em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/mhs_metop-b_obs_2024091712.h5 .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/mhs_metop-b_tlapmean.txt .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/satbias_mhs_metop-b.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/mhs_metop-b_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/mhs_metop-b_tlapmean.txt .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/satbias_mhs_metop-b.h5 .
 </pre>
 </p>
 
@@ -1957,12 +1957,40 @@ show what should be included for clear-ksy satellite radiance assimilation
 </pre>
 
 <p>
-Modify the run_variational.ksh to name da_test to "3dhybrid_mhs", and submib the PBS job:
+Modify the run_variational.ksh to name da_test to "3dhybrid_mhs", and submit the PBS job:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>qsub run_variational.ksh
 </pre>
+
+<p>
+After the practice, we can check the results by running the plot_diag.py.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>python plot_diag.py
+</pre>
+
+You can display the scattered of OMB/OMA of the radiances:
+<pre class="terminal">
+display XB_XA_da_mhs_metop-b.png
+</pre>
+
+<img src="images/XB_XA_da_mhs_metop-b.png" alt="vertical profile of RMS of OMB/OMA for radar reflectivity" width="800">
+
+<p>
+Similar to previous DA tests, you can save your running results: 
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3dhybrid_mhs.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>mv dbOut dbOut_3dhybrid_mhs
+</pre>
+
+<p>
+Now, you have all the tests of the training finished.
+</p>
 
 </div>
 

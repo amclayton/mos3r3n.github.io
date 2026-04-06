@@ -941,7 +941,7 @@ It should look like the figure below.
 <div id="generate_localization" class="subsection">
 
 <p>
-In this exercise, we will generate the BUMP localization files that can be used for spatial localization
+In this exercise, we will generate BUMP localization files that can be used for spatial localization
 of the ensemble background error covariance. These files will be used in the 3DEnVar
 and hybrid-3DEnVar data assimilation exercises that follow later.
 </p>
@@ -987,7 +987,7 @@ and the MPAS graph, streams, and namelist files:
 </pre>
 
 <p>
-Then, link in the YAML files and then the 2-stream IO files:
+Then, link in the YAML files and the 2-stream IO files:
 </p>
 
 <pre class="terminal">
@@ -1002,7 +1002,7 @@ Then, link in the YAML files and then the 2-stream IO files:
 </pre>
 
 <p>
-Now, copy the MPAS-JEDI YAML file and the pbs job script, and then submit the job script.
+Now, copy the MPAS-JEDI YAML file and the PBS job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
@@ -1018,21 +1018,22 @@ or by monitoring the log file <em class="terminal">jedi.log</em>.
 
 <p>
 After the PBS job has finished, check that the BUMP localization files have been generated.
-One "local" file should be generated for each processor. (256 processors are used for this exercise).
+One "local" file should be generated for each processor. (256 processors are used for this exercise.)
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ls bumploc_nicas_local_*.nc <br>
-
 </pre>
 
 <p>
-For a Dirac function multiplied by a given localization function, the
-user can make a plot from <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
+To see the results of multiplying Dirac-like fields - i.e. fields that have
+unit values at selected points but zero values elsewhere - with the
+localization functions, you can make a plot from
+<em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
 </p>
 
 <p><i>
-First, make sure the Conda environment has been activated before plotting:
+First, make sure that the Conda environment has been activated:
 </i></p>
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1

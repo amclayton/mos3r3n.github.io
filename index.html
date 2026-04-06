@@ -767,7 +767,7 @@ In this session, we will be running an application called 𝐻(𝐱), which maps
 <div id="grid_rotate" class="subsection">
 
 <p>
-Create an HofX directory under MPAS-JEDI-Training as follows:
+First, create an HofX directory under the MPAS-JEDI-Training directory as follows:
 </p>
 
 <pre class="terminal">
@@ -777,7 +777,7 @@ Create an HofX directory under MPAS-JEDI-Training as follows:
 </pre>
 
 <p>
-Set an environment variable for the mpas-bundle directory
+Then, set an environment variable that points to the mpas-bundle directory
 </p>
 
 <pre class="terminal">
@@ -786,8 +786,7 @@ Set an environment variable for the mpas-bundle directory
 
 <p>
 Now, we need to prepare input files to run HofX.
-The following commands are for linking files, such as
-physics-related data and tables, MPAS graph, streams, and namelist files:
+The following commands are for linking physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -815,7 +814,7 @@ We also need to link in YAML files:
 
 <p>
 MPAS uses 2-stream IO, in which invariant and variant states are stored in separate files. 
-The following commands link in an MPAS invariant file (invariant fields) and an MPAS
+Run the following commands to link in an MPAS invariant file (invariant fields) and an MPAS
 6-h forecast background file (variant fields).
 </p>
 
@@ -825,7 +824,7 @@ The following commands link in an MPAS invariant file (invariant fields) and an 
 </pre>
 
 <p>
-We also link the 6-h forecast file as a template file:
+We also need to link the 6-h forecast file as a template file:
 </p>
 
 <pre class="terminal">
@@ -855,7 +854,7 @@ Next, create dbIn and dbOut directories, and then link the observation input fil
 <div id="initialization-static-varres" class="subsection">
 
 <p>
-Copy hofx.yaml and run_hofx.ksh to the working directory:
+Now, copy hofx.yaml and run_hofx.ksh to the HofX directory:
 </p>
 
 <pre class="terminal">
@@ -865,7 +864,7 @@ Copy hofx.yaml and run_hofx.ksh to the working directory:
 </pre>
 
 <p>
-Submit a PBS job to run hofx,
+Then, submit the PBS job to run hofx:
 </p>
 
 <pre class="terminal">
@@ -873,13 +872,16 @@ Submit a PBS job to run hofx,
 </pre>
 
 <p>
-According to the setting in hofx.yaml, the output files are obsout_hofx_*.h5 under dbOut.
-You may check the output file content, e.g., using 'ncdump -h obsout_hofx_aircraft.h5'.
-you can also check hofx by running plot_diag.py.
+According to the settings in hofx.yaml, the output files are named obsout_hofx_*.h5, and stored
+under dbOut. You may check the output file contents by using the ncdump program - e.g. 'ncdump -h obsout_hofx_aircraft.h5'.
 </p>
 
 <p>
-The following steps are for set up python environment, copy graphics directory, and run plot_diag.py:
+You can also check hofx by running plot_diag.py.
+</p>
+
+<p>
+The following steps are for setting up the Python environment, copy graphics directory, and run plot_diag.py:
 </p>
 
 <pre class="terminal">

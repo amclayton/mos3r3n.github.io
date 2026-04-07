@@ -30,7 +30,7 @@
     b.red {font-family:"Courier New",Courier,monospace; font-weight:bold; color:#ff0000;}
 </style>
 
-<title>MPAS-JEDI Training for WSRP &mdash; Practice Session Guide</title>
+<title>MPAS-JEDI initial training for CAWRAS &mdash; Practical Session Guide</title>
 
 <script type="text/javascript">
 function show(id)
@@ -75,20 +75,20 @@ function jump(sectionid='')
 <img src="images/MPAS_logo.png" style="height:84px; width:250px">
 <img src="images/mss-ccrs-logo.png" style="height:84px; width:400px">
 <img src="images/Astar_logo.png" style="height:84px; width:250px">
-<h1>Welcome to the MPAS-JEDI Training hands-on exercises</h1>
+<h1>Hands-on exercises for CAWRAS initial MPAS-JEDI training</h1>
 
 <p class="top">
-This web page is intended to serve as a guide through the hands-on practice exercises of this MPAS-JEDI 
-training for the Weather Science Research Programme (WSRP) projects. Detailed information of WSRP 
-can be found at <a href="https://www.a-star.edu.sg/ihpc/cawret" target="_blank">CAWRET website</a>. 
-In the following, exercises are split into 5 main sections, each of them focusing on a specific aspect 
+This web page is intended to serve as a guide through the hands-on practical exercises within the
+initial training course on MPAS-JEDI, which is aimed at participants within the Climate and Weather
+Research Alliance Singapore (CAWRAS).
+The exercises are split into 5 main sections, each focusing on a specific aspect 
 of using the MPAS-JEDI data assimilation system.
 </p>
 
 <p class="top">
-In case you would like to refer to any of the lecture slides from previous days,
+If you would like to refer to the accompanying lecture slides,
 you can open the <a href="agenda.html" target="_blank">Tutorial Agenda</a> in another window.
-The test dataset is available under Aspire2a under the WSRP project folder 
+The test dataset is available under ASPIRE 2A under the CAWRAS project folder 
 /home/project/13004327/training_service/2026-MPAS-JEDI.
 </p>
 
@@ -107,16 +107,16 @@ Clicking the grey headers will expand each section or subsection.
 <div id="prerequisites" class="section">
 <p>
 The practical exercises in this tutorial have been tailored to work on
-the <a href="https://www.nscc.sg/aspire-2a/" target="_blank">NSCC Aspire2a</a> system.
-Aspire2a is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
+the <a href="https://www.nscc.sg/aspire-2a/" target="_blank">NSCC ASPIRE 2A</a> system.
+ASPIRE 2A is an HPC cluster that provides most of the libraries needed by MPAS-JEDI and its pre- and post-processing
 tools through <i>modules</i>. In general, before compiling and running MPAS-JEDI on your own system,
 you will need to install <a href="https://github.com/JCSDA/spack-stack" target="_blank">spack-stack</a>.
-However, this tutorial does not cover the installation of spack-stack, which was pre-installed on Aspire2a.
+However, this tutorial does not cover the installation of spack-stack, which was pre-installed on ASPIRE 2A.
 MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com/JCSDA/spack-stack/tree/release/1.8.0" target="_blank">spack-stack-1.8.0</a>.
 </p>
 
 <p>
-Before logging onto Aspire2a, you need to set up your vpn to have the internet connection to NSCC HPC systems. Please follow the instructions from NSCC for
+Before login to ASPIRE 2A, you need to set up your vpn to access NSCC HPC systems. Please follow the instructions from NSCC for
 	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_MAC.pdf" target="_blank">Mac</a> and 
 	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a>users.  
 <p>
@@ -124,12 +124,12 @@ After setting up the VPN, log onto Aspire2a from your laptop or desktop by
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ssh aspire2a.nscc.sg
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nscc.sg
 </pre>
 
 <p>
-You will be required to type your username and password to log in to Aspire2a. It is recommended to at least login onto Aspire2a 
-with multiple terminals for different tasks.
+You will be required to type your userid and password to get onto ASPIRE 2A. It is recommended to login to ASPIRE 2A within multiple terminals, each for a different
+task.
 </p>
 
 <p>
@@ -142,19 +142,20 @@ After login, you will be in your home directory:
 
 <p>
 The command above will display the current working directory (your home directory after login). However, the home directory
- usually has very limited disk space, so it is recommended to perform all exercises under your scratch directory.
+usually has very limited disk space, so it is recommended to perform all exercises under your scratch directory.
 </p>
 
 <p>
-You can set an environment variable for your scratch directory:
+You can set an environment variable for your scratch directory as follows:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export SCRATCH=${HOME/home/scratch}
+<em class="prompt">$ </em>export SCRATCH=${HOME}/scratch
 </pre>
 
 <p>
-You will run all of the practical exercises in your own <i>scratch</i> space, and you can check whether it is properly set by using
+You will run all of the practical exercises in your own <i>scratch</i> space, and you can check whether it is properly
+set by entering
 <em class="terminal">echo $SCRATCH</em>.
 </p>
 
@@ -171,13 +172,13 @@ Then, create a working directory for the training exercises and move into it:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>mkdir MPAS_JEDI_Training
-<em class="prompt">$ </em>cd MPAS_JEDI_Training
+<em class="prompt">$ </em>mkdir MPAS-JEDI-Training
+<em class="prompt">$ </em>cd MPAS-JEDI-Training
 </pre>
 
 <p>
-All the training dataset is located under /home/project/13004327/training_service/2026-MPAS-JEDI. Due to the IO limit, 
-you recommend you to linking them to your working directory
+All of the training datasets are located under /home/project/13004327/training_service/2026-MPAS-JEDI.
+Due to IO limititations, we recommend that you link them into your working directory:
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
 <em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
@@ -190,27 +191,27 @@ you recommend you to linking them to your working directory
 </p>
 
 <p>
-Now, under your working directory, you will have those folders:
+Now, under your working directory, you will have these folders:
 <ul>
-    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data on bufr and IODA formats, CRTM coefficients, bias correction files.
-    <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namlist and stream files.
+    <li><em class="terminal">OBS_FILE</em> - Observation-related files, such as observation data in BUFR and IODA formats, CRTM coefficients, and bias correction files.
+    <li><em class="terminal">MPAS_FILE</em> - MPAS model-related files, such as MPAS forecast (as background), ensemble forecasts, MPAS grid files, and MPAS namelist and stream files.
     <li><em class="terminal">BEC_FILE</em> - Background error covariance (BEC) files, including ensemble-BEC localization matrix and static BEC files. 
-    <li><em class="terminal">MPASJEDI_FILE</em> - yaml and job scirpt files for conducting MPAS-JEDI applications.
+    <li><em class="terminal">MPASJEDI_FILE</em> - YAML and job script files for running MPAS-JEDI applications.
     <li><em class="terminal">Graphics</em> - Python scripts for visualization.
-    <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compled exctuables of MPAS-JEDI (CCRS version).
-    <li><em class="terminal">OBS2IODA</em> - Source code and compiled exctuable of obs2ioda for observation convector.
+    <li><em class="terminal">SINGV-NG-1.0</em> - Source code and compiled executables for MPAS-JEDI (CCRS version).
+    <li><em class="terminal">OBS2IODA</em> - Source code and compiled executables for the obs2ioda observation convector.
 </ul>
 </p>
 
 <p>
-On aspire2a, the default shell is bash.
+On ASPIRE 2A, the default shell is bash.
 </p>
 
 <p>
-Aspire2a uses the LMOD package to manage the software development. 
-Running <em class="terminal">module list</em> to see what modules are loaded by default
+ASPIRE 2A uses the LMOD package to manage the software environment.
+Run <em class="terminal">module list</em> to see what modules are loaded by default
 right after you log in.
-It should print something similar to below:
+The output something be similar to that below:
 </p>
 
 <pre class="terminal">
@@ -222,8 +223,8 @@ Currently Loaded Modulefiles:
 </pre>
 
 <p>
-Post-processing and graphics exercises will need Python. A Conda environment with a plenty of Python libraries are available. 
-You can activate the conda environment with the following command:
+Post-processing and graphics exercises will need Python. A Conda environment with the required Python libraries is available, 
+and can be activated by running the following command:
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
@@ -231,38 +232,41 @@ You can activate the conda environment with the following command:
 </p>
 
 <p>
-Running jobs on Aspire2a requires the submission of a job script to a batch queueing system,
+Running jobs on ASPIRE 2A requires the submission of a job script to a batch queueing system,
 which will allocate requested computing resources to your job when they become available.
-In general, it's best to avoid running any compute-intensive jobs on the login nodes, and
-the practical instructions to follow will guide you in the process of submitting jobs when
+In general, it's best to avoid running any compute-intensive jobs on the login nodes.
+The practical instructions to follow will guide you through the process of submitting jobs when
 necessary.
 </p>
 
 <p>
-As a first introduction to running jobs on Aspire2a, there are several key commands worth
+As a first introduction to running jobs on ASPIRE 2A, there are several key commands worth
 noting:
 <ul>
     <li><em class="terminal">qsub job-script</em> - This command submits a PBS job script, which describes a job
                                          to be run on one or more batch nodes.
     <li><em class="terminal">qstat -u $USER</em> - This command tells you the status of your pending and running jobs.
                                                    <i>Note that you may need to wait about 30 seconds for a recently submitted job to show up.</i></li>
-    <li><em class="terminal">qdel JobID</em> - This command deletes a queued or running job</li>
+    <li><em class="terminal">qdel JobID</em> - This command deletes a queued or running job.</li>
 </ul>
 </p>
 
 <p>
 Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
-After the training, do remember to use your own project number to submit jobs.
+After the training, please remember to use your own project number when submitting jobs.
 
- At various points in the practical exercises, we'll need to submit jobs to Aspire2a's queueing system
-using the <em class="terminal">qsub</em> command, and after doing so, you may check on the status
-of the job with the <em class="terminal">qstat</em> command, monitoring the log files produced by the job
-once you see that the job has begun to run. Most exercises will run with 128 cores in one single node,
-each Aspire2a's node having 128 cores (440GB available memory).
+At various points in the practical exercises, you will need to submit jobs to
+ASPIRE 2A's queueing system
+using the <em class="terminal">qsub</em> command.
+After doing so, you may check on the status of the job using the
+<em class="terminal">qstat</em> command, or by monitoring the log files
+produced by the job after seeing that the job has begun to run.
+Most exercises will run on one ASPIRE 2A node, which
+has 128 cores and 440 GB available memory.
 </p>
 
 <p>
-You're now ready to begin with the practical exercises of this training!
+You're now ready to begin with the practical exercises of this training course!
 </p>
 
 </div>
@@ -271,16 +275,24 @@ You're now ready to begin with the practical exercises of this training!
 <!-- === 1. Compiling/Testing MPAS-JEDI =========== -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('compile')">
-<h2 id="compile-header">1. Compiling/Testing MPAS-JEDI</h2>
+<h2 id="compile-header">1. Compiling and testing MPAS-JEDI</h2>
 </div>
 <div id="compile" class="section">
 <p>
-In this section, the goal is to obtain, compile, and test the MPAS-JEDI code
-through cmake/ctest mechanism. Due to I/O and network bandwidth limitations, 
-it is not recommended to download, compile, or test the MPAS-JEDI code on the login node 
-during this training.
-</p>
+This section explains how to obtain and compile the MPAS-JEDI code, and run
+installation tests, through a cmake/ctest mechanism.
 
+<div class="outlined">
+<p>
+Due to the huge burden on I/O and network bandwidth, <b>please do not
+configure or compile the MPAS-JEDI code, or run the installation tests, during
+the training course</b>. Instead, please set up an environment variable called
+'bundle_dir' which points to a directory containing pre-compiled executables:
+<pre class="terminal">
+<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+</pre>
+</p>
+</div>
 
 <!-- === 1.1 Downloading the code ================================================ -->
 <div class="subheader" onClick="show('downloading')">
@@ -289,8 +301,9 @@ during this training.
 <div id="downloading" class="subsection">
 
 <p>
-In order to build MPAS-JEDI and its dependencies, it is recommended to access source code from <a href=https://github.com/mos3r3n/mpas-bundle>mpas-bundle</a>.
-you will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/mpas-bundle/tree/SINGV-NG-1.0>SINGV-NG-1.0</a>:
+In order to build MPAS-JEDI and its dependencies, it is recommended to obtain
+the source code from <a href=https://github.com/mos3r3n/mpas-bundle>mpas-bundle</a>.
+We will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/mpas-bundle/tree/SINGV-NG-1.0>SINGV-NG-1.0</a>:
 </p>
 
 <pre class="terminal">
@@ -301,8 +314,9 @@ you will use the 'SINGV-NG-1.0' branch from <a href=https://github.com/mos3r3n/m
 </pre>
 
 <p>
-The git command will clone the mpas-bundle repository from github to a local directory 'code'
-, then make the 'SINGV-NG-1.0' branch as the active branch. The output to the terminal should look as following:
+The git command will clone the mpas-bundle repository from github to a local directory 'code',
+and then make the 'SINGV-NG-1.0' branch the active branch. The terminal output should look like
+the following:
 </p>
 
 <pre class="terminal">
@@ -317,15 +331,17 @@ Resolving deltas: 100% (267/267), done.
 
 <p>
 Note that the mpas-bundle repository does not contain actual source code. 
-Instead, the CMakeLists.txt file under code includes the github repositories's branch/tag
-information needed to build MPAS-JEDI.
+Instead, the CMakeLists.txt file under code includes the github branch/tag
+information of the repositories needed to build MPAS-JEDI.
+</p>
 
+<p>
 One important difference from previous mpas-bundle releases (1.0.0, 2.0.0, and 3.0.x) is
-that SINGV-NG-1.0 bundle works together with the special version of MPAS-A model code from  
+that the SINGV-NG-1.0 bundle works together with a special version of the MPAS-A model code from  
 <a href=https://github.com/mos3r3n/MPAS-Model-SINGVNG/tree/nssl>MPAS-SINGVNG</a>. Also, some 
 enhancements have been applied to the MPAS-JEDI DA system.
 
-Now, load the spack-stack environment pre-built using the GNU compiler:
+Now load the spack-stack pre-built environment for the GNU compiler:
 </p>
 
 <pre class="terminal">
@@ -334,8 +350,8 @@ Now, load the spack-stack environment pre-built using the GNU compiler:
 </pre>
 
 <p>
-The output to the module list in the terminal should look like the following (45 modules!!!).
-These packages are from pre-installed spack-stack-1.8.0.
+The output from the 'module list' command in the terminal should then look like
+the following (45 modules!!!).
 </p>
 
 <pre class="terminal">
@@ -350,6 +366,9 @@ Currently Loaded Modulefiles:
   8) stack-cray-mpich/8.1.15  17) util-linux-uuid/2.38.1   26) gptl/8.1.1               35) netcdf-fortran/4.6.1     44) udunits/2.2.28
   9) glibc/2.28               18) python/3.11.7            27) gsl-lite/0.37.0          36) parallel-netcdf/1.12.3   45) nccmp/1.9.0.1
 </pre>
+<p>
+(These packages are from the pre-installed spack-stack-1.8.0.)
+</p>
 
 <div class="outlined">
 <p>
@@ -372,14 +391,15 @@ Now you are ready to 'fetch' actual source code from github repositories through
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>Due to huge burden on I/O and network bandwidth, please don't configure, compile, adn test MPAS-JEDI during the training. 
-Inseatd, you may have a try after the traning when you have time.
+<b class="red">WARNING:</b> Again, please do not run the commands in this
+section during the course.
 </p>
 </div>
 
 <p>
 MPAS-JEDI uses cmake to automatically fetch the code from various github repositories,
-listed in CMakeLists.txt under ~code. Now type the command below under the build directory:
+listed in CMakeLists.txt under the code directory. Now type the command below under
+${SCRATCH}/MPAS-JEDI-Training/MPAS-BUNDLE:
 </p>
 
 <pre class="terminal">
@@ -390,11 +410,11 @@ listed in CMakeLists.txt under ~code. Now type the command below under the build
 </pre>
 
 <p>
-After it completes (may take 15-20 min depending on network connection), you will see the actual source code of various
+After it completes (it may take 15-20 min depending on the network connection), you will see the actual source code of various
 repositories (e.g., oops, vader, saber, ufo, ioda, crtm, mpas-jedi, and MPAS) is now under the code directory.
 Meanwhile, Makefile files to build executables are generated under the build directory.
-Now it is ready to compile MPAS-JEDI under 'build' using the standard make. Commonly, you don't compile MPAS-JEDI on the login node. 
-Instead, you do it by submiting an interactive job as following
+Now it is possible to compile MPAS-JEDI under 'build' using the standard make program. Commonly, we don't compile MPAS-JEDI on the login node. 
+Instead, we do it by submitting an interactive job as following
 <pre class="terminal">
 <em class="prompt">$ </em>qsub -I -l select=1:ncpus=4:mem=32gb -l walltime=01:00:00 -P ${PROJECT_NUMBER} -q normal
 </pre>
@@ -414,13 +434,13 @@ On the compute node, you need to re-activate the spack-stack environment first a
 
 <p>
 This could take ~25 min. Using more cores for build could speed up a bit, but will not help too much from our experience. 
-Also note that the reason you do the cmake step (will clone various github repositories) on the login 
-node instead of a compute node is that aspire2a's compute nodes have a much slower internet connection.
+Also note that the reason we do the cmake step (will clone various github repositories) on the login 
+node instead of a compute node is that ASPIRE 2A's compute nodes have a much slower internet connection.
 </p>
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>The compilation could take ~25 min to complete. You may continue to read instructions while waiting.
+<b class="red">TIP:</b> The compilation could take ~25 min to complete. You may continue to read instructions while waiting.
 </p>
 </div>
 
@@ -571,7 +591,7 @@ set an environment variable 'bundle_dir' for convenience in the subsequent pract
 </div>
 <div id="convert" class="section">
 <p>
-The goal of this session is to create the observation input files needed for running
+The goal of this exercise is to create the observation input files needed for running
 MPAS-JEDI test cases.
 </p>
 
@@ -583,8 +603,8 @@ MPAS-JEDI test cases.
 
 <p>
 Under the <em class="terminal">MPAS-JEDI-Training</em> directory,
-create a directory for converting NCEP BUFR observation into IODA-HDF5 format.
-Then, clone the obs2ioda repository and proceed for compiling the converter.
+create a directory for converting NCEP BUFR observations into IODA-HDF5 format.
+Then, clone the obs2ioda repository and proceed to compile the converter.
 </p>
 
 <pre class="terminal">
@@ -594,14 +614,19 @@ Then, clone the obs2ioda repository and proceed for compiling the converter.
 </pre>
 
 <p>
-NCEP BUFR library (https://github.com/NOAA-EMC/NCEPLIBS-bufr) along with NETCDF-C and NETCDF-Fortran libraries.
-are required to compile <em class="terminal">obs2ioda_v3</em>.
-Here you have pre-built BUFR_LIB and
-you put the pre-build BUFR_LIB path in <em class="terminal">Makefile</em>.
+To compile <em class="terminal">obs2ioda_v3</em>, some libraries are required:
+NETCDF-C and NETCDF-Fortran libraries, and the NCEP BUFR library
+(<a href="https://github.com/NOAA-EMC/NCEPLIBS-bufr">
+https://github.com/NOAA-EMC/NCEPLIBS-bufr</a>).
+Here, we will use a pre-built NCEP BUFR library. The library is referenced
+by NCEP_BUFR_LIB in
+<em class="terminal">Makefile</em>, and the value of NCEP_BUFR_LIB is
+specified via the cmake command.
 </p>
 
 <p>
-Load the proper intel compiler modules and then compile the converter by using <em class="terminal">make</em> command:
+Load the proper intel compiler modules, and then compile the converter by using
+the <em class="terminal">make</em> command:
 </p>
 
 <pre class="terminal">
@@ -620,23 +645,24 @@ If the compilation is successful, the executable file <em class="terminal">obs2i
 
 <!-- === 2.2 Run obs2ioda-v2.x ================================================ -->
 <div class="subheader" onClick="show('bufr')">
-<h3 id="bufr-header">2.2 Convert prepbufr/bufr files to IODAv2-HDF5 format </h3>
+<h3 id="bufr-header">2.2 Convert PREPBUFR/BUFR files to IODAv2-HDF5 format </h3>
 </div>
 <div id="bufr" class="subsection">
 
 <p>
-The NCEP bufr input files are under the existing OBS_FILE/BUFR folder. Now you need to convert
-the bufr-format data into the iodav2-hdf5 format under the OBS_IODA folder.
+The NCEP BUFR input files are under the existing OBS_FILE/BUFR folder. Now we
+will convert the bufr-format data into the iodav2-hdf5 format under a new
+directory OBS_IODA.
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training
-<em class="prompt">$ </em>mkidr OBS_IODA
+<em class="prompt">$ </em>mkdir OBS_IODA
 <em class="prompt">$ </em>cd OBS_IODA
 </pre>
 
 <p>
-Link the prepbufr/bufr files to the working directory:
+Link the PREPBUFR/BUFR files to the working directory:
 </p>
 
 <pre class="terminal">
@@ -664,7 +690,10 @@ The usage is:
 
 <p>
 If input_dir and output_dir are not specified, the default is the current working directory.
-If bufr_filename(s)_to_convert is not specified, the code looks for file name, **prepbufr.bufr** (also **satwnd.bufr**, **gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**) in the input/working directory. If the file exists, do the conversion, otherwise skip it.
+If bufr_filename(s)_to_convert is not specified, the code looks for files in the input/working
+directory which have the following filename patterns: **prepbufr.bufr**, **satwnd.bufr**,
+**gnssro.bufr**, **amsua.bufr**, **airs.bufr**, **mhs.bufr**, **iasi.bufr**, **cris.bufr**.
+All files matching the patterns are converted.
 </p>
 
 <pre class="terminal">
@@ -677,7 +706,7 @@ If bufr_filename(s)_to_convert is not specified, the code looks for file name, *
 </pre>
 
 <p>
-Now you have the proper format IODA files under OBS_IODA for mpas-jedi tests:
+The OBS_IODA directory should now contain the following IODA-format files.
 </p>
 
 <pre class="terminal">
@@ -687,6 +716,10 @@ amsua_metop-c_obs_2024091712.h5  gnssro_obs_2024091712.h5       sfc_obs_20240917
 amsua_n15_obs_2024091712.h5      mhs_metop-b_obs_2024091712.h5  sondes_obs_2024091712.h5
 amsua_n18_obs_2024091712.h5      mhs_metop-c_obs_2024091712.h5
 </pre>
+
+<p>
+These files will be used later by some of the MPAS-JEDI tests.
+</p>
 
 </div>
 
@@ -698,19 +731,14 @@ amsua_n18_obs_2024091712.h5      mhs_metop-c_obs_2024091712.h5
 <div id="plot_loc" class="subsection">
 
 <p>
-Setup python enviorment for plotting.
-</p>
-<p><i>
-Note that you need to load the python environment before executing the python script.
-If you have already loaded the spack-stack module, reset the module environment before loading python env.
-</i></p>
+First, set up the Python environment required for plotting as follows.
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 
 <p>
-Copy graphics directory to current directory:
+Next, copy the plotting script to the current directory, an then run it:
 </p>
 
 <pre class="terminal">
@@ -719,7 +747,7 @@ Copy graphics directory to current directory:
 </pre>
 
 <p>
-Now, one of the figures shown here:
+The command will create many figures. An example figure is shown below.
 </p>
 
 <img src="images/OBS_horizontal_distribution_satwind.png", width="800"/>
@@ -736,7 +764,7 @@ Now, one of the figures shown here:
 </div>
 <div id="hofx" class="section">
 <p>
-In this session, you will be running an application called 𝐻(𝐱), which maps the model states to the observation space.
+In this session, we will be running an application called 𝐻(𝐱), which maps model states to observation space.
 </p>
 
 <!-- === 3.1 Create working directory and link files =================== -->
@@ -746,7 +774,7 @@ In this session, you will be running an application called 𝐻(𝐱), which map
 <div id="grid_rotate" class="subsection">
 
 <p>
-Creating HofX directory in MPAS-JEDI-Training
+First, create an HofX directory under the MPAS-JEDI-Training directory as follows:
 </p>
 
 <pre class="terminal">
@@ -756,7 +784,7 @@ Creating HofX directory in MPAS-JEDI-Training
 </pre>
 
 <p>
-Set environment variable for the mpas-bundle directory
+Then, set an environment variable that points to the mpas-bundle directory
 </p>
 
 <pre class="terminal">
@@ -764,9 +792,8 @@ Set environment variable for the mpas-bundle directory
 </pre>
 
 <p>
-Now, you need to prepare input files to run hofx.
-The following commands are for linking files, such as, 
-physics-related data and tables, MPAS graph, streams, and namelist files:
+Now, we need to prepare input files to run HofX.
+The following commands are for linking physics-related data and tables, and MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -783,7 +810,7 @@ physics-related data and tables, MPAS graph, streams, and namelist files:
 </pre>
 
 <p>
-Link yamls:
+We also need to link in YAML files:
 </p>
 
 <pre class="terminal">
@@ -793,19 +820,26 @@ Link yamls:
 </pre>
 
 <p>
-The MPAS uses the 2-stream IO, in which invariant and variant states are stored in seperate files. 
-Link MPAS invariant file (invariant fields) and 6-h forecast background file (variant fields). 
-Also, link the 6-h forecast file as the template file:
+MPAS uses 2-stream IO, in which invariant and variant states are stored in separate files. 
+Run the following commands to link in an MPAS invariant file (invariant fields) and an MPAS
+6-h forecast background file (variant fields).
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/background/mpasout.2024-09-17_12.00.00.nc ./bg.2024-09-17_12.00.00.nc
+</pre>
+
+<p>
+We also need to link in the 6-h forecast file as a template file:
+</p>
+
+<pre class="terminal">
 <em class="prompt">$ </em>ln -fs bg.2024-09-17_12.00.00.nc templateFields.522172.2024-09-17_12.00.00.nc
 </pre>
 
 <p>
-Create dbIn and dbOut directories, and then link the observation input files under it:
+Next, create dbIn and dbOut directories, and then link the observation input files into dbIn:
 
 <pre class="terminal">
 <em class="prompt">$ </em>mkdir dbIn dbOut
@@ -827,7 +861,7 @@ Create dbIn and dbOut directories, and then link the observation input files und
 <div id="initialization-static-varres" class="subsection">
 
 <p>
-Copy hofx.yaml and run_hofx.ksh to the working directory:
+Now, copy hofx.yaml and run_hofx.ksh into the HofX directory:
 </p>
 
 <pre class="terminal">
@@ -837,7 +871,7 @@ Copy hofx.yaml and run_hofx.ksh to the working directory:
 </pre>
 
 <p>
-Submit a PBS job to run hofx,
+Then, submit the PBS job to run hofx:
 </p>
 
 <pre class="terminal">
@@ -845,13 +879,16 @@ Submit a PBS job to run hofx,
 </pre>
 
 <p>
-According to the setting in hofx.yaml, the output files are obsout_hofx_*.h5 under dbOut.
-You may check the output file content, e.g., using 'ncdump -h obsout_hofx_aircraft.h5'.
-you can also check hofx by running plot_diag.py.
+According to the settings in hofx.yaml, the output files are named obsout_hofx_*.h5, and stored
+under dbOut. You may check the output file contents by using the ncdump program - e.g. 'ncdump -h dbOut/obsout_hofx_aircraft.h5'.
 </p>
 
 <p>
-The following steps are for set up python environment, copy graphics directory, and run plot_diag.py:
+You can also check hofx by and running plot_obs_singv.py.
+</p>
+
+<p>
+The following commands set up the Python environment and copy plot_obs_singv.py.
 </p>
 
 <pre class="terminal">
@@ -860,7 +897,8 @@ The following steps are for set up python environment, copy graphics directory, 
 <em class="prompt">$ </em>cp  ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_obs_singv.py .
 </pre>
 
-Before plotting, you need to do several modifications as the following in plot_obs_singv.py:
+Before running  plot_obs_singv.py, you will need to make the following modifications near the bottom
+of the script.
 <pre class="terminal">
 obsout_dir = './dbOut'
 plot_type = 'HofX'
@@ -871,20 +909,20 @@ sensors = ['satwind','sondes','aircraft','sfc','gnssro']
 Then, you can run the Python script to plot the simulated observed variables.
 
 <pre class="terminal"></pre>
-<em class="prompt">$ </em>python plot_diag.py
+<em class="prompt">$ </em>python plot_obs_singv.py
 </pre>
 
 </p>
 
 <p>
-This will produce a number of figure files, display one of them
+This will produce a number of figure files. You can display one of them as follows.
 <p>
 <pre class="terminal">
 display HofX_horizontal_distribution_satwind.png
 </pre>
 
 <p>
-which will look like the figure below
+It should look like the figure below.
 </p>
 <img src="images/HofX_horizontal_distribution_satwind.png", width="800"/>
 
@@ -893,7 +931,7 @@ which will look like the figure below
 </div>
 
 <!-- ============================================================================== -->
-<!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs 
+<!-- === 4. Generating localization files and running 3D/4DEnVar with "conventional" obs -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('envar')">
 <h2 id="envar-header">4. Generating localization files and running 3DEnVar with "conventional" obs</h2>
@@ -910,13 +948,14 @@ which will look like the figure below
 <div id="generate_localization" class="subsection">
 
 <p>
-In this practice, you will generate the BUMP localization files to be used for spatial localization
-of ensemble background error covariance. These files will be used in the following 3DEnVar and hybrid-3DEnVar
-data assimilation practice.
+In this exercise, we will generate BUMP localization files that can be used for spatial localization
+of the ensemble background error covariance. These files will be used in the 3DEnVar
+and hybrid-3DEnVar data assimilation exercises that follow later.
 </p>
 
 <p>
-Create the working directory.
+After changing to your <em class="terminal">${SCRATCH}/MPAS-JEDI-Training</em> directory,
+create and move to the working directory as follows.
 </p>
 
 <pre class="terminal">
@@ -926,7 +965,9 @@ Create the working directory.
 </pre>
 
 <p>
-set the bundle_dir environment
+Then, make sure that the `bundle_dir` points to the correct directory.
+For example, if you are running this exercise during the training course, pick up the
+pre-built executables as follows.
 </p>
 
 <pre class="terminal">
@@ -934,8 +975,9 @@ set the bundle_dir environment
 </pre>
 
 <p>
-Now, you need to prepare input files to generate BUMP localization files.
-Similar to what you have done for the HofX application, you need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
+Now, we need to prepare the input files required to generate the BUMP localization files.
+Similar to what was done for the HofX application, link in MPAS physics-related data and tables,
+and the MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -952,17 +994,13 @@ Similar to what you have done for the HofX application, you need to link MPAS ph
 </pre>
 
 <p>
-Then, link yamls:
+Then, link in the YAML files and the 2-stream IO files:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/geovars.yaml .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/keptvars.yaml .
 </pre>
-
-<p>
-Followed by the 2-stream IO files:
-</p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/invariant.522172.nc .
@@ -971,7 +1009,7 @@ Followed by the 2-stream IO files:
 </pre>
 
 <p>
-copy the MPAS-JEDI yaml file and the pbs job script, and then submit the job script.
+Now, copy the MPAS-JEDI YAML file and the PBS job script, and then submit the job script.
 </p>
 
 <pre class="terminal">
@@ -981,52 +1019,69 @@ copy the MPAS-JEDI yaml file and the pbs job script, and then submit the job scr
 </pre>
 
 <p>
-User may check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
-or monitoring the log file <em class="terminal">jedi.log</em>.
+You can check the PBS job status by running <em class="terminal">qstat -u $USER</em>,
+or by monitoring the log file <em class="terminal">jedi.log</em>.
 </p>
 
 <p>
-After finishing the PBS job, user can check the BUMP localization files generated. The "local" files are generated for each processor (256 processors in this practice).
+After the PBS job has finished, check that the BUMP localization files have been generated.
+One "local" file should be generated for each processor. (256 processors are used for this exercise.)
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ls bumploc_nicas_local_*.nc <br>
-
 </pre>
 
 <p>
-For a Dirac function multiplied by a given localization function, user can make a plot with <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
+To see the results of multiplying Dirac-like fields - i.e. fields that have
+unit values at selected points but zero values elsewhere - with the
+localization functions, you can make a plot from
+<em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
 </p>
 
 <p><i>
-Make sure the Conda environment has been activated before plotting.
+First, make sure that the Conda environment has been activated:
 </i></p>
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 <p>
-Copy the plotting script for Dirac output.
+Then copy and run the plotting script for the Dirac output file:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_bumploc.py .
 <em class="prompt">$ </em>python plot_bumploc.py
+</pre>
+
+The resulting figure can be displayed as follows:
+
+<pre class="terminal">
 <em class="prompt">$ </em>display figure_bumploc.png
 </pre>
+
+<p>
+The figure should look like this:
+</p>
 
 <img src="images/figure_bumploc.png", width="600"/>
 
 <p>
-User may play with different localization lengths (e.g., change the horizontal one from 300km to 150km) by
-changing the following YAML keys from <em class="terminal">bumploc.yaml</em>, then re-submit the PBS job script.
+We suggest that you try applying different horizontal or vertical localization lengths,
+and seeing how this alters the results. This is done by changing the relevant YAML keys,
+and then re-submiting the PBS job script.
 </p>
 
 <p><i>
 [Note that <em class="terminal">dirac_nicas.2024-09-17_12.00.00.nc</em>, 
-<em class="ternminal">figure_bumploc.png</em>, and all tghose BUMP NICAS files will be overwritten, so it is a good idea
-to rename the existing files to compare them to those from a new experiment with modified localization lengths.]
+<em class="ternminal">figure_bumploc.png</em>, and all the BUMP NICAS files will be overwritten, so it is a good idea
+to rename the existing files to allow comparison with the new experiment using modified localization lengths.]
 </i></p>
+
+<p>
+The YAML settings you might want to change are highlighted below.
+</p>
 
 <pre class="terminal">
       ...
@@ -1046,7 +1101,8 @@ to rename the existing files to compare them to those from a new experiment with
 </pre>
 
 <p>
-Make a plot for Dirac result (with <em class="terminal">plot_bumploc.py</em>) to see how the localization looks like.
+You can then compare the <em class="ternminal">figure_bumploc.png</em> file
+with the original one.
 </p>
 
 </div>
@@ -1099,7 +1155,7 @@ Similar to what you have done before, you need to link MPAS physics-related data
 </pre>
 
 <p>
-Then, link yamls:
+Then, link YAML files:
 </p>
 
 <pre class="terminal">
@@ -1291,7 +1347,7 @@ satellite radiances.
 <div id="run_3dvar" class="subsection">
 
 <p>
-In this practice, you will run MPAS-JEDI 3DVar and hybrid 3DEnVar. The overall procedure is similar 
+In this exercise, we will run MPAS-JEDI 3DVar and hybrid 3DEnVar. The overall procedure is similar 
 to the 3DEnVar practice in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
 background error covariance (BEC), which contains the climatological characteristics. Here, the 
 pre-generated static BEC will be used. you hope to provide a practice for static B training in future 
@@ -1324,7 +1380,7 @@ files. So, you link the static BEC files:
 </pre>
 
 <p>
-Then, you can copy the yaml file:
+Then, we can copy the YAML file:
 </p>
 
 <pre class="terminal">
@@ -1410,7 +1466,7 @@ After running 3DVar practice successfully, you now do the hybrid 3DEnvar practic
 </p>
 
 <p>
-Then, you can copy the yaml file:
+Then, we can copy the YAML file:
 </p>
 
 <pre class="terminal">
@@ -1555,10 +1611,9 @@ which will look like the figure below
 <div id="run_radar" class="subsection">
 
 <p>
-In this practice, you will run radar data assimilation using the 3DEnvar method. In this practice, 
-radar reflectivity is included as an analysis variable, and with this, the tangent linear and adjoint
-of the reflectivity operator can be avoided. 
-The practice is still under ${SCRATCH}/MPAS-JEDI-Training/Variational.
+In this exercise, we will run radar data assimilation using the 3DEnvar method. In this exercise, 
+radar reflectivity is included as an analysis variable, and with this, the tagent linear and adjoint
+of reflectivity operator can be avoided. We still conduct the practice under ${SCRATCH}/MPAS-JEDI-Training/Variational.
 </p>
 
 <p>

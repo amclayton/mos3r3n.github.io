@@ -116,7 +116,11 @@ MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com
 </p>
 
 <p>
-You can login to ASPIRE 2A from your laptop or desktop as follows.
+Before login to ASPIRE 2A, you need to set up your vpn to access NSCC HPC systems. Please follow the instructions from NSCC for
+	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_MAC.pdf" target="_blank">Mac</a> and 
+	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a>users.  
+<p>
+After setting up the VPN, log onto Aspire2a from your laptop or desktop by
 </p>
 
 <pre class="terminal">
@@ -124,11 +128,8 @@ You can login to ASPIRE 2A from your laptop or desktop as follows.
 </pre>
 
 <p>
-You will be required to type your userid and password, and then through the DUO two-factor authentication 
-to get onto ASPIRE 2A. It is recommended to login to ASPIRE 2A within multiple terminals, each for a different
+You will be required to type your userid and password to get onto ASPIRE 2A. It is recommended to login to ASPIRE 2A within multiple terminals, each for a different
 task.
-
-(Note - need to fix this! DUO is needed for VPN access. Login comes later.)
 </p>
 
 <p>
@@ -179,13 +180,13 @@ Then, create a working directory for the training exercises and move into it:
 All of the training datasets are located under /home/project/13004327/training_service/2026-MPAS-JEDI.
 Due to IO limititations, we recommend that you link them into your working directory:
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/Graphics .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0 .
-<em class="prompt">$ </em>ln -sf /home/project/13004327/training_service/2026-MPAS-JEDI/OBS2IODA .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/OBS_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/MPAS_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/BEC_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/MPASJEDI_FILE .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/Graphics .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0 .
+<em class="prompt">$ </em>ln -fs /home/project/13004327/training_service/2026-MPAS-JEDI/OBS2IODA .
 </pre>
 </p>
 
@@ -260,8 +261,8 @@ using the <em class="terminal">qsub</em> command.
 After doing so, you may check on the status of the job using the
 <em class="terminal">qstat</em> command, or by monitoring the log files
 produced by the job after seeing that the job has begun to run.
-Most exercises will run on 256 cores spread between two ASPIRE 2A nodes, each
-of which has 128 cores and 440 GB available memory.
+Most exercises will run on one ASPIRE 2A node, which
+has 128 cores and 440 GB available memory.
 </p>
 
 <p>
@@ -369,8 +370,14 @@ Currently Loaded Modulefiles:
 (These packages are from the pre-installed spack-stack-1.8.0.)
 </p>
 
+<div class="outlined">
 <p>
-Now we are ready to 'fetch' actual source code from github repositories through cmake.
+<b class="red">WARNING:</b>You may encountor the issue that .
+</p>
+</div>
+
+<p>
+Now you are ready to 'fetch' actual source code from github repositories through cmake.
 </p>
 
 </div>
@@ -438,7 +445,7 @@ node instead of a compute node is that ASPIRE 2A's compute nodes have a much slo
 </div>
 
 <p>
-Once we reach 100% of the compilation, many executables will be generated under build/bin.
+Once you reach 100% of the compilation, many executables will be generated under build/bin.
 Related executables of MPAS model and MPAS-JEDI include:
 </p>
 
@@ -555,7 +562,7 @@ The qdel command will kill your interactive job by only supplying 'job-id-number
 
 <p>
 Note that the tutorial test cases are designed with single-precision MPAS model test dataset.
-Therefore, we pre-compiled mpas-bundle code with single-precision mode in
+Therefore, you pre-compiled mpas-bundle code with single-precision mode in
 </p>
 
 <pre class="terminal">
@@ -674,7 +681,7 @@ Link executables and files:
 </pre>
 
 <p>
-Now we can run <em class="terminal">obs2ioda_v3</em>.
+Now you can run <em class="terminal">obs2ioda_v3</em>.
 The usage is:
 </p>
 <pre class="terminal">
@@ -791,7 +798,7 @@ The following commands are for linking physics-related data and tables, and MPAS
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DBL .
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
@@ -975,7 +982,7 @@ and the MPAS graph, streams, and namelist files:
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DBL .
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
@@ -1109,7 +1116,7 @@ with the original one.
 <div id="3denvar" class="subsection">
 
 <p>
-We are now ready to set up and run the first analysis test using 3DEnVar. For this 3DEnVar, we will use a 3 km background forecast and ensemble input at the same resolution.
+you are now ready to set up and run the first analysis test using 3DEnVar. For this 3DEnVar, you will use a 3 km background forecast and ensemble input at the same resolution.
 </p>
 
 <p>
@@ -1130,13 +1137,13 @@ set the bundle_dir environment:
 </p>
 
 <p>
-Again, we now prepare all necessary input files to run the MPAS-JEDI variational DA application.
-Similar to what we have done before, we need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
+Again, you now prepare all necessary input files to run the MPAS-JEDI variational DA application.
+Similar to what you have done before, you need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*TBL .
-<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere*DBL .
+<em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DBL .
 <em class="prompt">$ </em>ln -fs ${bundle_dir}/MPAS/core_atmosphere/*DATA .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/grid/x1.522172.graph.info* .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/MPAS_FILE/streamNamelist/namelist.atmosphere .
@@ -1167,7 +1174,7 @@ Followed by the 2-stream IO files:
 </pre>
 
 <p>
-Next, we should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working 
+Next, you should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working 
 directory and make a copy of the background file as the analysis file to be overwritten. 
 </p>
 
@@ -1177,7 +1184,7 @@ directory and make a copy of the background file as the analysis file to be over
 </pre>
 
 <p>
-Then, we need to link ensemble forecasts and bump localization files.
+Then, you need to link ensemble forecasts and bump localization files.
 </p>
 
 <pre class="terminal">
@@ -1189,7 +1196,11 @@ Then, we need to link ensemble forecasts and bump localization files.
 </pre>
 
 <p>
-Next, we need to link observation files into the working directory. 
+For the BUMP localization files, you can use files generated in the practice 3.1.
+</p>
+	
+<p>
+Next, you need to link observation files into the working directory. 
 </p>
 
 <pre class="terminal">
@@ -1204,25 +1215,25 @@ Next, we need to link observation files into the working directory.
 </pre>
 
 <p>
-Now, we are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
-<em class="terminal">3denvar.yaml</em> contains all of the settings we need for this 3DEnVar update. 
+Now, you are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
+<em class="terminal">3denvar.yaml</em> contains all of the settings you need for this 3DEnVar update. 
 Also, copy the PBS job script. 
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3denvar.yaml .
-<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training//run_variational.ksh .
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/run_variational.ksh .
 </pre>
 
 <p>
-Before submitting the job to run the 3DEnvar application, we need to check whether the test case is properly set:
+Before submitting the job to run the 3DEnVar application, you need to check whether the test case is properly set:
 <pre class="terminal">
 <em class="prompt">$ </em>grep "da_test=" run_variational.ksh
 export da_test="3denvar"
 </pre>
 
 <p>
-Now, we submit the PBS job script to run the following executable <em class="terminal">mpasjedi_variational.x</em>, which is used for all of our variational updates. 
+Now, you submit the PBS job script to run the following executable <em class="terminal">mpasjedi_variational.x</em>, which is used for all of our variational updates. 
 </p>
 
 <pre class="terminal">
@@ -1247,10 +1258,10 @@ Now that the analysis was successful, you may plot the cost function and gradien
 
 <p>
 Link 'jedi_3denvar.log' to 'jedi.log' in plot_cost_grad.py, copy the Python script plot_cost_grad.py to the current 
-working directory, and run the python scirpt to plot the figure:
+working directory, and run the Python script to plot the figure:
 
 <pre class="terminal">
-<em class="prompt">$ </em> ln -sf jedi_3denvar.log ./jedi.log
+<em class="prompt">$ </em> ln -fs jedi_3denvar.log ./jedi.log
 <em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_cost_grad.py .
 <em class="prompt">$ </em> python plot_cost_grad.py
 </pre>
@@ -1271,7 +1282,7 @@ You can also plot the analysis increment (i.e., an.*.nc - bg.*.nc) with the foll
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/module_mpas_vars.py .
+<em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/module_mpas_variables.py .
 <em class="prompt">$ </em> cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_mpas_anainc.py .
 <em class="prompt">$ </em> python plot_mpas_anainc.py
 <em class="prompt">$ </em> display ana_inc_U-V-T-Q_lev10.png
@@ -1296,12 +1307,12 @@ You can follow the same procedure as in section 2.2 to plot these 'feedback' fil
 <p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/Graphics/mpas_jedi_graphics/* .
-<em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_diag.py .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/Graphics/mpas_jedi_graphics .
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/Graphics/plot_diag.py .
 <em class="prompt">$ </em>python plot_diag.py
 </pre>
 
-This will produce a number of figure files, display one of them
+This will produce a number of figure files. Display one of them
 <pre class="terminal">
 display RMSofOMM_da_gnssro_atmosphericRefractivity.png
 </pre>
@@ -1319,27 +1330,27 @@ which will look like the figure below
 <!-- === 5. Running 3DVar and hybrid-3DEnVar, and assimilates more observations  == -->
 <!-- ============================================================================== -->
 <div class="header" onClick="show('hybrid')">
-<h2 id="hybrid-header">5. Assimileting remoting sensing data using different DA methods</h2>
+<h2 id="hybrid-header">5. Assimilating remote sensing data using different DA methods</h2>
 </div>
 <div id="hybrid" class="section">
 <p>
-In this session, we will test different different deterministic DA methods. Also, we will 
-additionally assimilate more remote sensing observations, including radar reflectivity and 
+In this session, you will test different deterministic DA methods. Also, you will additionally 
+assimilate more remote sensing observations, including radar reflectivity and 
 satellite radiances.
 </p>
 
 
-<!-- === 5.1 Running 3DVar ==================================== -->
+<!-- === 5.1 Running 3DVar and Hybrid ==================================== -->
 <div class="subheader" onClick="show('run_3dvar')">
 <h3 id="run_3dvar-header">5.1 Running 3DVar and hybrid-3DEnVar</h3>
 </div>
 <div id="run_3dvar" class="subsection">
 
 <p>
-In this exercise, we will run MPAS-JEDI 3DVar and hybird 3DEnVar. The overall procedure is similar 
+In this exercise, we will run MPAS-JEDI 3DVar and hybrid 3DEnVar. The overall procedure is similar 
 to the 3DEnVar practice in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
 background error covariance (BEC), which contains the climatological characteristics. Here, the 
-pre-generated static BEC will be used. We hope to provide a practice for static B training in future 
+pre-generated static BEC will be used. you hope to provide a practice for static B training in future 
 MPAS-JEDI training.
 </p>
 
@@ -1358,14 +1369,14 @@ previous 3DEnvar results.
 
 <p>
 All files necessary to run 3DVar and hybrid 3DEnVar are available under Variational, except for the static BEC 
-files. So, we link the static BEC files:
+files. So, you link the static BEC files:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>mkdir staticBEC
 <em class="prompt">$ </em>cd staticBEC
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_HDIAG .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_NICAS .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_HDIAG .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/BEC_FILE/BUMP_NICAS .
 </pre>
 
 <p>
@@ -1378,7 +1389,7 @@ Then, we can copy the YAML file:
 </pre>
 
 <p>
-Before doing the 3DVar practice, we can comapre 3dvar.yaml and 3denvar.yaml, and can find their difference is in the background error section:
+Before doing the 3DVar practice, you can comapre 3dvar.yaml and 3denvar.yaml, and can find their difference is in the background error section:
 
 <pre class="terminal">
 <em class="prompt">$ </em>diff 3dvar.yaml 3denvar.yaml
@@ -1393,11 +1404,6 @@ Before doing the 3DVar practice, we can comapre 3dvar.yaml and 3denvar.yaml, and
 <         drivers:
 <           multivariate strategy: univariate
 <           read local nicas: true
-<         grids: 
-<           - model:
-<               variables: [uReconstructZonal,uReconstructMeridional,temperature,spechum]
-<           - model:
-<               variables: [surface_pressure]
 <     saber outer blocks:
 <     - saber block name: StdDev
 <       read:
@@ -1443,11 +1449,11 @@ Also, change the da_test="3denvar" to da_test="3dvar" in the PBS script file run
 
 <p>
 You can repeat the same procedures as the 3DEnvar practice to analyze the results of 3DVar, like the cost function, analysis 
-increment, and OMB/OMA statistics. Here, we won't include detailed instructions anymore.
+increment, and OMB/OMA statistics. Here, you won't include detailed instructions anymore.
 </p>
 
 <p>
-After running 3DVar practice successfully, we now do the hybrid 3DEnvar practice. Similarly, backup the results of 3DVar run:
+After running 3DVar practice successfully, you now do the hybrid 3DEnvar practice. Similarly, backup the results of 3DVar run:
 
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
@@ -1490,11 +1496,6 @@ By comapring 3dhybrid.yaml and 3dvar.yaml, you can clearly see the difference in
 <             drivers:
 <               multivariate strategy: univariate
 <               read local nicas: true
-<             grids: 
-<               - model:
-<                   variables: [uReconstructZonal,uReconstructMeridional,temperature,spechum]
-<               - model:
-<                   variables: [surface_pressure]
 <         saber outer blocks:
 <         - saber block name: StdDev
 <           read:
@@ -1565,7 +1566,7 @@ Change the da_test="3dvar" to da_test="3dhybrid" in the PBS script file run_vari
 </p>
 
 <p>
-Backup the hybrid 3DeVar results:
+After the hybrid 3DEnVar practice, backup the results:
 
 <pre class="terminal">
 <em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3dhybrid.2024-09-17_12.00.00.nc
@@ -1575,7 +1576,7 @@ Backup the hybrid 3DeVar results:
 </p>
 
 <p>
-We now can have a comparsion among the three practices through their analysis increments. Modify the Python script plot_mpas_anainc.py:
+You can have a comparison among the three practices through their analysis increments. Modify the Python script plot_mpas_anainc.py:
 <pre class="terminal">
     mpas_bak = [
         "bg.2024-09-17_12.00.00.nc",
@@ -1620,14 +1621,14 @@ First, link the IODA-format radar observations into dbIn directory:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 <em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_rw_obs_2024091712.h5
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_zh_obs_2024091712.h5
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_rw_obs_2024091712.h5
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/radar_obs_2024091712.h5 ./radar_zh_obs_2024091712.h5
 <em class="prompt">$ </em>mkdir -p ${SCRATCH}/MPAS-JEDI-Training/Variational/dbOut
 </pre>
 </p>
 
 <p>
-Then, we copy the background file to the analysis file for overwriting:
+Then, copy the background file to the analysis file for overwriting:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 <em class="prompt">$ </em>cp bg.2024-09-17_12.00.00.nc an.2024-09-17_12.00.00.nc
@@ -1635,7 +1636,7 @@ Then, we copy the background file to the analysis file for overwriting:
 </p>
 
 <p>
-Following, copy the 3denvar_radar.yaml to current working directory:
+Following, copy the 3denvar_radar.yaml to the current working directory:
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3denvar_radar.yaml . 
@@ -1644,12 +1645,16 @@ Following, copy the 3denvar_radar.yaml to current working directory:
 </p>
 
 <p>
-Now, we can compare 3denvar_radar.yaml with 3denvar.yaml:
+Now, you can compare 3denvar_radar.yaml with 3denvar.yaml:
 <pre class="terminal">
 <em class="prompt">$ </em>diff 3denvar_radar.yaml 3denvar.yaml
 </pre>
-We will find the differences will include:
+</p>
+
+<p>	
+You will find the differences will include:
 1) analysis variables
+</p>
 
 <pre class="terminal">
 <   state variables: &incvars [spechum,surface_pressure,temperature,uReconstructMeridional,uReconstructZonal,qc,qi,qr,qs,qg,refl10cm]
@@ -1657,24 +1662,28 @@ We will find the differences will include:
 >   state variables: &incvars [spechum,surface_pressure,temperature,uReconstructMeridional,uReconstructZonal]
 </pre>
 
+<p>
 2) state variables
-
+</p>
+	
 <pre class="terminal">
 <     state variables: [spechum,surface_pressure,temperature,uReconstructMeridional,uReconstructZonal,theta,rho,u,w,qv,pressure,landmask,observable_domain_mask,wind_reduction_factor_at_10m,xice,snowc,skintemp,ivgtyp,isltyp,snowh,vegfra,u10,v10,t2m,q2,lai,smois,tslb,pressure_p,qc,qi,qr,qs,qg,refl10cm]
 ---
 >     state variables: [spechum,surface_pressure,temperature,uReconstructMeridional,uReconstructZonal,theta,rho,u,w,qv,pressure,landmask,observable_domain_mask,wind_reduction_factor_at_10m,xice,snowc,skintemp,ivgtyp,isltyp,snowh,vegfra,u10,v10,t2m,q2,lai,smois,tslb,pressure_p]
 </pre>
- 
-3) radar radial velocity and reflectivity related observation section:
-<pre class="terminal">
 
+<p> 
+3) radar radial velocity and reflectivity related observation section:
+</p>
+	
+<pre class="terminal">
 <     - obs space:
 <         <<: *ObsSpace
 <         name: RadarRW
 <         obsdatain:
 <           engine:
 <             type: H5File
-<             obsfile: dbIn/radar_obs_2024091712.h5
+<             obsfile: dbIn/radar_rw_obs_2024091712.h5
 <         obsdataout:
 <           engine:
 <             type: H5File
@@ -1714,7 +1723,7 @@ We will find the differences will include:
 <         obsdatain:
 <           engine:
 <             type: H5File
-<             obsfile: dbIn/radar_obs_2024091712.h5
+<             obsfile: dbIn/radar_zh_obs_2024091712.h5
 <         obsdataout: 
 <           engine:
 <             type: H5File
@@ -1753,10 +1762,8 @@ We will find the differences will include:
 <         <<: *multiIterationFilter
 </pre>
 
-</p>
-
 <p>
-Last, modify the run_variational.ksh to name da_test to "3denvar_radar", and submib the PBS job:
+Last, modify the run_variational.ksh to name da_test to "3denvar_radar", and submit the PBS job:
 </p>
 
 <pre class="terminal">
@@ -1764,7 +1771,7 @@ Last, modify the run_variational.ksh to name da_test to "3denvar_radar", and sub
 </pre>
 
 <p>
-After the successufl runing the radar DA practice, we can run the plot_diag.py to see the results.
+After the successuflly runing the radar DA practice, you can run the plot_diag.py to see the results.
 </p>
 
 <pre class="terminal">
@@ -1779,7 +1786,7 @@ display RMSofOMM_da_radar_zh_equivalentReflectivityFactor.png
 <img src="images/RMSofOMM_da_radar_zh_equivalentReflectivityFactor.png" alt="vertical profile of RMS of OMB/OMA for radar reflectivity" width="800">
 
 <p>
-Before going to the next practice, backup our tested dataset:
+Before going to the next practice, backup the tested dataset:
 </p>
 
 <pre class="terminal">
@@ -1796,8 +1803,8 @@ Before going to the next practice, backup our tested dataset:
 <div id="run_clearsky" class="subsection">
 
 <p>
-In the last practice, we further test the clear-sky satellite radiances assimilation using MPAS-JEDI's hybrid 3DEnVar method.
-The assimilated radiances are from Microwave Humidity Sounding (MHS) channels 3-5 aboard Metop-B. The practice is still under
+In the last practice, you further test the clear-sky satellite radiances assimilation using MPAS-JEDI's hybrid 3DEnVar method.
+The assimilated clear-sky radiances are from Microwave Humidity Sounding (MHS) channels 3-5 aboard Metop-B. The practice is still under
 ${SCRATCH}/MPAS-JEDI-Training/Variational.
 </p>
 
@@ -1805,16 +1812,16 @@ ${SCRATCH}/MPAS-JEDI-Training/Variational.
 First, prepare satellite observation-related files for the practice, including MHS IODA file, bias correction files, and CRTM coefficients:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/CRTM_Coeff .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/CRTM_Coeff .
 <em class="prompt">$ </em>cd dbIn
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/mhs_metop-b_obs_2024091712.h5 .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/mhs_metop-b_tlapmean.txt .
-<em class="prompt">$ </em>ln -sf ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/satbias_mhs_metop-b.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/mhs_metop-b_obs_2024091712.h5 .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/mhs_metop-b_tlapmean.txt .
+<em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/VarBC_Coeff/satbias_mhs_metop-b.h5 .
 </pre>
 </p>
 
 <p>
-Then, we copy the background file to the analysis file for overwriting:
+Then, you copy the background file to the analysis file for overwriting:
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
 <em class="prompt">$ </em>cp bg.2024-09-17_12.00.00.nc an.2024-09-17_12.00.00.nc
@@ -1822,23 +1829,26 @@ Then, we copy the background file to the analysis file for overwriting:
 </p>
 
 <p>
-Following, copy the 3dhybrid_mhs.yaml to current working directory:
+Following, copy the 3dhybrid_mhs.yaml to the current working directory:
 
 <pre class="terminal">
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3dhybrid_mhs.yaml . 
 </pre>
 
 <p>
-Now, we can compare 3dhybrid_mhs.yaml with 3dhybrid.yaml:
+Now, you can compare 3dhybrid_mhs.yaml with 3dhybrid.yaml:
+</p>
 <pre class="terminal">
 <em class="prompt">$ </em>diff 3dhybrid_mhs.yaml 3dhybrid.yaml
 </pre>
-We will find the differences is adding a new observation section related to MHS Metop-B. In this section, we 
-show what should be included for clear-ksy satellite radiance assimilation
+<p>
+you will find that the difference is adding a new observation section related to MHS Metop-B. In this section, you 
+show what should be included for clear-sky satellite radiance assimilation:
 </p>
 
 <p>
 1) observation operator via CRTM (Community Radiative Transfer Model):
+</p>
 <pre class="terminal">
 <       obs operator:
 <         name: CRTM
@@ -1853,7 +1863,9 @@ show what should be included for clear-ksy satellite radiance assimilation
 <           Sensor_ID: mhs_metop-b
 </pre>
 
-2) variational bias correction:
+<p>
+2) variational bias correction (VarBC):
+</p>
 <pre class="terminal">
 <       obs bias:
 <         input file: dbIn/satbias_mhs_metop-b.h5
@@ -1886,7 +1898,9 @@ show what should be included for clear-ksy satellite radiance assimilation
 <           output file: dbOut/satbias_cov_mhs_metop-b.h5
 </pre>
 
-3) radiance-specific or general quality control, observation error:
+<p>
+3)  general and radiance-specific quality control, observation error:
+</p>
 <pre class="terminal">
 <       obs filters:
 <       # Metadata Check
@@ -2014,12 +2028,40 @@ show what should be included for clear-ksy satellite radiance assimilation
 </pre>
 
 <p>
-Modify the run_variational.ksh to name da_test to "3dhybrid_mhs", and submib the PBS job:
+Modify run_variational.ksh to name da_test to "3dhybrid_mhs", and submit the PBS job:
 </p>
 
 <pre class="terminal">
 <em class="prompt">$ </em>qsub run_variational.ksh
 </pre>
+
+<p>
+After the practice, you can check the results by running the plot_diag.py.
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>python plot_diag.py
+</pre>
+
+you can display the scatter plot of OMB/OMA of the radiances:
+<pre class="terminal">
+display XB_XA_da_mhs_metop-b.png
+</pre>
+
+<img src="images/XB_XA_da_mhs_metop-b.png" alt="vertical profile of RMS of OMB/OMA for radar reflectivity" width="800">
+
+<p>
+Similar to previous DA tests, you can save the running results: 
+</p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>mv an.2024-09-17_12.00.00.nc 3dhybrid_mhs.2024-09-17_12.00.00.nc
+<em class="prompt">$ </em>mv dbOut dbOut_3dhybrid_mhs
+</pre>
+
+<p>
+Now, you have all the tests of the training finished.
+</p>
 
 </div>
 

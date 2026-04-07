@@ -118,9 +118,10 @@ MPAS-JEDI code build for this tutorial is based upon <a href="https://github.com
 <p>
 Before login to ASPIRE 2A, you need to set up your vpn to access NSCC HPC systems. Please follow the instructions from NSCC for
 	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_MAC.pdf" target="_blank">Mac</a> and 
-	<a href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a>users.  
+	<a
+href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a> users.  
 <p>
-After setting up the VPN, log onto Aspire2a from your laptop or desktop by
+After setting up the VPN, log onto ASPIRE 2A from your laptop or desktop by
 </p>
 
 <pre class="terminal">
@@ -1045,21 +1046,36 @@ One "local" file should be generated for each processor. (256 processors are use
 </pre>
 
 <p>
-To see the results of multiplying Dirac-like fields - i.e. fields that have
-unit values at selected points but zero values elsewhere - with the
-localization functions, you can make a plot from
-<em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> .
+Each column of a localization matrix is associated with a single grid point,
+and the column itself is the scalar localization field associated with that
+grid point. The localization matrix itself is never directly calculated or
+stored by BUMP, but we can obtain a particular column by implicitly convolving
+the localization matrix with a "Dirac" function, which has unit value at the
+associated grid point, and zero values elsewhere.
+If we set values to unity at more than one grid point, then the result of
+convolution will be the superposition of the individual localization fields
+associated with each selected point. However, if the selected points are
+well-spaced compared with the localization scales, there will be minimal
+overlap between the individual localization fields, allowing us to easily
+distiguish between them.
+</p>
+
+The Dirac output file
+<em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> contains
+the results of a convolution with a field that has unit values at selected
+well-spaced grid points and zero values elsewhere.
 </p>
 
 <p><i>
-First, make sure that the Conda environment has been activated:
+To plot the field, first make sure that the Conda environment has been
+activated:
 </i></p>
 <pre class="terminal">
 <em class="prompt">$ </em>module load miniforge3/25.3.1
 <em class="prompt">$ </em>conda activate /home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training
 </pre>
 <p>
-Then copy and run the plotting script for the Dirac output file:
+Then, copy and run the plotting script for the Dirac output file:
 </p>
 
 <pre class="terminal">
@@ -1080,9 +1096,9 @@ The figure should look like this:
 <img src="images/figure_bumploc.png", width="600"/>
 
 <p>
-We suggest that you try applying different horizontal or vertical localization lengths,
-and seeing how this alters the results. This is done by changing the relevant YAML keys,
-and then re-submiting the PBS job script.
+We suggest that you try applying different horizontal or vertical localization
+lengths, and seeing how this alters the results. This is done by changing the
+relevant YAML keys, and then re-submiting the PBS job script.
 </p>
 
 <p><i>

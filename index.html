@@ -290,7 +290,7 @@ the training course</b>. Instead, please set an environment variable named
 <code>bundle_dir</code> that points to a directory containing pre-compiled executables:
 </p>
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+<em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 </div>
 
@@ -574,11 +574,11 @@ The qdel command will kill your interactive job by only supplying 'job-id-number
 
 <p>
 Note that the tutorial test cases are designed with single-precision MPAS model test dataset.
-Therefore, you pre-compiled mpas-bundle code with single-precision mode in
+The pre-compiled mpas-bundle code with single-precision mode can be found under
 </p>
 
 <pre class="terminal">
-/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0
+/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/
 </pre>
 
 <p>
@@ -587,7 +587,7 @@ set an environment variable 'bundle_dir' for convenience in the subsequent pract
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+<em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 
 </div>
@@ -642,7 +642,7 @@ the <em class="terminal">make</em> command:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>source /home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>source /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
 <em class="prompt">$ </em>mkdir build 
 <em class="prompt">$ </em>cd build
 <em class="prompt">$ </em>cmake .. -DNCEP_BUFR_LIB=/data/projects/13004327/software_service/spack-stack/1.8-mos3r3n/envs/mpas-bundle/install/gcc/11.2.0/bufr-12.1.0-eemymeq/lib64/libbufr_4.so
@@ -709,7 +709,7 @@ All files matching the patterns are converted.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>source /home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>source /home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/code/env-setup/gnu-aspire2a.sh
 <em class="prompt">$ </em>./obs2ioda_v3 prepbufr.gdas.20240917.t12z.nr.48h
 <em class="prompt">$ </em>./obs2ioda_v3 gdas.satwnd.t12z.20240917.bufr
 <em class="prompt">$ </em>./obs2ioda_v3 gdas.gpsro.t12z.20240917.bufr
@@ -800,7 +800,7 @@ Then, set an environment variable that points to the mpas-bundle directory
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+<em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 
 <p>
@@ -983,7 +983,7 @@ pre-built executables as follows.
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+<em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 
 <p>
@@ -1144,7 +1144,7 @@ Let's create a new working directory for this test:
 <p>
 set the bundle_dir environment:
 <pre class="terminal">
-<em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
+<em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 </p>
 

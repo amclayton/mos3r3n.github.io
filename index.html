@@ -1062,7 +1062,7 @@ distiguish between them.
 
 The Dirac output file
 <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> contains
-the results of a convolution with a field that has unit values at selected
+the results of convolution with a field that has unit values at selected
 well-spaced grid points and zero values elsewhere.
 </p>
 
@@ -1089,6 +1089,116 @@ The resulting figure can be displayed as follows:
 <em class="prompt">$ </em>display figure_bumploc.png
 </pre>
 
+<pre>
+$ python plot_bumploc.py
+/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/io/__init__.py:241: DownloadWarning: Downloading: https://naturalearth.s3.amazonaws.com/50m_physical/ne_50m_coastline.zip
+  warnings.warn(f'Downloading: {url}', DownloadWarning)
+Traceback (most recent call last):
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 1303, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 1349, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 1298, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 1058, in _send_output
+    self.send(msg)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 996, in send
+    self.connect()
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/http/client.py", line 1475, in connect
+    self.sock = self._context.wrap_socket(self.sock,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/ssl.py", line 517, in wrap_socket
+    return self.sslsocket_class._create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/ssl.py", line 1104, in _create
+    self.do_handshake()
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/ssl.py", line 1382, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/scratch/users/gov/nea/aclayton/MPAS-JEDI-Training/Localization/plot_bumploc.py", line 61, in <module>
+    plt.savefig('figure_bumploc.png', dpi=200, bbox_inches='tight')
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/pyplot.py", line 1243, in savefig
+    res = fig.savefig(*args, **kwargs)  # type: ignore[func-returns-value]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/figure.py", line 3490, in savefig
+    self.canvas.print_figure(fname, **kwargs)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/backend_bases.py", line 2155, in print_figure
+    self.figure.draw(renderer)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/artist.py", line 94, in draw_wrapper
+    result = draw(artist, renderer, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/figure.py", line 3257, in draw
+    mimage._draw_list_compositing_images(
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/mpl/geoaxes.py", line 524, in draw
+    return super().draw(renderer=renderer, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/axes/_base.py", line 3181, in draw
+    mimage._draw_list_compositing_images(
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/matplotlib/artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/mpl/feature_artist.py", line 185, in draw
+    geoms = self._feature.intersecting_geometries(extent)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/feature/__init__.py", line 309, in intersecting_geometries
+    return super().intersecting_geometries(extent)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/feature/__init__.py", line 112, in intersecting_geometries
+    return (geom for geom in self.geometries() if
+                             ^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/feature/__init__.py", line 291, in geometries
+    path = shapereader.natural_earth(resolution=self.scale,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/io/shapereader.py", line 306, in natural_earth
+    return ne_downloader.path(format_dict)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/io/__init__.py", line 203, in path
+    result_path = self.acquire_resource(target_path, format_dict)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/io/shapereader.py", line 359, in acquire_resource
+    shapefile_online = self._urlopen(url)
+                       ^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/site-packages/cartopy/io/__init__.py", line 242, in _urlopen
+    return urlopen(url)
+           ^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/project/13004327/software_service/conda_envs/MPAS-JEDI-Training/lib/python3.11/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)>
+</pre>
 <p>
 The figure should look like this:
 </p>

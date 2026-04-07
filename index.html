@@ -1060,6 +1060,7 @@ overlap between the individual localization fields, allowing us to easily
 distiguish between them.
 </p>
 
+<p>
 The Dirac output file
 <em class="terminal"> dirac_nicas.2024-09-17_12.00.00.nc</em> contains
 the results of convolution with a field that has unit values at selected
@@ -1258,7 +1259,7 @@ you are now ready to set up and run the first analysis test using 3DEnVar. For t
 </p>
 
 <p>
-Let's create a new working directory for this test:
+First, create and move to a new working directory for this test:
 </p>
 
 <pre class="terminal">
@@ -1268,15 +1269,15 @@ Let's create a new working directory for this test:
 </pre>
 
 <p>
-set the bundle_dir environment:
+Now, set the bundle_dir environment variable:
 <pre class="terminal">
 <em class="prompt">$ </em>export bundle_dir=/home/project/13004327/training_service/2026-MPAS-JEDI/SINGV-NG-1.0/build
 </pre>
 </p>
 
 <p>
-Again, you now prepare all necessary input files to run the MPAS-JEDI variational DA application.
-Similar to what you have done before, you need to link MPAS physics-related data and tables, MPAS graph, streams, and namelist files:
+You now need to prepare all necessary input files to run the MPAS-JEDI variational DA application.
+Similar to what you did before, link in MPAS physics-related data and tables, and MPAS graph, streams, and namelist files:
 </p>
 
 <pre class="terminal">
@@ -1293,7 +1294,7 @@ Similar to what you have done before, you need to link MPAS physics-related data
 </pre>
 
 <p>
-Then, link YAML files:
+Then, link in the YAML files:
 </p>
 
 <pre class="terminal">
@@ -1303,7 +1304,7 @@ Then, link YAML files:
 </pre>
 
 <p>
-Followed by the 2-stream IO files:
+Then, link in the 2-stream IO files:
 </p>
 
 <pre class="terminal">
@@ -1312,8 +1313,9 @@ Followed by the 2-stream IO files:
 </pre>
 
 <p>
-Next, you should link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working 
-directory and make a copy of the background file as the analysis file to be overwritten. 
+Next, link the background file <em class="terminal">mpasout.2024-09-17_12.00.00.nc</em> into the working 
+directory and make a template for the analysis file by copying of the background file. (The contents
+of the analysis file will later be overwritten by the program.)
 </p>
 
 <pre class="terminal">
@@ -1322,7 +1324,7 @@ directory and make a copy of the background file as the analysis file to be over
 </pre>
 
 <p>
-Then, you need to link ensemble forecasts and bump localization files.
+Then, link in the ensemble forecasts and the bump localization files.
 </p>
 
 <pre class="terminal">
@@ -1334,15 +1336,15 @@ Then, you need to link ensemble forecasts and bump localization files.
 </pre>
 
 <p>
-For the BUMP localization files, you can use files generated in the practice 3.1.
+For the BUMP localization files, we will use the files generated in the exercise 3.1.
 </p>
 	
 <p>
-Next, you need to link observation files into the working directory. 
+Next, link in the observation files into the a subdirectory dbIn. 
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>mkdir dbIn dbOut
+<em class="prompt">$ </em>mkdir dbIn
 <em class="prompt">$ </em>cd dbIn
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/aircraft_obs_2024091712.h5 .
 <em class="prompt">$ </em>ln -fs ${SCRATCH}/MPAS-JEDI-Training/OBS_FILE/IODA/gnssro_obs_2024091712.h5 .
@@ -1353,25 +1355,44 @@ Next, you need to link observation files into the working directory.
 </pre>
 
 <p>
-Now, you are ready to link the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
-<em class="terminal">3denvar.yaml</em> contains all of the settings you need for this 3DEnVar update. 
+A further subdirectory dbOut is needed for the output files: 
+</p>
+
+<<pre class="terminal">
+<em class="prompt">$ </em>mkdir dbOut
+</pre>
+
+<p>
+Now, you are ready to link in the pre-prepared <em class="terminal">3denvar.yaml</em> file for 3DEnVar. 
+<em class="terminal">3denvar.yaml</em> contains all of the settings you need for this 3DEnVar update.
+<p>
+
+<pre class="terminal">
+<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3denvar.yaml .
+</pre>
+
+<p>
 Also, copy the PBS job script. 
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/3denvar.yaml .
 <em class="prompt">$ </em>cp ${SCRATCH}/MPAS-JEDI-Training/MPASJEDI_FILE/run_variational.ksh .
 </pre>
 
+
 <p>
-Before submitting the job to run the 3DEnVar application, you need to check whether the test case is properly set:
+Before submitting the job to run the 3DEnVar application, you can confirm that the test case is properly set
+by checking the value of da_test in the YAMPL file:
+</p>
+
 <pre class="terminal">
 <em class="prompt">$ </em>grep "da_test=" run_variational.ksh
 export da_test="3denvar"
 </pre>
 
 <p>
-Now, you submit the PBS job script to run the following executable <em class="terminal">mpasjedi_variational.x</em>, which is used for all of our variational updates. 
+Now, submit the PBS job script to run the executable <em class="terminal">mpasjedi_variational.x</em>,
+which is used for all of variational analysis tests.
 </p>
 
 <pre class="terminal">

@@ -284,14 +284,14 @@ installation tests, through a cmake/ctest mechanism.
 
 <div class="outlined">
 <p>
-Due to the huge burden on I/O and network bandwidth, <b>please do not
-configure or compile the MPAS-JEDI code, or run the installation tests, during
-the training course</b>. Instead, please set up an environment variable called
-'bundle_dir' which points to a directory containing pre-compiled executables:
+Due to the heavy load on I/O and network bandwidth, <b>please do not
+configure or compile the MPAS-JEDI code, or run installation tests during
+the training course</b>. Instead, please set an environment variable named
+<code>bundle_dir</code> that points to a directory containing pre-compiled executables:
+</p>
 <pre class="terminal">
 <em class="prompt">$ </em>export bundle_dir=/home/project/17001770/weather_department/dae/taosun/MPAS-JEDI-Training/SINGV-NG-1.0/build
 </pre>
-</p>
 </div>
 
 <!-- === 1.1 Downloading the code ================================================ -->
@@ -356,15 +356,21 @@ the following (45 modules!!!).
 
 <pre class="terminal">
 Currently Loaded Modulefiles:
-  1) craype-x86-milan         10) zlib-ng/2.1.6            19) stack-python/3.11.7      28) snappy/1.1.10            37) parallelio/2.6.2
-  2) craype/2.7.15            11) pigz/2.8                 20) boost/1.84.0             29) c-blosc/1.21.5           38) jedi-cmake/1.4.0
-  3) libfabric/1.11.0.4.125   12) zstd/1.5.2               21) eckit/1.25.2             30) nghttp2/1.57.0           39) cmake/3.31.3
-  4) cray-pals/1.1.6          13) tar/1.34                 22) eigen/3.4.0              31) curl/8.7.1               40) ecbuild/3.7.2
-  5) gcc/11.2.0               14) gettext/0.22.5           23) fckit/0.11.0             32) hdf5/1.14.3              41) python-venv/1.0
-  6) cray-mpich/8.1.15        15) libxcrypt/4.4.35         24) fftw/3.3.10              33) netcdf-c/4.9.2           42) py-setuptools/63.4.3
-  7) stack-gcc/11.2.0         16) sqlite/3.43.2            25) ecmwf-atlas/0.36.0       34) netcdf-cxx4/4.3.1        43) py-pycodestyle/2.11.0
-  8) stack-cray-mpich/8.1.15  17) util-linux-uuid/2.38.1   26) gptl/8.1.1               35) netcdf-fortran/4.6.1     44) udunits/2.2.28
-  9) glibc/2.28               18) python/3.11.7            27) gsl-lite/0.37.0          36) parallel-netcdf/1.12.3   45) nccmp/1.9.0.1
+  1) craype-x86-milan         16) sqlite/3.43.2            31) curl/8.7.1
+  2) craype/2.7.15            17) util-linux-uuid/2.38.1   32) hdf5/1.14.3
+  3) libfabric/1.11.0.4.125   18) python/3.11.7            33) netcdf-c/4.9.2
+  4) cray-pals/1.1.6          19) stack-python/3.11.7      34) netcdf-cxx4/4.3.1
+  5) gcc/11.2.0               20) boost/1.84.0             35) netcdf-fortran/4.6.1
+  6) cray-mpich/8.1.15        21) eckit/1.25.2             36) parallel-netcdf/1.12.3
+  7) stack-gcc/11.2.0         22) eigen/3.4.0              37) parallelio/2.6.2
+  8) stack-cray-mpich/8.1.15  23) fckit/0.11.0             38) jedi-cmake/1.4.0
+  9) glibc/2.28               24) fftw/3.3.10              39) cmake/3.31.3
+ 10) zlib-ng/2.1.6            25) ecmwf-atlas/0.36.0       40) ecbuild/3.7.2
+ 11) pigz/2.8                 26) gptl/8.1.1               41) python-venv/1.0
+ 12) zstd/1.5.2               27) gsl-lite/0.37.0          42) py-setuptools/63.4.3
+ 13) tar/1.34                 28) snappy/1.1.10            43) py-pycodestyle/2.11.0
+ 14) gettext/0.22.5           29) c-blosc/1.21.5           44) udunits/2.2.28
+ 15) libxcrypt/4.4.35         30) nghttp2/1.57.0           45) nccmp/1.9.0.1
 </pre>
 <p>
 (These packages are from the pre-installed spack-stack-1.8.0.)
@@ -372,7 +378,13 @@ Currently Loaded Modulefiles:
 
 <div class="outlined">
 <p>
-<b class="red">WARNING:</b>You may encountor the issue that .
+<b class="red">WARNING:</b> You may encounter the following issue:
+</p>
+<pre class="terminal">
+ModuleCmd_List.c(170):FATAL:997: The environment variables LOADEDMODULES and _LMFILES_ have inconsistent lengths.
+</pre>
+<p>
+You can resolve this by sourcing the environment bash file again.
 </p>
 </div>
 

@@ -121,10 +121,16 @@ Before login to ASPIRE 2A, you need to set up your vpn to access NSCC HPC system
 	<a
 href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a> users.  
 <p>
-After setting up the VPN, log onto ASPIRE 2A from your laptop or desktop by
-</p>
+After setting up the VPN, ssh into ASPIRE 2A from your laptop or desktop.
+The required ssh command may depend on your institution, as explained in section 4
+<a href="https://help.nscc.sg/wp-content/uploads/2024/05/ASPIRE2A-General-Quickstart-Guide.pdf">ASPIRE 2A General QuickStart Guide</a>.
+Possiblilities are as follows:</p>
 
 <pre class="terminal">
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nscc.sg
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nus.sg
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2antu.nscc.sg
+<em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.a-star.sg
 <em class="prompt">$ </em>ssh -Y &lt;userid&gt;@aspire2a.nscc.sg
 </pre>
 
@@ -151,7 +157,7 @@ You can set an environment variable for your scratch directory as follows:
 </p>
 
 <pre class="terminal">
-<em class="prompt">$ </em>export SCRATCH=${HOME}/scratch
+<em class="prompt">$ </em>export SCRATCH=${HOME/home/scratch}
 </pre>
 
 <p>

@@ -1493,8 +1493,8 @@ which will look like the figure below
 </div>
 <div id="hybrid" class="section">
 <p>
-In this session, you will test different deterministic DA methods. Also, you will additionally 
-assimilate more remote sensing observations, including radar reflectivity and 
+In this session, you will test different deterministic DA methods, and also assimilate
+some additional remote sensing observations, including radar reflectivity and 
 satellite radiances.
 </p>
 
@@ -1506,9 +1506,9 @@ satellite radiances.
 <div id="run_3dvar" class="subsection">
 
 <p>
-In this exercise, we will run MPAS-JEDI 3DVar and hybrid 3DEnVar. The overall procedure is similar 
-to the 3DEnVar practice in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
-background error covariance (BEC), which contains the climatological characteristics. Here, the 
+In this exercise, you will run MPAS-JEDI 3DVar and hybrid 3DEnVar. The overall procedure is similar 
+to the 3DEnVar exercise in section 4.2. However, both 3DVar and hybrid 3DEnVar use the static
+background error covariance (BEC), which contains climatologically-averaged characteristics. Here, the 
 pre-generated static BEC will be used. you hope to provide a practice for static B training in future 
 MPAS-JEDI training.
 </p>
@@ -1607,12 +1607,12 @@ Also, change the da_test="3denvar" to da_test="3dvar" in the PBS script file run
 </pre>
 
 <p>
-You can repeat the same procedures as the 3DEnvar practice to analyze the results of 3DVar, like the cost function, analysis 
+You can repeat the same procedures as the 3DEnVar practice to analyze the results of 3DVar, like the cost function, analysis 
 increment, and OMB/OMA statistics. Here, you won't include detailed instructions anymore.
 </p>
 
 <p>
-After running 3DVar practice successfully, you now do the hybrid 3DEnvar practice. Similarly, backup the results of 3DVar run:
+After running 3DVar practice successfully, you now do the hybrid 3DEnVar practice. Similarly, backup the results of 3DVar run:
 
 <pre class="terminal">
 <em class="prompt">$ </em>cd ${SCRATCH}/MPAS-JEDI-Training/Variational
@@ -1770,7 +1770,7 @@ which will look like the figure below
 <div id="run_radar" class="subsection">
 
 <p>
-In this exercise, we will run radar data assimilation using the 3DEnvar method. In this exercise, 
+In this exercise, we will run radar data assimilation using the 3DEnVar method. In this exercise, 
 radar reflectivity is included as an analysis variable, and with this, the tagent linear and adjoint
 of reflectivity operator can be avoided. We still conduct the practice under ${SCRATCH}/MPAS-JEDI-Training/Variational.
 </p>

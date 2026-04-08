@@ -122,7 +122,7 @@ Before login to ASPIRE 2A, you need to set up your vpn to access NSCC HPC system
 href="https://help.nscc.sg/wp-content/uploads/ASPIRE2A_VPN_WINDOWS.pdf" target="_blank">Windows</a> users.  
 <p>
 After setting up the VPN, ssh into ASPIRE 2A from your laptop or desktop.
-The required ssh command may depend on your institution, as explained in section 4
+The required ssh command may depend on your institution, as explained in section 4 of the
 <a href="https://help.nscc.sg/wp-content/uploads/2024/05/ASPIRE2A-General-Quickstart-Guide.pdf">ASPIRE 2A General QuickStart Guide</a>.
 Possiblilities are as follows:</p>
 
@@ -259,8 +259,11 @@ noting:
 </p>
 
 <p>
-Throughout this training, you will submit your jobs to a special project number <em class="terminal">S6244386</em>.
-After the training, please remember to use your own project number when submitting jobs.
+Throughout this training course, you will submit your jobs to a dedicated queue
+<em class="terminal">R13547281</em>. and use a dedicated project number
+<em class="terminal">53010008</em>.
+After the training, please remember to submit to the regular queues using your own project
+number.
 
 At various points in the practical exercises, you will need to submit jobs to
 ASPIRE 2A's queueing system
@@ -353,6 +356,7 @@ Now load the spack-stack pre-built environment for the GNU compiler:
 
 <pre class="terminal">
 <em class="prompt">$ </em>source code/env-setup/gnu-aspire2a.sh
+<em class="prompt">$ </em>source code/env-setup/gnu-aspire2a.sh # (Yes, run twice!)
 <em class="prompt">$ </em>module list
 </pre>
 
